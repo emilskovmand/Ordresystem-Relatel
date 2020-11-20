@@ -46,6 +46,10 @@ body {
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.wrapper .sidebar ul a.active li {
+  background-color: #318d74;
+}
+
 .wrapper .sidebar ul li p {
   color: #fff;
   display: block;

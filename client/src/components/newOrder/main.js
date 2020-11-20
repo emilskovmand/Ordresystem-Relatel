@@ -29,7 +29,7 @@ export default function NewOrder() {
                 <div>
                 </div>
                 <select className="info selector space">
-                    <option value="select">Massehandling</option>
+                    <option style={{ display: "none" }} value="" disabled selected>--Massehandling--</option>
                     <option value="godkend">Godkend Valgte</option>
                     <option value="slet">Slet Alle</option>
                 </select>
