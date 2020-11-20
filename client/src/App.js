@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import './sass/index.css';
+import FrontPage from './components/newOrder/main'
+import Godkendt from './components/GodtkendtTilProduktion/main'
+import Afventer from './components/GodkendProduktion/main'
+import Færdigeordre from './components/FærdigeOrdre/main'
+import SideNavigation from './components/shared/navigation'
+
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<Router>
+			<div id="App" className="wrapper">
+				<SideNavigation />
+				<Switch>
+					<Route path='/' exact component={FrontPage} />
+					<Route path='/godkendt' component={Godkendt} />
+					<Route path='/afventer' component={Afventer} />
+					<Route path='/færdigeordre' component={Færdigeordre} />
+				</Switch>
+			</div>
+		</Router>
+	);
 }
 
 export default App;
