@@ -12,7 +12,7 @@ router.get('/:status', async (req, res) => {
         res.json(orders);
     } catch (error) {
         console.log(error)
-        res.status(404)
+        res.status(500)
     }
 });
 
@@ -36,10 +36,29 @@ router.post('/createOrder', (req, res) => {
         })
         .catch(err => {
             console.log(err);
-            res.status(404);
+            res.status(500);
         })
 
     res.send("Retrieved Order!")
 });
+
+// ROUTE: /api/order/updateSingleorder/%DYNAMIC%_id
+router.put('/updateSingleOrder/:_id', async (req, res) => {
+    try {
+        const updatedOrder = await orderModel.findByIdAndUpdate(req.params._id, {
+            BestillingsDato: req.body.Bestillingsdato,
+            Virksomhed: req.body.Virksomhed,
+            Kundenavn: req.body.Kundenavn,
+            AntalIndtalinger: req.body.AntalIndtalinger,
+            ValgteSpeaker: req.body.ValgteSpeaker,
+            Status: req.body.Status
+        });
+        res.send("Updated order: " + req.params._id);
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+        res.send("Updating order " + req.params._id + " failed...");
+    }
+})
 
 module.exports = router;

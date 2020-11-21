@@ -1,0 +1,186 @@
+#EditModal {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    background-color: rgba($color: #575555, $alpha: .7);
+
+    animation: fade-in .3s ease-in 1;
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .closing {
+        animation: fade-out .3s ease-in 1;
+
+        @keyframes fade-out {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+    }
+
+    &.close {
+        opacity: 0;
+        transition: opacity .35s ease-out;
+
+        .modalContainer.close {
+            transition: transform .3s ease-out;
+            transform: translateY(-30px) rotateY(-16deg);
+        }
+    }
+
+    >.modalWrapper {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        >.modalContainer {
+            position: relative;
+            height: 70vh;
+            width: 700px;
+            background-color: whitesmoke;
+            border-radius: 25px;
+            padding: 25px;
+            animation: walk-inEdit .35s ease-out 1;
+
+            @keyframes walk-inEdit {
+                from {
+                    transform: translateY(-30px) rotateY(16deg);
+                }
+
+                to {
+                    transform: translateY(0px) rotateY(0deg);
+                }
+            }
+
+            >h4 {
+                font-size: 24px;
+                text-align: center;
+
+            }
+
+            >p {
+                font-size: 12px;
+                color: gray;
+                user-select: none;
+                margin-bottom: 20px;
+            }
+
+            >.inputField {
+                margin-bottom: 10px;
+
+                >.labelfield {
+                    margin-bottom: 3px;
+                    font-weight: 100;
+                    font-size: 14px;
+                }
+
+                >input {
+                    outline: none;
+                    border-top: 0px solid transparent;
+                    border-left: 1px solid transparent;
+                    border-right: 0px solid transparent;
+                    border-bottom: 1px solid #39a487;
+                    padding: 6px 3px;
+                    font-size: 20px;
+                    width: 100%;
+                    background-color: whitesmoke;
+                }
+            }
+
+            >.statusContainer {
+                width: 100%;
+                padding: 30px 2px;
+                font-size: 26px;
+
+                span {
+
+                    &.NyOrdre {
+                        color: red;
+                    }
+                }
+            }
+
+            .errorMessage {
+                display: none;
+                width: fit-content;
+                padding: 6px 2px;
+                background-color: lighten(red, 30%);
+                color: whitesmoke;
+            }
+
+            .buttonsContainer {
+                position: absolute;
+                bottom: 0px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 70%;
+
+                >button {
+                    cursor: pointer;
+
+                    &.nextButton {
+                        font-size: 20px;
+                        background-color: #387ec9;
+                        outline: none;
+                        border-top-left-radius: 25px;
+                        border-bottom-left-radius: 25px;
+                        border: 0px solid transparent;
+                        padding: 20px 0px;
+                        color: whitesmoke;
+                        width: calc(100% / 3);
+
+                        &:hover {
+                            background-color: darken(#387ec9, 6%);
+                        }
+                    }
+
+                    &.submitButton {
+                        font-size: 20px;
+                        background-color: #39a487;
+                        outline: none;
+                        border: 0px solid transparent;
+                        padding: 20px 0px;
+                        color: whitesmoke;
+                        width: calc(100% / 3);
+
+                        &:hover {
+                            background-color: darken(#39a487, 6%);
+                        }
+                    }
+
+                    &.cancelButton {
+                        font-size: 20px;
+                        height: 100%;
+                        width: calc(100% / 3);
+                        color: whitesmoke;
+                        border-top-right-radius: 25px;
+                        border-bottom-right-radius: 25px;
+                        background-color: rgb(228, 16, 16);
+                        outline: none;
+                        border: 0px solid transparent;
+                        padding: 20px 0px;
+
+                        &:hover {
+                            background-color: darken(rgb(228, 16, 16), 6%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

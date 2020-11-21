@@ -1,5 +1,6 @@
 import { Fragment, useState, useRef, useEffect } from 'react'
 import { CreateOrder, GetOrders } from '../../services/orderService'
+import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 
 function NewOrderModal({ setModal }) {
@@ -32,6 +33,7 @@ function NewOrderModal({ setModal }) {
         if (notValidFields.length > 0) {
             errorBox.current.innerText = "Ugyldige felter: " + notValidFields;
             errorBox.current.style = "display: block;"
+            return;
         } else {
             CreateOrder(
                 inputs.current.id.value,
@@ -111,10 +113,12 @@ function NewOrderModal({ setModal }) {
     )
 }
 
-function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status }) {
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal }) {
+
+
     return (
         <>
-            <tr>
+            <tr id={dbId}>
                 <td><input type="checkbox" name="CheckBox" value={OrdreId} /></td>
                 <td>{OrdreId}</td>
                 <td>{BestillingsDato}</td>
@@ -123,7 +127,7 @@ function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndta
                 <td>{AntalIndtalinger}</td>
                 <td>{ValgteSpeaker}</td>
                 <td>{Status}</td>
-                <td><button type="button" className="button">Åben Ordre</button></td>
+                <td><button onClick={() => orderModal(arguments[0])} type="button" className="button">Åben Ordre</button></td>
             </tr>
         </>
     )
@@ -132,15 +136,23 @@ function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndta
 export default function NewOrder() {
     const [showModal, setModal] = useState(false);
     const [data, setData] = useState(null);
+    const [openOrder, setOpenOrder] = useState({});
 
     const setParentModalState = (val) => {
         setModal(val);
     }
 
+    const editModal = (rowArguments = {}, empty = false) => {
+        if (empty) {
+            setOpenOrder({})
+            return;
+        }
+        setOpenOrder(rowArguments);
+    }
+
     useEffect(() => {
         // Effect
         GetOrders('Ny%20Ordre').then((response) => {
-            console.log(response);
             setData(response);
         })
 
@@ -149,11 +161,22 @@ export default function NewOrder() {
         }
     },
         // Dependencies
-        [showModal])
+        [showModal, openOrder])
 
     return (
         <Fragment>
             {showModal && <NewOrderModal setModal={setParentModalState} />}
+            {Object.keys(openOrder).length > 0 && <OpenOrder
+                _id={openOrder.dbId}
+                OrdreId={openOrder.OrdreId}
+                BestillingsDato={openOrder.BestillingsDato}
+                Virksomhed={openOrder.Virksomhed}
+                Kundenavn={openOrder.Kundenavn}
+                AntalIndtalinger={openOrder.AntalIndtalinger}
+                ValgteSpeaker={openOrder.ValgteSpeaker}
+                Status={openOrder.Status}
+                setEditState={editModal}
+            />}
             <div className="main_content">
                 <div className="header">Velkommen til ordresystemet. Du er logget ind som: Relatel</div>
 
@@ -190,6 +213,7 @@ export default function NewOrder() {
                     <tbody>
                         {data && data.map((value, index) => {
                             return <Row
+                                key={index}
                                 dbId={value._id}
                                 OrdreId={value.OrdreId}
                                 BestillingsDato={value.BestillingsDato}
@@ -198,6 +222,7 @@ export default function NewOrder() {
                                 AntalIndtalinger={value.AntalIndtalinger}
                                 ValgteSpeaker={value.ValgteSpeaker}
                                 Status={value.Status}
+                                orderModal={editModal}
                             />
                         })}
                     </tbody>

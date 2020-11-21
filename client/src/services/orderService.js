@@ -22,6 +22,28 @@ export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenav
     });
 }
 
+export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status) {
+
+    const load = {
+        OrdreId: parseInt(OrdreId),
+        Bestillingsdato: Bestillingsdato,
+        Virksomhed: Virksomhed,
+        Kundenavn: Kundenavn,
+        AntalIndtalinger: AntalIndtalinger,
+        ValgteSpeaker: ValgteSpeaker,
+        Status: Status
+    }
+
+    await fetch(`/api/order/updateSingleOrder/${_id}`, {
+        method: 'PUT',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(load)
+    });
+}
+
 export async function GetOrders(status) {
     const response = await fetch(`/api/order/${status}`)
     return response.json();

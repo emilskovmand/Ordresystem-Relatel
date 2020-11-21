@@ -246,8 +246,6 @@ body {
   width: 700px;
   border-radius: 25px;
   padding: 25px;
-  -webkit-animation: walk-in .3s ease-in-out 1;
-          animation: walk-in .3s ease-in-out 1;
 }
 
 #newOrderModal .modal-context {
@@ -360,6 +358,222 @@ body {
   padding: 6px 2px;
   background-color: #ff9999;
   color: whitesmoke;
+}
+
+#EditModal {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  background-color: rgba(87, 85, 85, 0.7);
+  -webkit-animation: fade-in .3s ease-in 1;
+          animation: fade-in .3s ease-in 1;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#EditModal .closing {
+  -webkit-animation: fade-out .3s ease-in 1;
+          animation: fade-out .3s ease-in 1;
+}
+
+@-webkit-keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+#EditModal.close {
+  opacity: 0;
+  -webkit-transition: opacity .35s ease-out;
+  transition: opacity .35s ease-out;
+}
+
+#EditModal.close .modalContainer.close {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  transition: -webkit-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+  -webkit-transform: translateY(-30px) rotateY(-16deg);
+          transform: translateY(-30px) rotateY(-16deg);
+}
+
+#EditModal > .modalWrapper {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#EditModal > .modalWrapper > .modalContainer {
+  position: relative;
+  height: 70vh;
+  width: 700px;
+  background-color: whitesmoke;
+  border-radius: 25px;
+  padding: 25px;
+  -webkit-animation: walk-inEdit .35s ease-out 1;
+          animation: walk-inEdit .35s ease-out 1;
+}
+
+@-webkit-keyframes walk-inEdit {
+  from {
+    -webkit-transform: translateY(-30px) rotateY(16deg);
+            transform: translateY(-30px) rotateY(16deg);
+  }
+  to {
+    -webkit-transform: translateY(0px) rotateY(0deg);
+            transform: translateY(0px) rotateY(0deg);
+  }
+}
+
+@keyframes walk-inEdit {
+  from {
+    -webkit-transform: translateY(-30px) rotateY(16deg);
+            transform: translateY(-30px) rotateY(16deg);
+  }
+  to {
+    -webkit-transform: translateY(0px) rotateY(0deg);
+            transform: translateY(0px) rotateY(0deg);
+  }
+}
+
+#EditModal > .modalWrapper > .modalContainer > h4 {
+  font-size: 24px;
+  text-align: center;
+}
+
+#EditModal > .modalWrapper > .modalContainer > p {
+  font-size: 12px;
+  color: gray;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  margin-bottom: 20px;
+}
+
+#EditModal > .modalWrapper > .modalContainer > .inputField {
+  margin-bottom: 10px;
+}
+
+#EditModal > .modalWrapper > .modalContainer > .inputField > .labelfield {
+  margin-bottom: 3px;
+  font-weight: 100;
+  font-size: 14px;
+}
+
+#EditModal > .modalWrapper > .modalContainer > .inputField > input {
+  outline: none;
+  border-top: 0px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 0px solid transparent;
+  border-bottom: 1px solid #39a487;
+  padding: 6px 3px;
+  font-size: 20px;
+  width: 100%;
+  background-color: whitesmoke;
+}
+
+#EditModal > .modalWrapper > .modalContainer > .statusContainer {
+  width: 100%;
+  padding: 30px 2px;
+  font-size: 26px;
+}
+
+#EditModal > .modalWrapper > .modalContainer > .statusContainer span.NyOrdre {
+  color: red;
+}
+
+#EditModal > .modalWrapper > .modalContainer .errorMessage {
+  display: none;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 6px 2px;
+  background-color: #ff9999;
+  color: whitesmoke;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 70%;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button {
+  cursor: pointer;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.nextButton {
+  font-size: 20px;
+  background-color: #387ec9;
+  outline: none;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  border: 0px solid transparent;
+  padding: 20px 0px;
+  color: whitesmoke;
+  width: calc(100% / 3);
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.nextButton:hover {
+  background-color: #306fb2;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.submitButton {
+  font-size: 20px;
+  background-color: #39a487;
+  outline: none;
+  border: 0px solid transparent;
+  padding: 20px 0px;
+  color: whitesmoke;
+  width: calc(100% / 3);
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.submitButton:hover {
+  background-color: #318d74;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.cancelButton {
+  font-size: 20px;
+  height: 100%;
+  width: calc(100% / 3);
+  color: whitesmoke;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: #e41010;
+  outline: none;
+  border: 0px solid transparent;
+  padding: 20px 0px;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.cancelButton:hover {
+  background-color: #c70e0e;
 }
 
 body {
