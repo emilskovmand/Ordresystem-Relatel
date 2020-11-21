@@ -1,0 +1,146 @@
+.modal {
+    left: 0;
+    top: 0;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba($color: #575555, $alpha: .7);
+
+    animation: fade-in .3s ease-in 1;
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .modalContainer {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: whitesmoke;
+        height: 70vh;
+        width: 700px;
+
+        border-radius: 25px;
+        padding: 25px;
+
+        animation: walk-in .3s ease-in-out 1;
+    }
+}
+
+#newOrderModal .modal-context {
+    position: relative;
+    height: 100%;
+
+    animation: walk-in .3s ease-in 1;
+
+    >h4 {
+        font-size: 20px;
+        font-weight: 300;
+        text-align: center;
+    }
+
+
+    >.inputField {
+        margin-bottom: 10px;
+
+        >.labelfield {
+            margin-bottom: 3px;
+            font-weight: 100;
+            font-size: 14px;
+
+            label {}
+        }
+
+        >input {
+            outline: none;
+            border-top: 0px solid transparent;
+            border-left: 1px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 1px solid #39a487;
+            padding: 6px 3px;
+            font-size: 20px;
+            width: 100%;
+            background-color: whitesmoke;
+        }
+    }
+
+    .submitOrder {
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70%;
+        font-size: 20px;
+        background-color: #39a487;
+        outline: none;
+        border-radius: 25px;
+        border: 0px solid transparent;
+        padding: 20px 16px;
+        color: whitesmoke;
+
+        &:hover {
+            cursor: pointer;
+            background-color: darken(#39a487, 6%);
+        }
+    }
+
+    .buttonsContainer {
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70%;
+
+        >button {
+            cursor: pointer;
+
+            &.submitButton {
+                font-size: 20px;
+                background-color: #39a487;
+                outline: none;
+                border-top-left-radius: 25px;
+                border-bottom-left-radius: 25px;
+                border: 0px solid transparent;
+                padding: 20px 16px;
+                color: whitesmoke;
+                width: 65%;
+
+                &:hover {
+                    background-color: darken(#39a487, 6%);
+                }
+            }
+
+            &.cancelButton {
+                font-size: 20px;
+                height: 100%;
+                width: 35%;
+                color: whitesmoke;
+                border-top-right-radius: 25px;
+                border-bottom-right-radius: 25px;
+                background-color: rgb(228, 16, 16);
+                outline: none;
+                border: 0px solid transparent;
+                padding: 20px 16px;
+
+                &:hover {
+                    background-color: darken(rgb(228, 16, 16), 6%);
+                }
+            }
+        }
+    }
+
+    .errorMessage {
+        display: none;
+        width: fit-content;
+        padding: 6px 2px;
+        background-color: lighten(red, 30%);
+        color: whitesmoke;
+    }
+}

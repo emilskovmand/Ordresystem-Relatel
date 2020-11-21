@@ -26,7 +26,7 @@ export default function GodkendProduktion() {
 
 
 
-                <input type="text" class="selector move" placeholder="Søgeord..." />
+                <input type="text" class="selector move space" placeholder="Søgeord..." />
                 <button type="button" class="button">Søg</button>
 
 

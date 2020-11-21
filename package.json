@@ -11,6 +11,8 @@
     "body-parser": "^1.18.3",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
+    "mongoose": "^5.10.15",
+    "react-loading": "^2.0.3",
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {

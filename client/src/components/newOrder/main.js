@@ -1,7 +1,117 @@
-import { Fragment } from 'react'
+import { Fragment, useState, useRef, useEffect } from 'react'
+import { CreateOrder, GetOrders } from '../../services/orderService'
+import ReactLoading from 'react-loading'
 
+function NewOrderModal({ setModal }) {
 
-function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status }) {
+    const inputs = useRef([]);
+    const errorBox = useRef();
+
+    // Håndterer oprettelsen af ordre
+    const handleOprettelse = () => {
+
+        const notValidFields = [];
+        // Check each field
+        if (inputs.current.id.value.length === 0) {
+            notValidFields.push("OrdreId");
+        }
+        if (inputs.current.virksomhed.value.length === 0) {
+            notValidFields.push("Virksomhed");
+        }
+        if (inputs.current.kundenavn.value.length === 0) {
+            notValidFields.push("Kundenavn");
+        }
+        if (inputs.current.indtalinger.value > 6) {
+            notValidFields.push("Antal Indtalinger")
+        }
+        if (inputs.current.speaker.value.length === 0) {
+            notValidFields.push("Valgte Speaker");
+        }
+
+        // if any validation errors occured
+        if (notValidFields.length > 0) {
+            errorBox.current.innerText = "Ugyldige felter: " + notValidFields;
+            errorBox.current.style = "display: block;"
+        } else {
+            CreateOrder(
+                inputs.current.id.value,
+                inputs.current.dato.value,
+                inputs.current.virksomhed.value,
+                inputs.current.kundenavn.value,
+                inputs.current.indtalinger.value,
+                inputs.current.speaker.value
+            )
+            setModal(false);
+        }
+    }
+
+    // Dato format for input
+    const dato = () => {
+        const dateForDateTimeInputValue = date => new Date(date.getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 16);
+        return dateForDateTimeInputValue(new Date());
+    }
+
+    return (
+        <>
+            <div id="newOrderModal" className="modal">
+                <div className="modalContainer">
+                    <section className="modal-context">
+                        <h4>Opret ny ordre</h4>
+                        <div className="inputField">
+                            <div className="labelfield">
+                                <label htmlFor="OrdreId">OrdreId</label>
+                            </div>
+                            <input ref={input => inputs.current.id = input} maxLength="8" name="OrdreId" type="text" placeholder=""></input>
+                        </div>
+                        <div className="inputField">
+                            <div className="labelfield">
+                                <label htmlFor="Dato">BestillingsDato</label>
+                            </div>
+                            <input ref={input => inputs.current.dato = input} name="Dato" type="datetime-local" defaultValue={dato()}></input>
+                        </div>
+                        <div className="inputField">
+                            <div className="labelfield">
+                                <label htmlFor="virksomhed">Virksomhed</label>
+                            </div>
+                            <input ref={input => inputs.current.virksomhed = input} name="virksomhed" type="text" placeholder=""></input>
+                        </div>
+                        <div className="inputField">
+                            <div className="labelfield">
+                                <label htmlFor="kunde">Kundenavn</label>
+                            </div>
+                            <input ref={input => inputs.current.kundenavn = input} name="kunde" type="text" placeholder=""></input>
+                        </div>
+                        <div className="inputField">
+                            <div className="labelfield">
+                                <label htmlFor="Indtalinger">Antal Indtalinger</label>
+                            </div>
+                            <input ref={input => inputs.current.indtalinger = input} name="Indtalinger" type="number" min="1" max="6" maxLength="2" defaultValue={1}></input>
+                        </div>
+                        <div className="inputField">
+                            <div className="labelfield">
+                                <label htmlFor="speaker">Valgte Speaker</label>
+                            </div>
+                            <input ref={input => inputs.current.speaker = input} name="speaker" type="text" placeholder=""></input>
+                        </div>
+
+                        <p ref={p => errorBox.current = p} className="errorMessage"></p>
+
+                        <div className="buttonsContainer">
+                            <button onClick={() => handleOprettelse()} className="submitButton">
+                                Opret Ordre
+                            </button>
+                            <button onClick={() => setModal(false)} className="cancelButton">
+                                Annuller
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </>
+    )
+}
+
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status }) {
     return (
         <>
             <tr>
@@ -20,8 +130,30 @@ function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger
 }
 
 export default function NewOrder() {
+    const [showModal, setModal] = useState(false);
+    const [data, setData] = useState(null);
+
+    const setParentModalState = (val) => {
+        setModal(val);
+    }
+
+    useEffect(() => {
+        // Effect
+        GetOrders('Ny%20Ordre').then((response) => {
+            console.log(response);
+            setData(response);
+        })
+
+        return () => {
+            // Cleanup
+        }
+    },
+        // Dependencies
+        [showModal])
+
     return (
         <Fragment>
+            {showModal && <NewOrderModal setModal={setParentModalState} />}
             <div className="main_content">
                 <div className="header">Velkommen til ordresystemet. Du er logget ind som: Relatel</div>
 
@@ -29,7 +161,7 @@ export default function NewOrder() {
                 <div>
                 </div>
                 <select className="info selector space">
-                    <option style={{ display: "none" }} value="" disabled selected>--Massehandling--</option>
+                    <option style={{ display: "none" }} value="">--Massehandling--</option>
                     <option value="godkend">Godkend Valgte</option>
                     <option value="slet">Slet Alle</option>
                 </select>
@@ -38,12 +170,12 @@ export default function NewOrder() {
                 <input type="text" className="selector space" placeholder="Søgeord..." />
                 <button type="button" className="button space">Søg</button>
 
-                <button type="button" className="button2 space">Opret Ny Ordre</button>
+                <button type="button" onClick={() => setModal(true)} className="button2 space">Opret Ny Ordre</button>
 
                 <table className="content-table info">
                     <thead>
                         <tr>
-                            <th><input type="CheckBox" name="CheckAll" onclick="SelectAll()" /> Vælg Alle</th>
+                            <th><input type="CheckBox" name="CheckAll" /> Vælg Alle</th>
                             <th>Ordre ID</th>
                             <th>Bestillingsdato</th>
                             <th>Virksomhed</th>
@@ -56,18 +188,23 @@ export default function NewOrder() {
                     </thead>
 
                     <tbody>
-                        <Row
-                            OrdreId={8208}
-                            BestillingsDato={"29-10-2020 kl. 15:32"}
-                            Virksomhed={"SAF PARTNERS ApS"}
-                            Kundenavn={"Andreas Andersen"}
-                            AntalIndtalinger={2}
-                            ValgteSpeaker={"Neutral kvindestemme"}
-                            Status={"Ny Ordre"}
-                        />
+                        {data && data.map((value, index) => {
+                            return <Row
+                                dbId={value._id}
+                                OrdreId={value.OrdreId}
+                                BestillingsDato={value.BestillingsDato}
+                                Virksomhed={value.Virksomhed}
+                                Kundenavn={value.Kundenavn}
+                                AntalIndtalinger={value.AntalIndtalinger}
+                                ValgteSpeaker={value.ValgteSpeaker}
+                                Status={value.Status}
+                            />
+                        })}
                     </tbody>
 
                 </table>
+
+                {!data && <ReactLoading className="loader" type={"spin"} color={"black"} height={50} width={50} />}
 
                 <div className="info">
                     <div>Hvis du oplever nogle problemer eller har spørgsmål, så kontakt os venligst på telefon: 71 99 18 14 eller email: kontakt@hejfrede.dk</div>
