@@ -113,13 +113,13 @@ function NewOrderModal({ setModal }) {
     )
 }
 
-function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal }) {
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox }) {
 
 
     return (
         <>
             <tr id={dbId}>
-                <td><input type="checkbox" name="CheckBox" value={OrdreId} /></td>
+                <td><input ref={input => checkBox(input)} type="checkbox" name="CheckBox" value={dbId} /></td>
                 <td>{OrdreId}</td>
                 <td>{BestillingsDato}</td>
                 <td>{Virksomhed}</td>
@@ -138,6 +138,8 @@ export default function NewOrder() {
     const [data, setData] = useState(null);
     const [openOrder, setOpenOrder] = useState({});
 
+    const checkBoxes = useRef([]);
+
     const setParentModalState = (val) => {
         setModal(val);
     }
@@ -148,6 +150,12 @@ export default function NewOrder() {
             return;
         }
         setOpenOrder(rowArguments);
+    }
+
+    const toggleMark = (input) => {
+        for (let i = 0; i < checkBoxes.current.length; i++) {
+            checkBoxes.current[i].checked = input.checked
+        }
     }
 
     useEffect(() => {
@@ -198,7 +206,7 @@ export default function NewOrder() {
                 <table className="content-table info">
                     <thead>
                         <tr>
-                            <th><input type="CheckBox" name="CheckAll" /> Vælg Alle</th>
+                            <th><input type="CheckBox" onChange={(_) => toggleMark(_.target)} name="CheckAll" /> Vælg Alle</th>
                             <th>Ordre ID</th>
                             <th>Bestillingsdato</th>
                             <th>Virksomhed</th>
@@ -223,6 +231,7 @@ export default function NewOrder() {
                                 ValgteSpeaker={value.ValgteSpeaker}
                                 Status={value.Status}
                                 orderModal={editModal}
+                                checkBox={el => checkBoxes.current[index] = el}
                             />
                         })}
                     </tbody>
