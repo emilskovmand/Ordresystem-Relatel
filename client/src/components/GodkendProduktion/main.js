@@ -1,38 +1,70 @@
-function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status }) {
+import { useState, useEffect } from 'react'
+import { GetOrders } from '../../services/orderService'
+import OpenOrder from '../shared/openOrder'
+import ReactLoading from 'react-loading'
+
+function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal }) {
     return (
         <>
             <tr>
                 <td>{OrdreId}</td>
-                <td>{BestillingsDato}</td>
+                <td>{BestillingsDato.replace('T', " kl. ")}</td>
                 <td>{Virksomhed}</td>
                 <td>{Kundenavn}</td>
                 <td>{AntalIndtalinger}</td>
                 <td>{ValgteSpeaker}</td>
                 <td>{Status}</td>
-                <td><button type="button" className="button">Åben Ordre</button></td>
+                <td><button onClick={() => orderModal(arguments[0])} type="button" className="button">Åben Ordre</button></td>
             </tr>
         </>
     )
 }
 
 export default function GodkendProduktion() {
+    const [data, setData] = useState(null);
+    const [openOrder, setOpenOrder] = useState({});
+
+    const editModal = (rowArguments = {}, empty = false) => {
+        if (empty) {
+            setOpenOrder({})
+            return;
+        }
+        setOpenOrder(rowArguments);
+    }
+
+    useEffect(() => {
+        // effect
+        GetOrders('Godkend%20Produktion').then((response) => {
+            setData(response);
+        })
+
+        return () => {
+            // cleanup
+        }
+    }, [openOrder])
+
     return (
         <>
-            <div class="main_content">
-                <div class="header">Velkommen til ordresystemet. Du er logget ind som: Relatel</div>
+            {Object.keys(openOrder).length > 0 && <OpenOrder
+                _id={openOrder.dbId}
+                OrdreId={openOrder.OrdreId}
+                BestillingsDato={openOrder.BestillingsDato}
+                Virksomhed={openOrder.Virksomhed}
+                Kundenavn={openOrder.Kundenavn}
+                AntalIndtalinger={openOrder.AntalIndtalinger}
+                ValgteSpeaker={openOrder.ValgteSpeaker}
+                Status={openOrder.Status}
+                setEditState={editModal}
+            />}
+            <div className="main_content">
+                <div className="header">Velkommen til ordresystemet. Du er logget ind som: Relatel</div>
 
-                <h2 class="info">Godkend Produktion</h2>
+                <h2 className="info">Godkend Produktion</h2>
 
+                <input type="text" className="selector move space" placeholder="Søgeord..." />
+                <button type="button" className="button">Søg</button>
 
-
-
-                <input type="text" class="selector move space" placeholder="Søgeord..." />
-                <button type="button" class="button">Søg</button>
-
-
-
-
-                <table class="content-table info">
+                <table className="content-table info">
                     <thead>
                         <tr>
                             <th>Ordre ID</th>
@@ -47,21 +79,26 @@ export default function GodkendProduktion() {
                     </thead>
 
                     <tbody>
-                        <Row
-                            OrdreId={8208}
-                            BestillingsDato={"29-10-2020 kl. 15:32"}
-                            Virksomhed={"SAF PARTNERS ApS"}
-                            Kundenavn={"Andreas Andersen"}
-                            AntalIndtalinger={2}
-                            ValgteSpeaker={"Neutral kvindestemme"}
-                            Status={"Godkend Produktion"}
-                        />
-
+                        {data && data.map((value, index) => {
+                            return <Row
+                                key={index}
+                                dbId={value._id}
+                                OrdreId={value.OrdreId}
+                                BestillingsDato={value.BestillingsDato}
+                                Virksomhed={value.Virksomhed}
+                                Kundenavn={value.Kundenavn}
+                                AntalIndtalinger={value.AntalIndtalinger}
+                                ValgteSpeaker={value.ValgteSpeaker}
+                                Status={value.Status}
+                                orderModal={editModal}
+                            />
+                        })}
                     </tbody>
                 </table>
 
+                {!data && <ReactLoading className="loader" type={"spin"} color={"black"} height={50} width={50} />}
 
-                <div class="info">
+                <div className="info">
                     <div>Hvis du oplever nogle problemer eller har spørgsmål, så kontakt os venligst på telefon: 71 99 18 14
                     eller
                     email: kontakt@hejfrede.dk</div>

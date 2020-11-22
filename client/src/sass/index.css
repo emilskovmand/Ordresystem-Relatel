@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap");
 * {
   margin: 0;
@@ -506,6 +507,18 @@ body {
   color: red;
 }
 
+#EditModal > .modalWrapper > .modalContainer > .statusContainer span.GodkendtTilProduktion {
+  color: #2c80ce;
+}
+
+#EditModal > .modalWrapper > .modalContainer > .statusContainer span.GodkendProduktion {
+  color: rosybrown;
+}
+
+#EditModal > .modalWrapper > .modalContainer > .statusContainer span.FærdigSendt {
+  color: #39a487;
+}
+
 #EditModal > .modalWrapper > .modalContainer .errorMessage {
   display: none;
   width: -webkit-fit-content;
@@ -574,6 +587,14 @@ body {
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.cancelButton:hover {
   background-color: #c70e0e;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.cancelButton.closeButton {
+  border-radius: 25px;
+  margin: 0 auto;
+  width: 40%;
+  margin-left: 30%;
+  margin-right: 30%;
 }
 
 body {

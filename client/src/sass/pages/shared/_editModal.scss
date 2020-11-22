@@ -112,6 +112,18 @@
                     &.NyOrdre {
                         color: red;
                     }
+
+                    &.GodkendtTilProduktion {
+                        color: rgb(44, 128, 206);
+                    }
+
+                    &.GodkendProduktion {
+                        color: rosybrown;
+                    }
+
+                    &.FærdigSendt {
+                        color: #39a487;
+                    }
                 }
             }
 
@@ -177,6 +189,14 @@
 
                         &:hover {
                             background-color: darken(rgb(228, 16, 16), 6%);
+                        }
+
+                        &.closeButton {
+                            border-radius: 25px;
+                            margin: 0 auto;
+                            width: 40%;
+                            margin-left: 30%;
+                            margin-right: 30%;
                         }
                     }
                 }

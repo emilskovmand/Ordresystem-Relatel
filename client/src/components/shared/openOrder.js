@@ -7,6 +7,12 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
     const inputs = useRef({});
     const errorBox = useRef();
 
+    let newStatus = "";
+
+    if (Status === "Ny Ordre") newStatus = "Godkendt Til Produktion";
+    else if (Status === "Godkendt Til Produktion") newStatus = "Godkend Produktion";
+    else if (Status === "Godkend Produktion") newStatus = "Færdig & Sendt";
+
     const updateOrder = (orderStatus = Status) => {
         const notValidFields = [];
         // Check each field
@@ -87,20 +93,24 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                         </div>
 
                         <div className="statusContainer">
-                            <p>Nuværende status: <span className={Status.replace(" ", "")}>{Status}</span></p>
+                            <p>Nuværende status: <span className={Status.replace(/\s+/g, '').replace('&', '')}>{Status}</span></p>
                         </div>
 
                         <p ref={p => errorBox.current = p} className="errorMessage"></p>
 
                         <div className="buttonsContainer">
-                            <button onClick={() => updateOrder("Godkendt Til Produktion")} className="nextButton">
-                                {Status === "Ny Ordre" && <>Godkend Ordre</>}
+                            {Status !== 'Færdig & Sendt' && <>
+                                <button onClick={() => updateOrder(newStatus)} className="nextButton">
+                                    {Status === "Ny Ordre" && <>Godkend Ordre</>}
+                                    {Status === "Godkendt Til Produktion" && <>Produceret</>}
+                                    {Status === "Godkend Produktion" && <>Godkendt</>}
+                                </button>
+                                <button onClick={() => updateOrder()} className="submitButton">
+                                    Opdater Ordre
                             </button>
-                            <button onClick={() => updateOrder()} className="submitButton">
-                                Opdater Ordre
-                            </button>
-                            <button onClick={() => setEditState({}, false)} className="cancelButton">
-                                Annuller
+                            </>}
+                            <button onClick={() => setEditState({}, false)} className={`cancelButton ${(Status === 'Færdig & Sendt') ? "closeButton" : ""}`}>
+                                {Status === 'Færdig & Sendt' ? <>Luk</> : <>Annuller</>}
                             </button>
                         </div>
                     </div>

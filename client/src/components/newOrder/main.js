@@ -121,7 +121,7 @@ function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndta
             <tr id={dbId}>
                 <td><input ref={input => checkBox(input)} type="checkbox" name="CheckBox" value={dbId} /></td>
                 <td>{OrdreId}</td>
-                <td>{BestillingsDato}</td>
+                <td>{BestillingsDato.replace('T', " kl. ")}</td>
                 <td>{Virksomhed}</td>
                 <td>{Kundenavn}</td>
                 <td>{AntalIndtalinger}</td>
