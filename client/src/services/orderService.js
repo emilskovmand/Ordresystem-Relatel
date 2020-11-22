@@ -22,6 +22,24 @@ export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenav
     });
 }
 
+export function searchFilter(criteria, row) {
+    if (/^\d+$/.test(criteria)) {
+        if (row.OrdreId === parseInt(criteria)) {
+            return true
+        } else {
+            return false;
+        }
+    } else if (criteria.length > 0) {
+        criteria = criteria.toLowerCase();
+        if (row.Virksomhed.toLowerCase().includes(criteria) || row.Kundenavn.toLowerCase().includes(criteria) || row.ValgteSpeaker.toLowerCase().includes(criteria)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
+
 export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status) {
 
     const load = {

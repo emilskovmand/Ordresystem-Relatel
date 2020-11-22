@@ -1,5 +1,5 @@
 import { Fragment, useState, useRef, useEffect } from 'react'
-import { CreateOrder, GetOrders } from '../../services/orderService'
+import { CreateOrder, GetOrders, searchFilter } from '../../services/orderService'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 
@@ -137,11 +137,17 @@ export default function NewOrder() {
     const [showModal, setModal] = useState(false);
     const [data, setData] = useState(null);
     const [openOrder, setOpenOrder] = useState({});
+    const [searchCriteria, setSearchCriteria] = useState("");
 
     const checkBoxes = useRef([]);
+    const search = useRef();
 
     const setParentModalState = (val) => {
         setModal(val);
+    }
+
+    const searchButton = (criteria) => {
+        setSearchCriteria(criteria);
     }
 
     const editModal = (rowArguments = {}, empty = false) => {
@@ -198,8 +204,8 @@ export default function NewOrder() {
                 </select>
                 <a className="space" href="google.dk"><button type="button" className="button">Anvend</button></a>
 
-                <input type="text" className="selector space" placeholder="Søgeord..." />
-                <button type="button" className="button space">Søg</button>
+                <input ref={input => search.current = input} type="text" className="selector space" placeholder="Søgeord..." />
+                <button onClick={() => searchButton(search.current.value)} type="button" className="button space">Søg</button>
 
                 <button type="button" onClick={() => setModal(true)} className="button2 space">Opret Ny Ordre</button>
 
@@ -220,19 +226,22 @@ export default function NewOrder() {
 
                     <tbody>
                         {data && data.map((value, index) => {
-                            return <Row
-                                key={index}
-                                dbId={value._id}
-                                OrdreId={value.OrdreId}
-                                BestillingsDato={value.BestillingsDato}
-                                Virksomhed={value.Virksomhed}
-                                Kundenavn={value.Kundenavn}
-                                AntalIndtalinger={value.AntalIndtalinger}
-                                ValgteSpeaker={value.ValgteSpeaker}
-                                Status={value.Status}
-                                orderModal={editModal}
-                                checkBox={el => checkBoxes.current[index] = el}
-                            />
+                            if (searchFilter(searchCriteria, value) === false) return <Fragment key={index}></Fragment>;
+                            else {
+                                return <Row
+                                    key={index}
+                                    dbId={value._id}
+                                    OrdreId={value.OrdreId}
+                                    BestillingsDato={value.BestillingsDato}
+                                    Virksomhed={value.Virksomhed}
+                                    Kundenavn={value.Kundenavn}
+                                    AntalIndtalinger={value.AntalIndtalinger}
+                                    ValgteSpeaker={value.ValgteSpeaker}
+                                    Status={value.Status}
+                                    orderModal={editModal}
+                                    checkBox={el => checkBoxes.current[index] = el}
+                                />
+                            }
                         })}
                     </tbody>
 

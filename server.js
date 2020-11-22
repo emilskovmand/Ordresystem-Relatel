@@ -20,7 +20,8 @@ mongoose.connect(process.env.DB_CONNECTION_STRING,
     { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false },
     () => {
         console.log('Connected to MongoDB!');
-    });
+    }
+);
 
 
 // Hvis dette er production miljø så skal vi statisk sørge for klientens brugerflade

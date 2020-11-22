@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { GetOrders } from '../../services/orderService'
+import { useState, useEffect, useRef, Fragment } from 'react'
+import { GetOrders, searchFilter } from '../../services/orderService'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 
@@ -23,6 +23,9 @@ function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger
 export default function GodkendProduktion() {
     const [data, setData] = useState(null);
     const [openOrder, setOpenOrder] = useState({});
+    const [searchCriteria, setSearchCriteria] = useState("");
+
+    const search = useRef();
 
     const editModal = (rowArguments = {}, empty = false) => {
         if (empty) {
@@ -30,6 +33,10 @@ export default function GodkendProduktion() {
             return;
         }
         setOpenOrder(rowArguments);
+    }
+
+    const searchButton = (criteria) => {
+        setSearchCriteria(criteria);
     }
 
     useEffect(() => {
@@ -61,8 +68,8 @@ export default function GodkendProduktion() {
 
                 <h2 className="info">Godkend Produktion</h2>
 
-                <input type="text" className="selector move space" placeholder="Søgeord..." />
-                <button type="button" className="button">Søg</button>
+                <input ref={input => search.current = input} type="text" className="selector move space" placeholder="Søgeord..." />
+                <button onClick={() => searchButton(search.current.value)} type="button" className="button">Søg</button>
 
                 <table className="content-table info">
                     <thead>
@@ -80,18 +87,21 @@ export default function GodkendProduktion() {
 
                     <tbody>
                         {data && data.map((value, index) => {
-                            return <Row
-                                key={index}
-                                dbId={value._id}
-                                OrdreId={value.OrdreId}
-                                BestillingsDato={value.BestillingsDato}
-                                Virksomhed={value.Virksomhed}
-                                Kundenavn={value.Kundenavn}
-                                AntalIndtalinger={value.AntalIndtalinger}
-                                ValgteSpeaker={value.ValgteSpeaker}
-                                Status={value.Status}
-                                orderModal={editModal}
-                            />
+                            if (searchFilter(searchCriteria, value) === false) return <Fragment key={index}></Fragment>;
+                            else {
+                                return <Row
+                                    key={index}
+                                    dbId={value._id}
+                                    OrdreId={value.OrdreId}
+                                    BestillingsDato={value.BestillingsDato}
+                                    Virksomhed={value.Virksomhed}
+                                    Kundenavn={value.Kundenavn}
+                                    AntalIndtalinger={value.AntalIndtalinger}
+                                    ValgteSpeaker={value.ValgteSpeaker}
+                                    Status={value.Status}
+                                    orderModal={editModal}
+                                />
+                            }
                         })}
                     </tbody>
                 </table>
