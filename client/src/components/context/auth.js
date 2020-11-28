@@ -6,13 +6,13 @@ const UserAuth = {
     user: null,
     async signin(cb) {
         await GetUser().then(response => {
-            if (response) {
+            if (response.user) {
                 console.log(response);
                 this.user = response;
-                this.isAuthenticated = true
+                this.isAuthenticated = true;
+                cb();
             }
         })
-        cb();
     },
     async signout(cb) {
         this.isAuthenticated = false;

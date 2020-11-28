@@ -9,7 +9,7 @@ const orderModel = require('../models/orderModel');
 router.get('/:status', async (req, res) => {
     try {
         const orders = await orderModel.find({ Status: req.params.status });
-        res.json(orders);
+        res.json(orders.reverse());
     } catch (error) {
         console.log(error)
         res.status(500)

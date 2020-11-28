@@ -13,13 +13,12 @@ import { ProvideAuth, useAuth } from './components/context/auth'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
-	let auth = useAuth();
 
 	useEffect(() => {
 
 		return () => {
 		}
-	}, [auth])
+	}, [])
 
 	return (
 		<ProvideAuth>

@@ -24,7 +24,7 @@ export default function Navigation() {
                 </ul>
                 <div className="bottom_icons">
                     <a href="/"><i className="fas fa-user-cog"></i></a>
-                    <a href="/"><i className="fas fa-sign-out-alt"></i></a>
+                    <a href="/api/user/logout"><i className="fas fa-sign-out-alt"></i></a>
                 </div>
             </div>
         </>

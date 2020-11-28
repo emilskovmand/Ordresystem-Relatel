@@ -7,7 +7,7 @@ export default function PrivateRoute({ children, exact = false, authed, ...rest 
 
     return (
         <Route {...rest} exact={exact} render={({ location }) => {
-            return (auth.user)
+            return (auth.user != null)
                 ? (
                     children
                 )

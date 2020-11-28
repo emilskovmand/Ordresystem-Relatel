@@ -11,7 +11,7 @@ export default function LoginPage() {
     let location = useLocation();
     let auth = useAuth();
 
-    let { from } = location.state || { from: { pathname: "/" } };
+    let { from } = { from: { pathname: "/" } };
 
     const handleLogin = async () => {
         if (password.length > 0 && username.length > 0) {

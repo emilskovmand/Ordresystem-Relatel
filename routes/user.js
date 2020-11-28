@@ -26,11 +26,18 @@ router.post('/login', (req, res, next) => {
                     console.log(err);
                 }
                 res.json("Succesfully Authenticated");
-                console.log("Authenticated: " + req.user);
             })
         }
     })(req, res, next);
 
+})
+
+
+// ROUTE: /api/user/logout
+router.get('/logout', (req, res) => {
+    req.logOut();
+    res.status(301);
+    res.redirect('/');
 })
 
 // ROUTE: /api/user/getUser
