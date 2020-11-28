@@ -1,13 +1,32 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require("passport");
+const passportLocal = require("passport-local").Strategy;
 require('dotenv/config');
+
+//---------------------------------------- END OF IMPORT --------------------------------------
 
 const app = express();
 const port = process.env.PORT || 3001;
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({
+    secret: process.env.SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 24 * 1000 }
+}))
+
+app.use(cookieParser(process.env.SECRET));
+app.use(passport.initialize());
+app.use(passport.session());
+require('./passportConfig')(passport);
+
+//---------------------------------------- END OF MIDDLEWARE ------------------------------------
 
 // API Routes
 const userRouter = require('./routes/user');

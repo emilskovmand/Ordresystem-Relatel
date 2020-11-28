@@ -1,0 +1,99 @@
+#login {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+    position: relative;
+
+    >.form-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 3px;
+        background-color: transparent;
+        overflow: hidden;
+        min-height: 270px;
+        width: 340px;
+
+        >h1 {
+            font-size: 40px;
+            text-align: center;
+            font-weight: 200;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .form {
+            display: block;
+            position: relative;
+
+            >input {
+                display: block;
+                appearance: none;
+                outline: 0;
+                border: 1px solid fade-out($color: white, $amount: .4);
+                background-color: fade-out($color: white, $amount: .8);
+                width: 250px;
+
+                border-radius: 3px;
+                padding: 10px 15px;
+                margin: 0 auto 10px auto;
+                display: block;
+                text-align: center;
+                font-size: 18px;
+
+                color: white;
+
+                transition-duration: 0.25s;
+                font-weight: 300;
+
+                &:hover {
+                    background-color: fade-out($color: white, $amount: .4);
+                }
+
+                &:focus {
+                    background-color: white;
+                    width: 300px;
+
+                    color: #53e3a6;
+                }
+
+                &::-webkit-input-placeholder {
+                    /* WebKit browsers */
+                    font-family: 'Source Sans Pro', sans-serif;
+                    color: white;
+                    font-weight: 300;
+                }
+            }
+
+            button {
+                display: block;
+                appearance: none;
+                outline: 0;
+                background-color: #faa892;
+                border: 0;
+                margin: 0 auto;
+                padding: 10px 15px;
+                color: #ffffff;
+                border-radius: 3px;
+                width: 250px;
+                cursor: pointer;
+                font-size: 18px;
+                transition-duration: 0.25s;
+
+                &:hover {
+                    background-color: fade-out($color: #faa892, $amount: .12);
+                }
+            }
+        }
+
+        >a {
+            padding: 20px;
+            font-size: 13px;
+            font-weight: 100;
+            text-align: center;
+            text-decoration-line: underline;
+        }
+    }
+}
