@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { UpdateSingleOrder } from '../../services/orderService'
+import { UpdateSingleOrder, DeleteOrders } from '../../services/orderService'
 
 export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, setEditState, editState }) {
     const [closing, Close] = useState(false);
@@ -54,11 +54,22 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
         }
     }
 
+    const deleteOrder = () => {
+
+        DeleteOrders([_id]);
+
+        Close(true);
+        setTimeout(() => {
+            setEditState({}, true)
+        }, 350);
+    }
+
     return (
         <>
             <div id="EditModal" className={`openOrder ${(closing) ? " close" : ""}`}>
                 <div className="modalWrapper">
                     <div className={`modalContainer${(closing) ? " close" : ""}`}>
+                        <i id="trashcan" class="fa fa-trash" aria-hidden="true" onClick={() => deleteOrder()} ></i>
                         <h4>OrdreId: {OrdreId}</h4>
                         <p>{_id}</p>
                         <div className="inputField">

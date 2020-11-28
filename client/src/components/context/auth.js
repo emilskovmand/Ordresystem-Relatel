@@ -7,7 +7,6 @@ const UserAuth = {
     async signin(cb) {
         await GetUser().then(response => {
             if (response.user) {
-                console.log(response);
                 this.user = response;
                 this.isAuthenticated = true;
                 cb();

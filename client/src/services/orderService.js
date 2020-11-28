@@ -62,7 +62,23 @@ export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhe
     });
 }
 
+export async function DeleteOrders(_ids) {
+    await fetch(`/api/order/delete`, {
+        method: 'DELETE',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ deleteList: _ids })
+    });
+}
+
+export async function getOrderId() {
+    const response = await fetch(`/api/order/newid`);
+    return response.json();
+}
+
 export async function GetOrders(status) {
-    const response = await fetch(`/api/order/${status}`)
+    const response = await fetch(`/api/order/statusOrders/${status}`)
     return response.json();
 }

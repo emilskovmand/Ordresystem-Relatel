@@ -245,7 +245,7 @@ body {
   background-color: whitesmoke;
   height: 70vh;
   width: 700px;
-  border-radius: 25px;
+  border-radius: 3px;
   padding: 25px;
 }
 
@@ -432,10 +432,17 @@ body {
   height: 70vh;
   width: 700px;
   background-color: whitesmoke;
-  border-radius: 25px;
+  border-radius: 5px;
   padding: 25px;
   -webkit-animation: walk-inEdit .35s ease-out 1;
           animation: walk-inEdit .35s ease-out 1;
+}
+
+#EditModal > .modalWrapper > .modalContainer #trashcan {
+  cursor: pointer;
+  position: absolute;
+  right: 25px;
+  top: 25px;
 }
 
 @-webkit-keyframes walk-inEdit {

@@ -53,9 +53,16 @@
             height: 70vh;
             width: 700px;
             background-color: whitesmoke;
-            border-radius: 25px;
+            border-radius: 5px;
             padding: 25px;
             animation: walk-inEdit .35s ease-out 1;
+
+            #trashcan {
+                cursor: pointer;
+                position: absolute;
+                right: 25px;
+                top: 25px;
+            }
 
             @keyframes walk-inEdit {
                 from {

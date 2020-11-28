@@ -29,6 +29,10 @@ const OrderSchema = mongoose.Schema({
     },
     Status: {
         type: String
+    },
+    Slettet: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -6,13 +6,42 @@ const orderModel = require('../models/orderModel');
 
 
 // ROUTE: /api/order/%DYNAMIC%OrderStatus
-router.get('/:status', async (req, res) => {
+router.get('/statusOrders/:status', async (req, res) => {
     try {
-        const orders = await orderModel.find({ Status: req.params.status });
+        const orders = await orderModel.find({ Status: req.params.status, Slettet: false });
         res.json(orders.reverse());
+        res.status(200);
     } catch (error) {
         console.log(error)
         res.status(500)
+    }
+});
+
+
+// ROUTE: /api/order/deleted
+router.get('/deleted', async (req, res) => {
+    try {
+        const orders = await orderModel.find({ Slettet: true });
+        res.json(orders.reverse());
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+    }
+})
+
+// ROUTE: /api/order/delete
+router.delete('/delete', async (req, res) => {
+    try {
+        orderModel.updateMany(
+            { _id: { $in: req.body.deleteList } },
+            { $set: { Slettet: true } }, (err) => {
+                if (err) { console.log(err); res.status(500); }
+            });
+        res.status(200);
+        res.json("Successfully deleted these orders");
+    } catch (error) {
+        console.log(error);
+        res.status(500);
     }
 });
 
@@ -41,6 +70,23 @@ router.post('/createOrder', (req, res) => {
 
     res.send("Retrieved Order!")
 });
+
+// ROUTE: /api/order/newid
+router.get('/newid', async (req, res) => {
+    try {
+        const orders = orderModel.find({}).sort({ OrdreId: -1 }).limit(1).exec((err, docs) => {
+            if (err) {
+                res.status(500);
+                console.log(err);
+            }
+            res.json(docs[0].OrdreId + 1);
+            res.status(200);
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500);
+    }
+})
 
 // ROUTE: /api/order/updateSingleorder/%DYNAMIC%_id
 router.put('/updateSingleOrder/:_id', async (req, res) => {

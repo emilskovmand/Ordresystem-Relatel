@@ -1,5 +1,5 @@
 import { Fragment, useState, useRef, useEffect } from 'react'
-import { CreateOrder, GetOrders, searchFilter } from '../../services/orderService'
+import { CreateOrder, GetOrders, searchFilter, getOrderId } from '../../services/orderService'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 
@@ -53,6 +53,19 @@ function NewOrderModal({ setModal }) {
         return dateForDateTimeInputValue(new Date());
     }
 
+    const getId = async () => {
+        return await getOrderId();
+    }
+
+    useEffect(() => {
+        getId().then((val) => {
+            inputs.current.id.value = val;
+        });
+        return () => {
+
+        }
+    }, [])
+
     return (
         <>
             <div id="newOrderModal" className="modal">
@@ -63,7 +76,7 @@ function NewOrderModal({ setModal }) {
                             <div className="labelfield">
                                 <label htmlFor="OrdreId">OrdreId</label>
                             </div>
-                            <input ref={input => inputs.current.id = input} maxLength="8" name="OrdreId" type="text" placeholder=""></input>
+                            <input ref={input => inputs.current.id = input} readOnly maxLength="8" name="OrdreId" type="text" defaultValue={"..."}></input>
                         </div>
                         <div className="inputField">
                             <div className="labelfield">
