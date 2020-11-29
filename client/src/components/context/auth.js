@@ -41,6 +41,13 @@ function useProvideAuth() {
     const signin = cb => {
         return UserAuth.signin(() => {
             setUser(UserAuth.user);
+            if (cb) cb();
+        })
+    }
+
+    const memorySignin = cb => {
+        return UserAuth.signin(() => {
+            setUser(UserAuth.user);
             localStorage.setItem('token', JSON.stringify(UserAuth.user));
             if (cb) cb();
         })
@@ -57,7 +64,8 @@ function useProvideAuth() {
     return {
         user,
         signin,
-        signout
+        signout,
+        memorySignin
     }
 }
 

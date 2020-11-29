@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { AuthLogin } from '../../services/userService'
 import { useAuth } from '../context/auth'
 import { useHistory } from 'react-router-dom'
@@ -6,6 +6,8 @@ import { useHistory } from 'react-router-dom'
 export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+
+    const rememberMe = useRef();
 
     let history = useHistory();
     let auth = useAuth();
@@ -16,9 +18,15 @@ export default function LoginPage() {
         if (password.length > 0 && username.length > 0) {
             await AuthLogin(username, password);
 
-            auth.signin(() => {
-                history.replace(from);
-            });
+            if (rememberMe.current.checked) {
+                auth.memorySignin(() => {
+                    history.replace(from);
+                })
+            } else {
+                auth.signin(() => {
+                    history.replace(from);
+                });
+            }
         }
     }
 
@@ -29,8 +37,9 @@ export default function LoginPage() {
                     <div></div>
                     <h1>Velkommen</h1>
                     <div className="form">
-                        <input id="usernameField" type="text" maxLength={60} placeholder="Username" onChange={e => setUsername(e.target.value)} />
-                        <input id="passwordField" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+                        <input id="usernameField" className="credential" type="text" maxLength={60} placeholder="Username" onChange={e => setUsername(e.target.value)} />
+                        <input id="passwordField" className="credential" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+                        <input ref={input => rememberMe.current = input} type="checkbox" /> <p>Husk mig</p>
                         <button onClick={handleLogin} type="submit" id="login-button">Login</button>
                     </div>
                     <a href="/forgotpassword">

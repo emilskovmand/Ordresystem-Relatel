@@ -643,7 +643,7 @@ body {
   position: relative;
 }
 
-#login > .form-container .form > input {
+#login > .form-container .form > input.credential {
   display: block;
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -664,21 +664,38 @@ body {
   font-weight: 300;
 }
 
-#login > .form-container .form > input:hover {
+#login > .form-container .form > input.credential:hover {
   background-color: rgba(255, 255, 255, 0.6);
 }
 
-#login > .form-container .form > input:focus {
+#login > .form-container .form > input.credential:focus {
   background-color: white;
   width: 300px;
   color: #53e3a6;
 }
 
-#login > .form-container .form > input::-webkit-input-placeholder {
+#login > .form-container .form > input.credential::-webkit-input-placeholder {
   /* WebKit browsers */
   font-family: 'Source Sans Pro', sans-serif;
   color: white;
   font-weight: 300;
+}
+
+#login > .form-container .form input[type="checkbox"] {
+  margin-left: 45px;
+  padding: 20px;
+  padding-bottom: 17px;
+  float: left;
+}
+
+#login > .form-container .form > p {
+  font-size: 13px;
+  font-weight: 100;
+  color: #ffffff;
+  padding: 0px 10px;
+  margin-left: 60px;
+  margin-bottom: 10px;
+  line-height: 16px;
 }
 
 #login > .form-container .form button {

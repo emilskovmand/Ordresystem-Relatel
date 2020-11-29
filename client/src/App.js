@@ -18,7 +18,7 @@ function App() {
 	useEffect(() => {
 		GetUser().then(result => {
 			if (result.user !== undefined) {
-				if (auth.user === undefined) {
+				if (auth.user === null) {
 					auth.signout(() => {
 						fetch('/api/user/logout');
 					});
