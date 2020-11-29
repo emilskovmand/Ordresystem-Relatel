@@ -74,14 +74,26 @@ router.post('/createOrder', (req, res) => {
 // ROUTE: /api/order/newid
 router.get('/newid', async (req, res) => {
     try {
-        const orders = orderModel.find({}).sort({ OrdreId: -1 }).limit(1).exec((err, docs) => {
+        orderModel.find({ OrdreId: { $gte: 0 } }).limit(1).exec((err, docs) => {
             if (err) {
                 res.status(500);
                 console.log(err);
             }
-            res.json(docs[0].OrdreId + 1);
-            res.status(200);
-        });
+            if (docs.length > 0) {
+                orderModel.find({ OrdreId: { $gte: 0 } }).sort({ OrdreId: -1 }).limit(1).exec((err, docs) => {
+                    if (err) {
+                        res.status(500);
+                        console.log(err);
+                    }
+                    res.json(docs[0].OrdreId + 1);
+                    res.status(200);
+                });
+            }
+            else {
+                res.json(1);
+                res.status(200);
+            }
+        })
     } catch (err) {
         console.log(err);
         res.status(500);
@@ -97,7 +109,8 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
             Kundenavn: req.body.Kundenavn,
             AntalIndtalinger: req.body.AntalIndtalinger,
             ValgteSpeaker: req.body.ValgteSpeaker,
-            Status: req.body.Status
+            Status: req.body.Status,
+            Slettet: false
         });
         res.send("Updated order: " + req.params._id);
     } catch (error) {

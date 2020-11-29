@@ -42,6 +42,19 @@ mongoose.connect(process.env.DB_CONNECTION_STRING,
     }
 );
 
+var db = mongoose.connection;
+
+const userSchema = require('./models/userModel');
+const orderSchema = require('./models/orderModel');
+
+// var db = mongoose.connection;
+// db.on('open', () => {
+
+//     mongoose.model('User', userSchema.schema);
+//     mongoose.model('Ordre', orderSchema.schema);
+
+// })
+
 
 // Hvis dette er production miljø så skal vi statisk sørge for klientens brugerflade
 if (process.env.NODE_ENV === 'production') {
