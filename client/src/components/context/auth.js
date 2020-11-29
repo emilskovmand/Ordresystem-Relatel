@@ -3,7 +3,7 @@ import { GetUser } from '../../services/userService'
 
 const UserAuth = {
     isAuthenticated: false,
-    user: null,
+    user: localStorage.getItem('token') !== "null" ? JSON.parse(localStorage.getItem('token')) : null,
     async signin(cb) {
         await GetUser().then(response => {
             if (response.user) {
@@ -36,11 +36,12 @@ function useAuth() {
 }
 
 function useProvideAuth() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(UserAuth.user);
 
     const signin = cb => {
         return UserAuth.signin(() => {
             setUser(UserAuth.user);
+            localStorage.setItem('token', JSON.stringify(UserAuth.user));
             if (cb) cb();
         })
     }
@@ -48,6 +49,7 @@ function useProvideAuth() {
     const signout = cb => {
         return UserAuth.signout(() => {
             setUser(null);
+            localStorage.removeItem('token');
             if (cb) cb();
         })
     }

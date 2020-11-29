@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 // ROUTE: /api/user/login
 router.post('/login', (req, res, next) => {
 
-    passport.authenticate("local", { session: true }, (err, user, info) => {
+    passport.authenticate("local", { session: true, successRedirect: '/', failureRedirect: '/login' }, (err, user, info) => {
         if (err) {
             res.status(500);
             console.log(err);
@@ -36,8 +36,8 @@ router.post('/login', (req, res, next) => {
 // ROUTE: /api/user/logout
 router.get('/logout', (req, res) => {
     req.logOut();
-    res.status(301);
-    res.redirect('/');
+    res.send("Successfully logged out.")
+    res.status(200);
 })
 
 // ROUTE: /api/user/getUser

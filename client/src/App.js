@@ -6,19 +6,41 @@ import Færdigeordre from './components/FærdigeOrdre/main'
 import SideNavigation from './components/shared/navigation'
 import PrivateRoute from './components/privateRoute'
 import LoginComponent from './components/auth/login'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { GetUser } from './services/userService'
-import { ProvideAuth, useAuth } from './components/context/auth'
+import { ProvideAuth, useProvideAuth } from './components/context/auth'
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
+	let auth = useProvideAuth();
 
 	useEffect(() => {
+		GetUser().then(result => {
+			if (result.user !== undefined) {
+				if (result.user.username !== auth.user.user.username || result.user._id !== auth.user.user._id) {
+					auth.signout(() => {
+						fetch('/api/user/logout');
+					});
+				}
+			}
+			else if (auth.user) {
+				auth.signout(() => {
+					fetch('/api/user/logout');
+				});
+				window.location.reload();
+			}
+			else {
+				auth.signout(() => {
+					fetch('/api/user/logout');
+				});
+			}
+
+		})
 
 		return () => {
 		}
-	}, [])
+	}, [auth])
 
 	return (
 		<ProvideAuth>

@@ -1,6 +1,15 @@
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../context/auth'
 
 export default function Navigation() {
+    let auth = useAuth();
+
+    const handleLogout = () => {
+        auth.signout(() => {
+            fetch('/api/user/logout');
+        })
+    }
+
     return (
         <>
             <div className="sidebar">
@@ -24,7 +33,7 @@ export default function Navigation() {
                 </ul>
                 <div className="bottom_icons">
                     <a href="/"><i className="fas fa-user-cog"></i></a>
-                    <a href="/api/user/logout"><i className="fas fa-sign-out-alt"></i></a>
+                    <a id="logoutButton" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i></a>
                 </div>
             </div>
         </>
