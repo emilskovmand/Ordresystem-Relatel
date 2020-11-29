@@ -32,7 +32,7 @@ export default function Navigation() {
                     <li><p><i className="fas fa-trash-alt"></i>Papirkurv</p></li>
                 </ul>
                 <div className="bottom_icons">
-                    <a href="/"><i className="fas fa-user-cog"></i></a>
+                    <a><i className="fas fa-user-cog"></i></a>
                     <a id="logoutButton" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i></a>
                 </div>
             </div>

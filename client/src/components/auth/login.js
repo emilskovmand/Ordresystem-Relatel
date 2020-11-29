@@ -1,21 +1,20 @@
-import react, { useState } from 'react';
+import { useState } from 'react';
 import { AuthLogin } from '../../services/userService'
 import { useAuth } from '../context/auth'
-import { useHistory, useLocation, withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
 
     let history = useHistory();
-    let location = useLocation();
     let auth = useAuth();
 
     let { from } = { from: { pathname: "/" } };
 
     const handleLogin = async () => {
         if (password.length > 0 && username.length > 0) {
-            const response = await AuthLogin(username, password);
+            await AuthLogin(username, password);
 
             auth.signin(() => {
                 history.replace(from);

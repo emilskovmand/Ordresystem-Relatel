@@ -18,10 +18,17 @@ function App() {
 	useEffect(() => {
 		GetUser().then(result => {
 			if (result.user !== undefined) {
-				if (result.user.username !== auth.user.user.username || result.user._id !== auth.user.user._id) {
+				if (auth.user === undefined) {
 					auth.signout(() => {
 						fetch('/api/user/logout');
 					});
+				}
+				if (auth.user) {
+					if (result.user.username !== auth.user.user.username || result.user._id !== auth.user.user._id) {
+						auth.signout(() => {
+							fetch('/api/user/logout');
+						});
+					}
 				}
 			}
 			else if (auth.user) {
