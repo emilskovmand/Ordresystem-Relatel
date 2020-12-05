@@ -51,7 +51,8 @@
         >.modalContainer {
             position: relative;
             height: 70vh;
-            width: 700px;
+            width: 620px;
+            max-width: 35vw;
             background-color: whitesmoke;
             border-radius: 5px;
             padding: 25px;
@@ -75,13 +76,13 @@
             }
 
             >h4 {
-                font-size: 24px;
+                font-size: 22px;
                 text-align: center;
 
             }
 
             >p {
-                font-size: 12px;
+                font-size: 11px;
                 color: gray;
                 user-select: none;
                 margin-bottom: 20px;
@@ -93,7 +94,7 @@
                 >.labelfield {
                     margin-bottom: 3px;
                     font-weight: 100;
-                    font-size: 14px;
+                    font-size: 13px;
                 }
 
                 >input {
@@ -103,7 +104,7 @@
                     border-right: 0px solid transparent;
                     border-bottom: 1px solid #39a487;
                     padding: 6px 3px;
-                    font-size: 20px;
+                    font-size: 16px;
                     width: 100%;
                     background-color: whitesmoke;
                 }
@@ -112,7 +113,7 @@
             >.statusContainer {
                 width: 100%;
                 padding: 30px 2px;
-                font-size: 26px;
+                font-size: 20px;
 
                 span {
 
@@ -120,7 +121,7 @@
                         color: red;
                     }
 
-                    &.GodkendtTilProduktion {
+                    &.UnderProduktion {
                         color: rgb(44, 128, 206);
                     }
 
@@ -153,11 +154,11 @@
                     cursor: pointer;
 
                     &.nextButton {
-                        font-size: 20px;
+                        font-size: 16px;
                         background-color: #387ec9;
                         outline: none;
-                        border-top-left-radius: 25px;
-                        border-bottom-left-radius: 25px;
+                        border-top-left-radius: 10px;
+                        border-bottom-left-radius: 10px;
                         border: 0px solid transparent;
                         padding: 20px 0px;
                         color: whitesmoke;
@@ -169,7 +170,7 @@
                     }
 
                     &.submitButton {
-                        font-size: 20px;
+                        font-size: 16px;
                         background-color: #39a487;
                         outline: none;
                         border: 0px solid transparent;
@@ -183,12 +184,12 @@
                     }
 
                     &.cancelButton {
-                        font-size: 20px;
+                        font-size: 16px;
                         height: 100%;
                         width: calc(100% / 3);
                         color: whitesmoke;
-                        border-top-right-radius: 25px;
-                        border-bottom-right-radius: 25px;
+                        border-top-right-radius: 10px;
+                        border-bottom-right-radius: 10px;
                         background-color: rgb(228, 16, 16);
                         outline: none;
                         border: 0px solid transparent;
@@ -199,11 +200,41 @@
                         }
 
                         &.closeButton {
-                            border-radius: 25px;
+                            border-radius: 10px;
                             margin: 0 auto;
                             width: 40%;
                             margin-left: 30%;
                             margin-right: 30%;
+                        }
+                    }
+
+                    &.genskabButton {
+                        font-size: 16px;
+                        background-color: #39a487;
+                        outline: none;
+                        border-top-left-radius: 10px;
+                        border-bottom-left-radius: 10px;
+                        border: 0px solid transparent;
+                        padding: 20px 0px;
+                        color: whitesmoke;
+                        width: calc(100% / 3);
+
+                        &:hover {
+                            background-color: darken($color: #39a487, $amount: 6%);
+                        }
+                    }
+
+                    &.deleteButton {
+                        font-size: 16px;
+                        background-color: #9a4bd1;
+                        outline: none;
+                        border: 0px solid transparent;
+                        padding: 20px 0px;
+                        color: whitesmoke;
+                        width: calc(100% / 3);
+
+                        &:hover {
+                            background-color: darken($color: #9a4bd1, $amount: 6%);
                         }
                     }
                 }

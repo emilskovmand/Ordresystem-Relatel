@@ -1,18 +1,20 @@
-import { useState, useEffect, Fragment, useRef } from 'react'
-import { GetOrders, searchFilter } from '../../services/orderService'
+import { Fragment, useState, useRef, useEffect } from 'react'
+import { searchFilter, GetDeletedOrders } from '../../services/orderService'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
+import { useAuth } from '../context/auth'
 
-function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal }) {
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox }) {
+
     return (
         <>
             <tr>
                 <td>{OrdreId}</td>
                 <td>{BestillingsDato.replace('T', " kl. ")}</td>
-                <td>{Virksomhed}</td>
-                <td>{Kundenavn}</td>
+                <td className={(Virksomhed.length > 40) ? "break" : ""}>{Virksomhed}</td>
+                <td className={(Kundenavn.length > 40) ? "break" : ""}>{Kundenavn}</td>
                 <td>{AntalIndtalinger}</td>
-                <td>{ValgteSpeaker}</td>
+                <td className={(ValgteSpeaker.length > 40) ? "break" : ""}>{ValgteSpeaker}</td>
                 <td>{Status}</td>
                 <td><button onClick={() => orderModal(arguments[0])} type="button" className="button">Åben Ordre</button></td>
             </tr>
@@ -20,10 +22,11 @@ function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger
     )
 }
 
-export default function GodtkendtTilProduktion() {
+export default function Papirkurv() {
     const [data, setData] = useState(null);
     const [openOrder, setOpenOrder] = useState({});
     const [searchCriteria, setSearchCriteria] = useState("");
+    let auth = useAuth();
 
     const search = useRef();
 
@@ -41,8 +44,8 @@ export default function GodtkendtTilProduktion() {
 
     useEffect(() => {
         // effect
-        GetOrders('Godkendt%20Til%20Produktion').then((response) => {
-            setData(response);
+        GetDeletedOrders().then((reponse) => {
+            setData(reponse);
         })
 
         return () => {
@@ -62,11 +65,12 @@ export default function GodtkendtTilProduktion() {
                 ValgteSpeaker={openOrder.ValgteSpeaker}
                 Status={openOrder.Status}
                 setEditState={editModal}
+                trashbin={true}
             />}
             <div className="main_content">
-                <div className="header">Velkommen til ordresystemet. Du er logget ind som: Relatel</div>
+                <div className="header">Velkommen til ordresystemet. Du er logget ind som: {auth.user.user.username}</div>
 
-                <h2 className="info">Godkendt Til Produktion</h2>
+                <h2 className="info">Papirkurv</h2>
 
                 <input ref={input => search.current = input} type="text" className="selector move space" placeholder="Søgeord..." />
                 <button onClick={() => searchButton(search.current.value)} type="button" className="button">Søg</button>
@@ -111,7 +115,7 @@ export default function GodtkendtTilProduktion() {
                 <div className="info">
                     <div>Hvis du oplever nogle problemer eller har spørgsmål, så kontakt os venligst på telefon: 71 99 18 14
                     eller
-                    email: kontakt@hejfrede.dk</div>
+                        email: kontakt@hejfrede.dk</div>
                 </div>
 
             </div>

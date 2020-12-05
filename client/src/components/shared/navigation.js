@@ -20,7 +20,7 @@ export default function Navigation() {
                         <li><p><i className="fas fa-medal"></i>Nye Ordre</p></li>
                     </NavLink>
                     <NavLink to='/godkendt' exact>
-                        <li><p><i className="fas fa-microphone-alt"></i>Godkendt til Produktion</p></li>
+                        <li><p><i className="fas fa-microphone-alt"></i>Under Produktion</p></li>
                     </NavLink>
                     <NavLink to='/afventer' exact>
                         <li><p><i className="fas fa-assistive-listening-systems"></i>Godkend Produktion</p></li>
@@ -29,10 +29,14 @@ export default function Navigation() {
                         <li><p><i className="fas fa-check"></i>Færdige Ordre</p></li>
                     </NavLink>
                     {/* <li><p><i class="fas fa-file-invoice"></i>Fakturering</p></li> */}
-                    <li><p><i className="fas fa-trash-alt"></i>Papirkurv</p></li>
+                    <NavLink to='/papirkurv' exact>
+                        <li><p><i className="fas fa-trash-alt"></i>Papirkurv</p></li>
+                    </NavLink>
                 </ul>
                 <div className="bottom_icons">
-                    <a><i className="fas fa-user-cog"></i></a>
+                    <NavLink to="/config" exact>
+                        <i className="fas fa-user-cog"></i>
+                    </NavLink>
                     <a id="logoutButton" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i></a>
                 </div>
             </div>

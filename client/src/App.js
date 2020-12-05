@@ -1,8 +1,9 @@
 import './sass/index.css';
 import FrontPage from './components/newOrder/main'
-import Godkendt from './components/GodtkendtTilProduktion/main'
+import Godkendt from './components/UnderProduktion/main'
 import Afventer from './components/GodkendProduktion/main'
 import Færdigeordre from './components/FærdigeOrdre/main'
+import Papirkurv from './components/papirkurv/main'
 import SideNavigation from './components/shared/navigation'
 import PrivateRoute from './components/privateRoute'
 import LoginComponent from './components/auth/login'
@@ -72,6 +73,13 @@ function App() {
 						<PrivateRoute exact={true} path='/'>
 							<SideNavigation />
 							<FrontPage />
+						</PrivateRoute>
+						<PrivateRoute path='/papirkurv'>
+							<SideNavigation />
+							<Papirkurv />
+						</PrivateRoute>
+						<PrivateRoute path='/config'>
+							<SideNavigation />
 						</PrivateRoute>
 					</Switch>
 				</div>

@@ -1,7 +1,8 @@
 import { Fragment, useState, useRef, useEffect } from 'react'
-import { CreateOrder, GetOrders, searchFilter, getOrderId } from '../../services/orderService'
+import { CreateOrder, GetOrders, searchFilter, getOrderId, DeleteOrders } from '../../services/orderService'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
+import { useAuth } from '../context/auth'
 
 function NewOrderModal({ setModal }) {
 
@@ -22,7 +23,7 @@ function NewOrderModal({ setModal }) {
         if (inputs.current.kundenavn.value.length === 0) {
             notValidFields.push("Kundenavn");
         }
-        if (inputs.current.indtalinger.value > 6) {
+        if (inputs.current.indtalinger.value > 6 || /[a-zA-Z]/g.test(inputs.current.indtalinger.value) || inputs.current.indtalinger.value.length === 0) {
             notValidFields.push("Antal Indtalinger")
         }
         if (inputs.current.speaker.value.length === 0) {
@@ -126,21 +127,28 @@ function NewOrderModal({ setModal }) {
     )
 }
 
-function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox }) {
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox, deleteRow }) {
 
+    const row = useRef();
+
+    const deleteAction = () => {
+        deleteRow(dbId);
+        row.current.style = "display: none;"
+    }
 
     return (
         <>
-            <tr id={dbId}>
+            <tr ref={tr => row.current = tr} id={dbId}>
                 <td><input ref={input => checkBox(input)} type="checkbox" name="CheckBox" value={dbId} /></td>
                 <td>{OrdreId}</td>
                 <td>{BestillingsDato.replace('T', " kl. ")}</td>
-                <td>{Virksomhed}</td>
-                <td>{Kundenavn}</td>
+                <td className={(Virksomhed.length > 40) ? "break" : ""}>{Virksomhed}</td>
+                <td className={(Kundenavn.length > 40) ? "break" : ""}>{Kundenavn}</td>
                 <td>{AntalIndtalinger}</td>
-                <td>{ValgteSpeaker}</td>
+                <td className={(ValgteSpeaker.length > 40) ? "break" : ""}>{ValgteSpeaker}</td>
                 <td>{Status}</td>
                 <td><button onClick={() => orderModal(arguments[0])} type="button" className="button">Åben Ordre</button></td>
+                <td><button onClick={() => deleteAction()} type="button" className="deleteRow" >Slet</button></td>
             </tr>
         </>
     )
@@ -151,6 +159,7 @@ export default function NewOrder() {
     const [data, setData] = useState(null);
     const [openOrder, setOpenOrder] = useState({});
     const [searchCriteria, setSearchCriteria] = useState("");
+    let auth = useAuth();
 
     const checkBoxes = useRef([]);
     const search = useRef();
@@ -175,6 +184,10 @@ export default function NewOrder() {
         for (let i = 0; i < checkBoxes.current.length; i++) {
             checkBoxes.current[i].checked = input.checked
         }
+    }
+
+    const deleteRow = (_id) => {
+        DeleteOrders([_id]);
     }
 
     useEffect(() => {
@@ -205,7 +218,7 @@ export default function NewOrder() {
                 setEditState={editModal}
             />}
             <div className="main_content">
-                <div className="header">Velkommen til ordresystemet. Du er logget ind som: Relatel</div>
+                <div className="header">Velkommen til ordresystemet. Du er logget ind som: {auth.user.user.username}</div>
 
                 <h2 className="info">Nye Ordre</h2>
                 <div>
@@ -234,6 +247,7 @@ export default function NewOrder() {
                             <th>Valgte Speaker</th>
                             <th>Status</th>
                             <th>Ordre Information</th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -253,6 +267,7 @@ export default function NewOrder() {
                                     Status={value.Status}
                                     orderModal={editModal}
                                     checkBox={el => checkBoxes.current[index] = el}
+                                    deleteRow={deleteRow}
                                 />
                             }
                         })}

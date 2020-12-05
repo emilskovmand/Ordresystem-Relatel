@@ -16,7 +16,14 @@ const UserSchema = mongoose.Schema({
     },
     lastLoginDate: {
         type: Date
-    }
+    },
+    permissions: [{
+        admin: Boolean,
+        createOrder: Boolean,
+        produce: Boolean,
+        approve: Boolean,
+        complete: Boolean
+    }]
 });
 
 module.exports = mongoose.model('User', UserSchema);

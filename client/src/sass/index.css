@@ -138,6 +138,19 @@ body {
   cursor: pointer;
 }
 
+.deleteRow {
+  background-color: #e41010;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+}
+
 .button2 {
   background-color: #3aae8f;
   border: none;
@@ -185,6 +198,12 @@ body {
 .content-table th,
 .content-table td {
   padding: 12px 15px;
+}
+
+.content-table th.break,
+.content-table td.break {
+  max-width: 260px;
+  word-break: break-all;
 }
 
 .content-table tbody tr {
@@ -434,7 +453,8 @@ body {
 #EditModal > .modalWrapper > .modalContainer {
   position: relative;
   height: 70vh;
-  width: 700px;
+  width: 620px;
+  max-width: 35vw;
   background-color: whitesmoke;
   border-radius: 5px;
   padding: 25px;
@@ -472,12 +492,12 @@ body {
 }
 
 #EditModal > .modalWrapper > .modalContainer > h4 {
-  font-size: 24px;
+  font-size: 22px;
   text-align: center;
 }
 
 #EditModal > .modalWrapper > .modalContainer > p {
-  font-size: 12px;
+  font-size: 11px;
   color: gray;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -493,7 +513,7 @@ body {
 #EditModal > .modalWrapper > .modalContainer > .inputField > .labelfield {
   margin-bottom: 3px;
   font-weight: 100;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 #EditModal > .modalWrapper > .modalContainer > .inputField > input {
@@ -503,7 +523,7 @@ body {
   border-right: 0px solid transparent;
   border-bottom: 1px solid #39a487;
   padding: 6px 3px;
-  font-size: 20px;
+  font-size: 16px;
   width: 100%;
   background-color: whitesmoke;
 }
@@ -511,14 +531,14 @@ body {
 #EditModal > .modalWrapper > .modalContainer > .statusContainer {
   width: 100%;
   padding: 30px 2px;
-  font-size: 26px;
+  font-size: 20px;
 }
 
 #EditModal > .modalWrapper > .modalContainer > .statusContainer span.NyOrdre {
   color: red;
 }
 
-#EditModal > .modalWrapper > .modalContainer > .statusContainer span.GodkendtTilProduktion {
+#EditModal > .modalWrapper > .modalContainer > .statusContainer span.UnderProduktion {
   color: #2c80ce;
 }
 
@@ -554,11 +574,11 @@ body {
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.nextButton {
-  font-size: 20px;
+  font-size: 16px;
   background-color: #387ec9;
   outline: none;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
   border: 0px solid transparent;
   padding: 20px 0px;
   color: whitesmoke;
@@ -570,7 +590,7 @@ body {
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.submitButton {
-  font-size: 20px;
+  font-size: 16px;
   background-color: #39a487;
   outline: none;
   border: 0px solid transparent;
@@ -584,12 +604,12 @@ body {
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.cancelButton {
-  font-size: 20px;
+  font-size: 16px;
   height: 100%;
   width: calc(100% / 3);
   color: whitesmoke;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   background-color: #e41010;
   outline: none;
   border: 0px solid transparent;
@@ -601,11 +621,41 @@ body {
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.cancelButton.closeButton {
-  border-radius: 25px;
+  border-radius: 10px;
   margin: 0 auto;
   width: 40%;
   margin-left: 30%;
   margin-right: 30%;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.genskabButton {
+  font-size: 16px;
+  background-color: #39a487;
+  outline: none;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: 0px solid transparent;
+  padding: 20px 0px;
+  color: whitesmoke;
+  width: calc(100% / 3);
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.genskabButton:hover {
+  background-color: #318d74;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.deleteButton {
+  font-size: 16px;
+  background-color: #9a4bd1;
+  outline: none;
+  border: 0px solid transparent;
+  padding: 20px 0px;
+  color: whitesmoke;
+  width: calc(100% / 3);
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.deleteButton:hover {
+  background-color: #8c34ca;
 }
 
 #login {

@@ -1,5 +1,4 @@
 
-
 export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status = "Ny Ordre") {
 
     const load = {
@@ -40,7 +39,7 @@ export function searchFilter(criteria, row) {
     return true;
 }
 
-export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status) {
+export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, Slettet = false) {
 
     const load = {
         OrdreId: parseInt(OrdreId),
@@ -49,7 +48,8 @@ export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhe
         Kundenavn: Kundenavn,
         AntalIndtalinger: AntalIndtalinger,
         ValgteSpeaker: ValgteSpeaker,
-        Status: Status
+        Status: Status,
+        Slettet: Slettet
     }
 
     await fetch(`/api/order/updateSingleOrder/${_id}`, {
@@ -81,4 +81,20 @@ export async function getOrderId() {
 export async function GetOrders(status) {
     const response = await fetch(`/api/order/statusOrders/${status}`)
     return response.json();
+}
+
+export async function GetDeletedOrders() {
+    const response = await fetch(`/api/order/deleted`);
+    return response.json();
+}
+
+export async function DeleteOrderFromSystem(_ids) {
+    await fetch(`/api/order/permanentlyDelete`, {
+        method: 'DELETE',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ deleteList: _ids })
+    });
 }

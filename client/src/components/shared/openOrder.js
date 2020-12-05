@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
-import { UpdateSingleOrder, DeleteOrders } from '../../services/orderService'
+import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem } from '../../services/orderService'
 
-export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, setEditState, editState }) {
+export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, setEditState, editState, trashbin = false }) {
     const [closing, Close] = useState(false);
 
     const inputs = useRef({});
@@ -9,8 +9,15 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
 
     let newStatus = "";
 
-    if (Status === "Ny Ordre") newStatus = "Godkendt Til Produktion";
-    else if (Status === "Godkendt Til Produktion") newStatus = "Godkend Produktion";
+    const closeAction = () => {
+        Close(true);
+        setTimeout(() => {
+            setEditState({}, true)
+        }, 350);
+    }
+
+    if (Status === "Ny Ordre") newStatus = "Under Produktion";
+    else if (Status === "Under Produktion") newStatus = "Godkend Produktion";
     else if (Status === "Godkend Produktion") newStatus = "Færdig & Sendt";
 
     const updateOrder = (orderStatus = Status) => {
@@ -22,7 +29,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
         if (inputs.current.kundenavn.value.length === 0) {
             notValidFields.push("Kundenavn");
         }
-        if (inputs.current.indtalinger.value > 6) {
+        if (inputs.current.indtalinger.value > 6 || /[a-zA-Z]/g.test(inputs.current.indtalinger.value) || inputs.current.indtalinger.value.length === 0) {
             notValidFields.push("Antal Indtalinger")
         }
         if (inputs.current.speaker.value.length === 0) {
@@ -46,22 +53,34 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                 inputs.current.speaker.value,
                 orderStatus
             );
-
-            Close(true);
-            setTimeout(() => {
-                setEditState({}, true)
-            }, 350);
+            closeAction();
         }
+    }
+
+    const remakeOrder = () => {
+        UpdateSingleOrder(
+            _id,
+            OrdreId,
+            inputs.current.dato.value,
+            inputs.current.virksomhed.value,
+            inputs.current.kundenavn.value,
+            inputs.current.indtalinger.value,
+            inputs.current.speaker.value,
+            Status,
+            false
+        )
+        closeAction();
+    }
+
+    const permanentlyDelete = () => {
+        DeleteOrderFromSystem([_id]);
+        closeAction();
     }
 
     const deleteOrder = () => {
 
         DeleteOrders([_id]);
-
-        Close(true);
-        setTimeout(() => {
-            setEditState({}, true)
-        }, 350);
+        closeAction();
     }
 
     return (
@@ -69,7 +88,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
             <div id="EditModal" className={`openOrder ${(closing) ? " close" : ""}`}>
                 <div className="modalWrapper">
                     <div className={`modalContainer${(closing) ? " close" : ""}`}>
-                        <i id="trashcan" class="fa fa-trash" aria-hidden="true" onClick={() => deleteOrder()} ></i>
+                        {!trashbin && <i id="trashcan" className="fa fa-trash" aria-hidden="true" onClick={() => deleteOrder()} ></i>}
                         <h4>OrdreId: {OrdreId}</h4>
                         <p>{_id}</p>
                         <div className="inputField">
@@ -109,12 +128,12 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
 
                         <p ref={p => errorBox.current = p} className="errorMessage"></p>
 
-                        <div className="buttonsContainer">
+                        {!trashbin && <div className="buttonsContainer">
                             {Status !== 'Færdig & Sendt' && <>
                                 <button onClick={() => updateOrder(newStatus)} className="nextButton">
-                                    {Status === "Ny Ordre" && <>Godkend Ordre</>}
-                                    {Status === "Godkendt Til Produktion" && <>Produceret</>}
-                                    {Status === "Godkend Produktion" && <>Godkendt</>}
+                                    {Status === "Ny Ordre" && <>Send til produktion</>}
+                                    {Status === "Under Produktion" && <>Produceret</>}
+                                    {Status === "Godkend Produktion" && <>Godkend</>}
                                 </button>
                                 <button onClick={() => updateOrder()} className="submitButton">
                                     Opdater Ordre
@@ -123,7 +142,15 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                             <button onClick={() => setEditState({}, false)} className={`cancelButton ${(Status === 'Færdig & Sendt') ? "closeButton" : ""}`}>
                                 {Status === 'Færdig & Sendt' ? <>Luk</> : <>Annuller</>}
                             </button>
-                        </div>
+                        </div>}
+
+                        {trashbin && <div className="buttonsContainer">
+                            <button onClick={() => remakeOrder()} className="genskabButton">Genskab Ordre</button>
+                            <button onClick={() => permanentlyDelete()} className="deleteButton">Slet Permanent</button>
+                            <button onClick={() => setEditState({}, false)} className={`cancelButton`}>
+                                Annuller
+                            </button>
+                        </div>}
                     </div>
                 </div>
             </div>

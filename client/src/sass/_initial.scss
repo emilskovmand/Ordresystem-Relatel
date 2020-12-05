@@ -135,6 +135,19 @@ body {
     cursor: pointer;
 }
 
+.deleteRow {
+    background-color: #e41010;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+}
+
 
 .button2 {
     background-color: #3aae8f;
@@ -184,6 +197,11 @@ body {
 .content-table th,
 .content-table td {
     padding: 12px 15px;
+
+    &.break {
+        max-width: 260px;
+        word-break: break-all;
+    }
 }
 
 .content-table tbody tr {

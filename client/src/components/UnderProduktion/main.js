@@ -1,13 +1,21 @@
-import { useState, useEffect, useRef, Fragment } from 'react'
-import { GetOrders, searchFilter } from '../../services/orderService'
+import { useState, useEffect, Fragment, useRef } from 'react'
+import { GetOrders, searchFilter, DeleteOrders } from '../../services/orderService'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
 
-function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal }) {
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, deleteRow }) {
+
+    const row = useRef();
+
+    const deleteAction = () => {
+        deleteRow(dbId);
+        row.current.style = "display: none;"
+    }
+
     return (
         <>
-            <tr>
+            <tr ref={tr => row.current = tr}>
                 <td>{OrdreId}</td>
                 <td>{BestillingsDato.replace('T', " kl. ")}</td>
                 <td className={(Virksomhed.length > 40) ? "break" : ""}>{Virksomhed}</td>
@@ -16,12 +24,13 @@ function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger
                 <td className={(ValgteSpeaker.length > 40) ? "break" : ""}>{ValgteSpeaker}</td>
                 <td>{Status}</td>
                 <td><button onClick={() => orderModal(arguments[0])} type="button" className="button">Åben Ordre</button></td>
+                <td><button onClick={() => deleteAction()} type="button" className="deleteRow" >Slet</button></td>
             </tr>
         </>
     )
 }
 
-export default function FærdigeOrdre() {
+export default function GodtkendtTilProduktion() {
     const [data, setData] = useState(null);
     const [openOrder, setOpenOrder] = useState({});
     const [searchCriteria, setSearchCriteria] = useState("");
@@ -41,9 +50,13 @@ export default function FærdigeOrdre() {
         setSearchCriteria(criteria);
     }
 
+    const deleteRow = (_id) => {
+        DeleteOrders([_id]);
+    }
+
     useEffect(() => {
         // effect
-        GetOrders('Færdig%20&%20Sendt').then((response) => {
+        GetOrders('Under%20Produktion').then((response) => {
             setData(response);
         })
 
@@ -68,12 +81,10 @@ export default function FærdigeOrdre() {
             <div className="main_content">
                 <div className="header">Velkommen til ordresystemet. Du er logget ind som: {auth.user.user.username}</div>
 
-                <h2 className="info">Færdige Ordre</h2>
-
+                <h2 className="info">Under Produktion</h2>
 
                 <input ref={input => search.current = input} type="text" className="selector move space" placeholder="Søgeord..." />
                 <button onClick={() => searchButton(search.current.value)} type="button" className="button">Søg</button>
-
 
                 <table className="content-table info">
                     <thead>
@@ -84,8 +95,9 @@ export default function FærdigeOrdre() {
                             <th>Kundenavn</th>
                             <th>Antal Indtalinger</th>
                             <th>Valgte Speaker</th>
-                            <th>Tidligere Status</th>
+                            <th>Status</th>
                             <th>Ordre Information</th>
+                            <td></td>
                         </tr>
                     </thead>
 
@@ -104,6 +116,7 @@ export default function FærdigeOrdre() {
                                     ValgteSpeaker={value.ValgteSpeaker}
                                     Status={value.Status}
                                     orderModal={editModal}
+                                    deleteRow={deleteRow}
                                 />
                             }
                         })}
@@ -111,10 +124,6 @@ export default function FærdigeOrdre() {
                 </table>
 
                 {!data && <ReactLoading className="loader" type={"spin"} color={"black"} height={50} width={50} />}
-
-                <div className="info">
-                    <button className="button">Indlæs flere</button>
-                </div>
 
                 <div className="info">
                     <div>Hvis du oplever nogle problemer eller har spørgsmål, så kontakt os venligst på telefon: 71 99 18 14

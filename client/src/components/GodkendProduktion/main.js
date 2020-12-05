@@ -1,20 +1,30 @@
 import { useState, useEffect, useRef, Fragment } from 'react'
-import { GetOrders, searchFilter } from '../../services/orderService'
+import { GetOrders, searchFilter, DeleteOrders } from '../../services/orderService'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
+import { useAuth } from '../context/auth'
 
-function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal }) {
+function Row({ OrdreId, dbId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, deleteRow }) {
+
+    const row = useRef();
+
+    const deleteAction = () => {
+        deleteRow(dbId);
+        row.current.style = "display: none;"
+    }
+
     return (
         <>
-            <tr>
+            <tr ref={tr => row.current = tr}>
                 <td>{OrdreId}</td>
                 <td>{BestillingsDato.replace('T', " kl. ")}</td>
-                <td>{Virksomhed}</td>
-                <td>{Kundenavn}</td>
+                <td className={(Virksomhed.length > 40) ? "break" : ""}>{Virksomhed}</td>
+                <td className={(Kundenavn.length > 40) ? "break" : ""}>{Kundenavn}</td>
                 <td>{AntalIndtalinger}</td>
-                <td>{ValgteSpeaker}</td>
+                <td className={(ValgteSpeaker.length > 40) ? "break" : ""}>{ValgteSpeaker}</td>
                 <td>{Status}</td>
                 <td><button onClick={() => orderModal(arguments[0])} type="button" className="button">Åben Ordre</button></td>
+                <td><button onClick={() => deleteAction()} type="button" className="deleteRow" >Slet</button></td>
             </tr>
         </>
     )
@@ -24,6 +34,7 @@ export default function GodkendProduktion() {
     const [data, setData] = useState(null);
     const [openOrder, setOpenOrder] = useState({});
     const [searchCriteria, setSearchCriteria] = useState("");
+    let auth = useAuth();
 
     const search = useRef();
 
@@ -37,6 +48,10 @@ export default function GodkendProduktion() {
 
     const searchButton = (criteria) => {
         setSearchCriteria(criteria);
+    }
+
+    const deleteRow = (_id) => {
+        DeleteOrders([_id]);
     }
 
     useEffect(() => {
@@ -64,7 +79,7 @@ export default function GodkendProduktion() {
                 setEditState={editModal}
             />}
             <div className="main_content">
-                <div className="header">Velkommen til ordresystemet. Du er logget ind som: Relatel</div>
+                <div className="header">Velkommen til ordresystemet. Du er logget ind som: {auth.user.user.username}</div>
 
                 <h2 className="info">Godkend Produktion</h2>
 
@@ -82,6 +97,7 @@ export default function GodkendProduktion() {
                             <th>Valgte Speaker</th>
                             <th>Status</th>
                             <th>Ordre Information</th>
+                            <td></td>
                         </tr>
                     </thead>
 
@@ -100,6 +116,7 @@ export default function GodkendProduktion() {
                                     ValgteSpeaker={value.ValgteSpeaker}
                                     Status={value.Status}
                                     orderModal={editModal}
+                                    deleteRow={deleteRow}
                                 />
                             }
                         })}

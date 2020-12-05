@@ -10,6 +10,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
     res.send('This is the user API');
 });
+
 // ROUTE: /api/user/login
 router.post('/login', (req, res, next) => {
 

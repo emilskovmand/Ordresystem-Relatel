@@ -45,6 +45,24 @@ router.delete('/delete', async (req, res) => {
     }
 });
 
+// ROUTE: /api/order/permanentlyDelete
+router.delete('/permanentlyDelete', async (req, res) => {
+    try {
+        orderModel.deleteMany({ _id: { $in: req.body.deleteList }, Slettet: true }, (err) => {
+            if (err) {
+                console.log(err);
+                res.status(500);
+            } else {
+                res.json("Deleted orders: " + req.body.deleteList)
+            }
+        });
+        res.status(200);
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+    }
+})
+
 // ROUTE: /api/order/createOrder
 router.post('/createOrder', (req, res) => {
     // Laver en ny ordre
@@ -110,7 +128,7 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
             AntalIndtalinger: req.body.AntalIndtalinger,
             ValgteSpeaker: req.body.ValgteSpeaker,
             Status: req.body.Status,
-            Slettet: false
+            Slettet: req.body.Slettet
         });
         res.send("Updated order: " + req.params._id);
     } catch (error) {
