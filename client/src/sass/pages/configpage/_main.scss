@@ -1,0 +1,365 @@
+#config-page {
+    margin-left: 230px;
+    width: 100%;
+
+    .greyout {
+        opacity: .7;
+    }
+
+    >.myuserContainer {
+        padding: 40px 130px;
+        width: 100%;
+
+        #myUser {
+            border-radius: 10px;
+            width: 800px;
+            padding: 25px;
+            margin: 0 auto;
+            background-color: #faa892;
+
+            >.wrapper {
+                width: 100%;
+
+                p {
+                    font-size: 17px;
+                    color: #ffffff;
+                    margin-bottom: 5px;
+                    margin-top: 5px;
+
+                    &.roles {
+                        text-align: center;
+                    }
+                }
+
+
+                >.userinfoContainer {
+                    width: 35%;
+                }
+
+                >.passwordContainer {
+                    width: 35%;
+                }
+
+                >.rolesContainer {
+                    width: 30%;
+                }
+            }
+        }
+    }
+
+    >.adminButtons {
+        padding: 17px 10px 0px 10px;
+        margin-bottom: -12px;
+
+        >button {
+            padding: 11px 20px;
+            border-radius: 5px;
+            border: 1px solid transparent;
+            color: #ffffff;
+            margin-right: 7px;
+            cursor: pointer;
+        }
+
+        >.newUser {
+            background-color: #3aae8f;
+
+            &:hover {
+                background-color: darken($color: #3aae8f, $amount: 8%);
+            }
+        }
+    }
+
+    >.userlistContainer {
+        width: 100%;
+        padding-left: 10px;
+
+        .userRow {
+
+            td {
+                position: relative;
+
+                >.center {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    padding: 0px 10px;
+
+                    input[type="checkbox"] {
+                        cursor: pointer;
+                        position: relative;
+                        width: 75px;
+                        height: 22px;
+                        appearance: none;
+                        background: linear-gradient(0deg, #333, #3d3535);
+                        outline: none;
+                        border-radius: 10px;
+                        box-shadow: 0 0 0 2px #005156, 0 0 0 3px #e6dede, inset 0 0 10px #000000, 0 5px 20px #faf5f53c;
+
+                        &:before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 45px;
+                            height: 22px;
+                            background: linear-gradient(0deg, #005156, #005156);
+                            border-radius: 10px;
+
+                            transform: scale(.925);
+                            transition: .3s ease-in-out;
+                        }
+
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            top: calc(50% - 2px);
+                            left: calc(10% + 20px);
+                            width: 10px;
+                            height: 4px;
+                            background: darken($color: #e41010, $amount: 10%);
+                            border-radius: 10px;
+                            transform: scale(.98, .96);
+                            transition: .3s ease-in-out;
+                        }
+                    }
+
+                    input:checked[type="checkbox"]:before {
+                        left: 30px;
+                    }
+
+                    input:checked[type="checkbox"]:after {
+                        left: calc(50% + 20px);
+                        background: #3aae8f;
+                    }
+                }
+            }
+
+
+            .SaveButton {
+                background-color: #387ec9;
+                padding: 11px 20px;
+                border-radius: 5px;
+                border: 1px solid transparent;
+                color: #ffffff;
+                margin-right: 7px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: darken($color: #387ec9, $amount: 8%);
+                }
+            }
+        }
+    }
+}
+
+
+#NewUserModal {
+    position: fixed;
+    top: 0;
+    z-index: 2000;
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    background-color: rgba($color: #575555, $alpha: .7);
+
+    animation: fade-in .3s ease-in 1;
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .closing {
+        animation: fade-out .3s ease-in 1;
+
+        @keyframes fade-out {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+    }
+
+    &.close {
+        opacity: 0;
+        transition: opacity .35s ease-out;
+
+        .modalContainer.close {
+            transition: transform .3s ease-out;
+            transform: translateY(-30px) rotateY(-16deg);
+        }
+    }
+
+    >.modalWrapper {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        >.modalContainer {
+            position: relative;
+            height: 70vh;
+            width: 620px;
+            max-width: 35vw;
+            background-color: whitesmoke;
+            border-radius: 5px;
+            padding: 25px;
+            animation: walk-inEdit .35s ease-out 1;
+
+            @keyframes walk-inEdit {
+                from {
+                    transform: translateY(-30px) rotateY(16deg);
+                }
+
+                to {
+                    transform: translateY(0px) rotateY(0deg);
+                }
+            }
+
+            >h4 {
+                font-size: 22px;
+                text-align: center;
+                margin-bottom: 17px;
+            }
+
+            >.inputField {
+                margin-bottom: 10px;
+
+                &.checkBoxField {
+                    margin: 12px 0px;
+                }
+
+                >.labelfield {
+                    margin-bottom: 3px;
+                    font-weight: 100;
+                    font-size: 13px;
+                }
+
+                >.checkLabel {
+                    position: relative;
+
+                    >span {
+                        position: absolute;
+                        top: -5px;
+                        left: 15px;
+                        white-space: nowrap;
+                    }
+                }
+
+                >.textField {
+                    outline: none;
+                    border-top: 0px solid transparent;
+                    border-left: 1px solid transparent;
+                    border-right: 0px solid transparent;
+                    border-bottom: 1px solid #39a487;
+                    padding: 6px 3px;
+                    font-size: 16px;
+                    width: 100%;
+                    background-color: whitesmoke;
+                }
+
+                input[type="checkbox"] {
+                    cursor: pointer;
+                    position: relative;
+                    width: 75px;
+                    height: 22px;
+                    appearance: none;
+                    background: linear-gradient(0deg, #333, #3d3535);
+                    outline: none;
+                    border-radius: 10px;
+                    box-shadow: 0 0 0 2px #005156, 0 0 0 3px #e6dede, inset 0 0 10px #000000, 0 5px 20px #faf5f53c;
+
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 45px;
+                        height: 22px;
+                        background: linear-gradient(0deg, #005156, #005156);
+                        border-radius: 10px;
+
+                        transform: scale(.925);
+                        transition: .3s ease-in-out;
+                    }
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: calc(50% - 2px);
+                        left: calc(10% + 20px);
+                        width: 10px;
+                        height: 4px;
+                        background: darken($color: #e41010, $amount: 10%);
+                        border-radius: 10px;
+                        transform: scale(.98, .96);
+                        transition: .3s ease-in-out;
+                    }
+                }
+
+                input:checked[type="checkbox"]:before {
+                    left: 30px;
+                }
+
+                input:checked[type="checkbox"]:after {
+                    left: calc(50% + 20px);
+                    background: #3aae8f;
+                }
+
+            }
+
+            >.buttonsContainer {
+                position: absolute;
+                bottom: 0px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 60%;
+
+                >button {
+                    cursor: pointer;
+                    height: 80%;
+                    font-size: 16px;
+
+                    &.createUserButton {
+                        background-color: #39a487;
+                        outline: none;
+                        border-top-left-radius: 25px;
+                        border-bottom-left-radius: 25px;
+                        border: 0px solid transparent;
+                        padding: 20px 16px;
+                        color: whitesmoke;
+                        width: 65%;
+
+                        &:hover {
+                            background-color: darken(#39a487, 6%);
+                        }
+                    }
+
+                    &.cancelButton {
+                        width: 35%;
+                        color: whitesmoke;
+                        border-top-right-radius: 25px;
+                        border-bottom-right-radius: 25px;
+                        background-color: rgb(228, 16, 16);
+                        outline: none;
+                        border: 0px solid transparent;
+                        padding: 20px 16px;
+
+                        &:hover {
+                            background-color: darken(rgb(228, 16, 16), 6%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

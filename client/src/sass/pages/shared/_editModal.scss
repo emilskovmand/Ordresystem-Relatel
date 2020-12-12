@@ -2,6 +2,7 @@
     position: fixed;
     top: 0;
     height: 100vh;
+    z-index: 2000;
     width: 100vw;
     max-width: 100%;
     background-color: rgba($color: #575555, $alpha: .7);

@@ -39,6 +39,7 @@ body {
   background: #39a487;
   padding: 30px 0px;
   position: fixed;
+  z-index: 1000;
 }
 
 .wrapper .sidebar h2 {
@@ -235,6 +236,7 @@ body {
   top: 0;
   position: fixed;
   height: 100vh;
+  z-index: 2000;
   width: 100vw;
   background-color: rgba(87, 85, 85, 0.7);
   -webkit-animation: fade-in .3s ease-in 1;
@@ -388,6 +390,7 @@ body {
   position: fixed;
   top: 0;
   height: 100vh;
+  z-index: 2000;
   width: 100vw;
   max-width: 100%;
   background-color: rgba(87, 85, 85, 0.7);
@@ -778,6 +781,390 @@ body {
   text-align: center;
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
+}
+
+#config-page {
+  margin-left: 230px;
+  width: 100%;
+}
+
+#config-page .greyout {
+  opacity: .7;
+}
+
+#config-page > .myuserContainer {
+  padding: 40px 130px;
+  width: 100%;
+}
+
+#config-page > .myuserContainer #myUser {
+  border-radius: 10px;
+  width: 800px;
+  padding: 25px;
+  margin: 0 auto;
+  background-color: #faa892;
+}
+
+#config-page > .myuserContainer #myUser > .wrapper {
+  width: 100%;
+}
+
+#config-page > .myuserContainer #myUser > .wrapper p {
+  font-size: 17px;
+  color: #ffffff;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+#config-page > .myuserContainer #myUser > .wrapper p.roles {
+  text-align: center;
+}
+
+#config-page > .myuserContainer #myUser > .wrapper > .userinfoContainer {
+  width: 35%;
+}
+
+#config-page > .myuserContainer #myUser > .wrapper > .passwordContainer {
+  width: 35%;
+}
+
+#config-page > .myuserContainer #myUser > .wrapper > .rolesContainer {
+  width: 30%;
+}
+
+#config-page > .adminButtons {
+  padding: 17px 10px 0px 10px;
+  margin-bottom: -12px;
+}
+
+#config-page > .adminButtons > button {
+  padding: 11px 20px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  color: #ffffff;
+  margin-right: 7px;
+  cursor: pointer;
+}
+
+#config-page > .adminButtons > .newUser {
+  background-color: #3aae8f;
+}
+
+#config-page > .adminButtons > .newUser:hover {
+  background-color: #308f76;
+}
+
+#config-page > .userlistContainer {
+  width: 100%;
+  padding-left: 10px;
+}
+
+#config-page > .userlistContainer .userRow td {
+  position: relative;
+}
+
+#config-page > .userlistContainer .userRow td > .center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  padding: 0px 10px;
+}
+
+#config-page > .userlistContainer .userRow td > .center input[type="checkbox"] {
+  cursor: pointer;
+  position: relative;
+  width: 75px;
+  height: 22px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background: -webkit-gradient(linear, left bottom, left top, from(#333), to(#3d3535));
+  background: linear-gradient(0deg, #333, #3d3535);
+  outline: none;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 0 2px #005156, 0 0 0 3px #e6dede, inset 0 0 10px #000000, 0 5px 20px #faf5f53c;
+          box-shadow: 0 0 0 2px #005156, 0 0 0 3px #e6dede, inset 0 0 10px #000000, 0 5px 20px #faf5f53c;
+}
+
+#config-page > .userlistContainer .userRow td > .center input[type="checkbox"]:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45px;
+  height: 22px;
+  background: -webkit-gradient(linear, left bottom, left top, from(#005156), to(#005156));
+  background: linear-gradient(0deg, #005156, #005156);
+  border-radius: 10px;
+  -webkit-transform: scale(0.925);
+          transform: scale(0.925);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+
+#config-page > .userlistContainer .userRow td > .center input[type="checkbox"]:after {
+  content: '';
+  position: absolute;
+  top: calc(50% - 2px);
+  left: calc(10% + 20px);
+  width: 10px;
+  height: 4px;
+  background: #b40d0d;
+  border-radius: 10px;
+  -webkit-transform: scale(0.98, 0.96);
+          transform: scale(0.98, 0.96);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+
+#config-page > .userlistContainer .userRow td > .center input:checked[type="checkbox"]:before {
+  left: 30px;
+}
+
+#config-page > .userlistContainer .userRow td > .center input:checked[type="checkbox"]:after {
+  left: calc(50% + 20px);
+  background: #3aae8f;
+}
+
+#config-page > .userlistContainer .userRow .SaveButton {
+  background-color: #387ec9;
+  padding: 11px 20px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  color: #ffffff;
+  margin-right: 7px;
+  cursor: pointer;
+}
+
+#config-page > .userlistContainer .userRow .SaveButton:hover {
+  background-color: #2e6aaa;
+}
+
+#NewUserModal {
+  position: fixed;
+  top: 0;
+  z-index: 2000;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  background-color: rgba(87, 85, 85, 0.7);
+  -webkit-animation: fade-in .3s ease-in 1;
+          animation: fade-in .3s ease-in 1;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#NewUserModal .closing {
+  -webkit-animation: fade-out .3s ease-in 1;
+          animation: fade-out .3s ease-in 1;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+#NewUserModal.close {
+  opacity: 0;
+  -webkit-transition: opacity .35s ease-out;
+  transition: opacity .35s ease-out;
+}
+
+#NewUserModal.close .modalContainer.close {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  transition: -webkit-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+  -webkit-transform: translateY(-30px) rotateY(-16deg);
+          transform: translateY(-30px) rotateY(-16deg);
+}
+
+#NewUserModal > .modalWrapper {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#NewUserModal > .modalWrapper > .modalContainer {
+  position: relative;
+  height: 70vh;
+  width: 620px;
+  max-width: 35vw;
+  background-color: whitesmoke;
+  border-radius: 5px;
+  padding: 25px;
+  -webkit-animation: walk-inEdit .35s ease-out 1;
+          animation: walk-inEdit .35s ease-out 1;
+}
+
+@keyframes walk-inEdit {
+  from {
+    -webkit-transform: translateY(-30px) rotateY(16deg);
+            transform: translateY(-30px) rotateY(16deg);
+  }
+  to {
+    -webkit-transform: translateY(0px) rotateY(0deg);
+            transform: translateY(0px) rotateY(0deg);
+  }
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > h4 {
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 17px;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField {
+  margin-bottom: 10px;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField.checkBoxField {
+  margin: 12px 0px;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField > .labelfield {
+  margin-bottom: 3px;
+  font-weight: 100;
+  font-size: 13px;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField > .checkLabel {
+  position: relative;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField > .checkLabel > span {
+  position: absolute;
+  top: -5px;
+  left: 15px;
+  white-space: nowrap;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField > .textField {
+  outline: none;
+  border-top: 0px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 0px solid transparent;
+  border-bottom: 1px solid #39a487;
+  padding: 6px 3px;
+  font-size: 16px;
+  width: 100%;
+  background-color: whitesmoke;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField input[type="checkbox"] {
+  cursor: pointer;
+  position: relative;
+  width: 75px;
+  height: 22px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background: -webkit-gradient(linear, left bottom, left top, from(#333), to(#3d3535));
+  background: linear-gradient(0deg, #333, #3d3535);
+  outline: none;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 0 2px #005156, 0 0 0 3px #e6dede, inset 0 0 10px #000000, 0 5px 20px #faf5f53c;
+          box-shadow: 0 0 0 2px #005156, 0 0 0 3px #e6dede, inset 0 0 10px #000000, 0 5px 20px #faf5f53c;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField input[type="checkbox"]:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45px;
+  height: 22px;
+  background: -webkit-gradient(linear, left bottom, left top, from(#005156), to(#005156));
+  background: linear-gradient(0deg, #005156, #005156);
+  border-radius: 10px;
+  -webkit-transform: scale(0.925);
+          transform: scale(0.925);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField input[type="checkbox"]:after {
+  content: '';
+  position: absolute;
+  top: calc(50% - 2px);
+  left: calc(10% + 20px);
+  width: 10px;
+  height: 4px;
+  background: #b40d0d;
+  border-radius: 10px;
+  -webkit-transform: scale(0.98, 0.96);
+          transform: scale(0.98, 0.96);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField input:checked[type="checkbox"]:before {
+  left: 30px;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .inputField input:checked[type="checkbox"]:after {
+  left: calc(50% + 20px);
+  background: #3aae8f;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .buttonsContainer {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 60%;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .buttonsContainer > button {
+  cursor: pointer;
+  height: 80%;
+  font-size: 16px;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .buttonsContainer > button.createUserButton {
+  background-color: #39a487;
+  outline: none;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  border: 0px solid transparent;
+  padding: 20px 16px;
+  color: whitesmoke;
+  width: 65%;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .buttonsContainer > button.createUserButton:hover {
+  background-color: #318d74;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .buttonsContainer > button.cancelButton {
+  width: 35%;
+  color: whitesmoke;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  background-color: #e41010;
+  outline: none;
+  border: 0px solid transparent;
+  padding: 20px 16px;
+}
+
+#NewUserModal > .modalWrapper > .modalContainer > .buttonsContainer > button.cancelButton:hover {
+  background-color: #c70e0e;
 }
 
 body {

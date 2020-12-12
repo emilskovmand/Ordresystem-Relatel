@@ -52,6 +52,7 @@ router.get('/getUser', async (req, res) => {
     }
 })
 
+// ROUTE: /api/user/register
 router.post('/register', (req, res) => {
     userModel.findOne({ username: req.body.username }, async (err, doc) => {
         if (err) {
@@ -64,7 +65,15 @@ router.post('/register', (req, res) => {
 
             const newUser = new userModel({
                 username: req.body.username,
-                password: hashedPassword
+                password: hashedPassword,
+                email: req.body.email,
+                permissions: {
+                    admin: req.body.admin,
+                    createOrder: req.body.createOrder,
+                    produce: req.body.produceOrder,
+                    approve: req.body.approve,
+                    complete: req.body.completedOrders
+                }
             })
             await newUser.save();
             res.json(`User ${req.body.username} created!`);
@@ -74,5 +83,30 @@ router.post('/register', (req, res) => {
     })
 })
 
+// ROUTE: /api/user/userlist
+router.get('/userlist', async (req, res) => {
+    if (req.user) {
+        try {
+            const users = await userModel.find();
+            res.json(users);
+            res.status(200);
+        } catch (error) {
+            console.log(error);
+            res.json(error);
+            res.status(500);
+        }
+    }
+    else {
+        res.send("Permission missing");
+        res.status(401);
+    }
+})
+
+// ROUTE: /api/user/update
+router.put('/update', async (req, res) => {
+    console.log(req.body);
+    res.json("");
+    res.status(200);
+})
 
 module.exports = router;

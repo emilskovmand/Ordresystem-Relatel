@@ -8,6 +8,7 @@ function NewOrderModal({ setModal }) {
 
     const inputs = useRef([]);
     const errorBox = useRef();
+    let [givenId, setGivenId] = useState(0);
 
     // Håndterer oprettelsen af ordre
     const handleOprettelse = () => {
@@ -48,6 +49,11 @@ function NewOrderModal({ setModal }) {
         }
     }
 
+    const readonly = (element) => {
+        element.readOnly = true;
+        element.value = givenId;
+    }
+
     // Dato format for input
     const dato = () => {
         const dateForDateTimeInputValue = date => new Date(date.getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 16);
@@ -61,6 +67,7 @@ function NewOrderModal({ setModal }) {
     useEffect(() => {
         getId().then((val) => {
             inputs.current.id.value = val;
+            setGivenId(val);
         });
         return () => {
 
@@ -77,7 +84,7 @@ function NewOrderModal({ setModal }) {
                             <div className="labelfield">
                                 <label htmlFor="OrdreId">OrdreId</label>
                             </div>
-                            <input ref={input => inputs.current.id = input} readOnly maxLength="8" name="OrdreId" type="text" defaultValue={"..."}></input>
+                            <input ref={input => inputs.current.id = input} readOnly onChange={(_) => readonly(_.target)} maxLength="8" name="OrdreId" type="text" defaultValue={"..."}></input>
                         </div>
                         <div className="inputField">
                             <div className="labelfield">

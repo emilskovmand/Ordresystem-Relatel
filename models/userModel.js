@@ -8,22 +8,41 @@ const UserSchema = mongoose.Schema({
     },
     username: {
         type: String,
+        unique: true,
         required: true
     },
     password: {
         type: String,
         required: true
     },
+    email: {
+        type: String
+    },
     lastLoginDate: {
         type: Date
     },
-    permissions: [{
-        admin: Boolean,
-        createOrder: Boolean,
-        produce: Boolean,
-        approve: Boolean,
-        complete: Boolean
-    }]
+    permissions: {
+        admin: {
+            type: Boolean,
+            default: false
+        },
+        createOrder: {
+            type: Boolean,
+            default: false
+        },
+        produce: {
+            type: Boolean,
+            default: false
+        },
+        approve: {
+            type: Boolean,
+            default: false
+        },
+        complete: {
+            type: Boolean,
+            default: false
+        }
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema);
