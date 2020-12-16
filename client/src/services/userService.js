@@ -31,18 +31,14 @@ export async function GetUserList() {
     return response.json();
 }
 
-export async function UpdateUser(dbId, username, password, email, admin, createOrder, produceOrder, approve, completedOrders) {
-    const response = await fetch(`/api/user/update`, {
+export async function UpdateUserRoles(_id, admin, createOrder, produceOrder, approve, completedOrders) {
+    const response = await fetch(`/api/user/updateRoles/${_id}`, {
         method: 'PUT',
         cache: 'no-cache',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            dbId: dbId,
-            username: username,
-            password: password,
-            email: email,
             admin: admin,
             createOrder: createOrder,
             produceOrder: produceOrder,

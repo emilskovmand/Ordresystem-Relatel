@@ -1,0 +1,86 @@
+.globalNotification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+
+    color: #ffffff;
+    font-weight: 100;
+    font-size: 13px;
+
+    width: 350px;
+    height: 90px;
+
+    animation: GoNotifier .2s 1 forwards;
+
+    animation-timing-function: cubic-bezier(0.260, 0.430, 0.185, 1.230);
+
+    @keyframes GoNotifier {
+        from {
+            bottom: -200px;
+        }
+
+        to {
+            bottom: 30px;
+        }
+    }
+
+    &.status200 {
+        background-color: rgb(46, 204, 64);
+    }
+
+    &.statusError {
+        background-color: rgb(255, 65, 54);
+    }
+
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    >.iconContainer {
+        width: 16%;
+        float: left;
+        height: 100%;
+        margin-right: 16px;
+        position: relative;
+
+        &.status200 {
+            background-color: rgb(34, 153, 48);
+        }
+
+        &.statusError {
+            background-color: rgb(191, 49, 40);
+        }
+
+        >i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    >.messageContainer {
+        position: relative;
+        width: 84%;
+        height: 100%;
+        padding: 15px 1px 15px 2px;
+
+        >button {
+            margin-top: 14px;
+            padding: 5px 4px;
+            outline: none;
+            width: 100px;
+            font-size: 16px;
+            color: #ffffff;
+            font-weight: 400;
+            border: 1px solid transparent;
+            cursor: pointer;
+
+            &.status200 {
+                background-color: rgb(34, 153, 48);
+            }
+
+            &.statusError {
+                background-color: rgb(191, 49, 40);
+            }
+        }
+    }
+}

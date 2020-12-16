@@ -1,10 +1,12 @@
 import { Fragment, useState, useRef, useEffect } from 'react'
 import { CreateOrder, GetOrders, searchFilter, getOrderId, DeleteOrders } from '../../services/orderService'
+import { useAPINotifier } from '../context/MessageReceiver'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
 
 function NewOrderModal({ setModal }) {
+    const { AddMessage } = useAPINotifier();
 
     const inputs = useRef([]);
     const errorBox = useRef();
@@ -44,7 +46,11 @@ function NewOrderModal({ setModal }) {
                 inputs.current.kundenavn.value,
                 inputs.current.indtalinger.value,
                 inputs.current.speaker.value
-            )
+            ).then((res) => {
+                res[0].then((val) => {
+                    AddMessage(val, res[1]);
+                })
+            });
             setModal(false);
         }
     }

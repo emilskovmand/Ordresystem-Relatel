@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react'
 import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem } from '../../services/orderService'
+import { useAPINotifier } from '../context/MessageReceiver'
 
 export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, setEditState, editState, trashbin = false }) {
-    const [closing, Close] = useState(false);
+    const [closing, Close] = useState(false)
+    const { AddMessage } = useAPINotifier();
 
     const inputs = useRef({});
     const errorBox = useRef();
@@ -20,7 +22,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
     else if (Status === "Under Produktion") newStatus = "Godkend Produktion";
     else if (Status === "Godkend Produktion") newStatus = "Færdig & Sendt";
 
-    const updateOrder = (orderStatus = Status) => {
+    const updateOrder = async (orderStatus = Status) => {
         const notValidFields = [];
         // Check each field
         if (inputs.current.virksomhed.value.length === 0) {
@@ -52,7 +54,12 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                 inputs.current.indtalinger.value,
                 inputs.current.speaker.value,
                 orderStatus
-            );
+            ).then((res) => {
+                res[0].then((val) => {
+                    AddMessage(val, res[1]);
+                })
+            })
+
             closeAction();
         }
     }

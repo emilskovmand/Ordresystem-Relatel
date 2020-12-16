@@ -79,14 +79,14 @@ router.post('/createOrder', (req, res) => {
     // Gemmer den nye ordre i databasen
     order.save()
         .then(data => {
+            res.json("Succesfully created order!")
             res.status(200);
         })
         .catch(err => {
             console.log(err);
+            res.json("Couldn't create order.")
             res.status(500);
         })
-
-    res.send("Retrieved Order!")
 });
 
 // ROUTE: /api/order/newid
@@ -130,11 +130,12 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
             Status: req.body.Status,
             Slettet: req.body.Slettet
         });
-        res.send("Updated order: " + req.params._id);
+        res.json("Updated order nr.: " + updatedOrder.OrdreId);
+        res.status(200);
     } catch (error) {
         console.log(error);
         res.status(500);
-        res.send("Updating order " + req.params._id + " failed...");
+        res.json("Updating order " + req.params._id + " failed...");
     }
 })
 

@@ -11,7 +11,7 @@ export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenav
         Status: Status
     }
 
-    await fetch('/api/order/createOrder', {
+    const response = await fetch('/api/order/createOrder', {
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -19,6 +19,8 @@ export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenav
         },
         body: JSON.stringify(load)
     });
+
+    return [response.json(), response.status];
 }
 
 export function searchFilter(criteria, row) {
@@ -52,7 +54,7 @@ export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhe
         Slettet: Slettet
     }
 
-    await fetch(`/api/order/updateSingleOrder/${_id}`, {
+    const response = await fetch(`/api/order/updateSingleOrder/${_id}`, {
         method: 'PUT',
         cache: 'no-cache',
         headers: {
@@ -60,10 +62,12 @@ export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhe
         },
         body: JSON.stringify(load)
     });
+
+    return [response.json(), response.status];
 }
 
 export async function DeleteOrders(_ids) {
-    await fetch(`/api/order/delete`, {
+    const response = await fetch(`/api/order/delete`, {
         method: 'DELETE',
         cache: 'no-cache',
         headers: {
@@ -71,6 +75,8 @@ export async function DeleteOrders(_ids) {
         },
         body: JSON.stringify({ deleteList: _ids })
     });
+
+    return [response.json(), response.status];
 }
 
 export async function getOrderId() {
@@ -89,7 +95,7 @@ export async function GetDeletedOrders() {
 }
 
 export async function DeleteOrderFromSystem(_ids) {
-    await fetch(`/api/order/permanentlyDelete`, {
+    const response = await fetch(`/api/order/permanentlyDelete`, {
         method: 'DELETE',
         cache: 'no-cache',
         headers: {
@@ -97,4 +103,6 @@ export async function DeleteOrderFromSystem(_ids) {
         },
         body: JSON.stringify({ deleteList: _ids })
     });
+
+    return [response.json(), response.status];
 }

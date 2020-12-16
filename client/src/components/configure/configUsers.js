@@ -1,42 +1,58 @@
 import { useState, useEffect, useRef, Fragment } from 'react'
-import { GetUserList } from '../../services/userService'
+import { GetUserList, UpdateUserRoles } from '../../services/userService'
 import { useAuth } from '../context/auth'
 import ReactLoading from 'react-loading'
 import NewUserModal from './createUser'
 
-function Row({ userName, admin = false, createOrder = false, produce = false, approve = false, complete = false }) {
+function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = false, produce = false, approve = false, complete = false }) {
+
+    const inputs = useRef({});
+
+    const confirmSave = () => {
+        UpdateUserRoles(
+            dbid,
+            inputs.current.admin.checked,
+            inputs.current.create.checked,
+            inputs.current.produce.checked,
+            inputs.current.approve.checked,
+            inputs.current.complete.checked
+        )
+    }
 
     return (
         <>
             <tr className="userRow">
                 <td>{userName}</td>
                 <td>
+                    <a href={`mailto:${mail}`}>{mail}</a>
+                </td>
+                <td>
                     <div className="center">
-                        <input id="checkAdmin" type="checkbox" defaultChecked={admin} />
+                        <input id="checkAdmin" ref={input => inputs.current.admin = input} type="checkbox" defaultChecked={admin} />
                     </div>
                 </td>
                 <td>
                     <div className="center">
-                        <input id="checkCreate" type="checkbox" defaultChecked={createOrder} />
+                        <input id="checkCreate" ref={input => inputs.current.create = input} type="checkbox" defaultChecked={createOrder} />
                     </div>
                 </td>
                 <td>
                     <div className="center">
-                        <input id="checkProduce" type="checkbox" defaultChecked={produce} />
+                        <input id="checkProduce" ref={input => inputs.current.produce = input} type="checkbox" defaultChecked={produce} />
                     </div>
                 </td>
                 <td>
                     <div className="center">
-                        <input id="checkApprove" type="checkbox" defaultChecked={approve} />
+                        <input id="checkApprove" ref={input => inputs.current.approve = input} type="checkbox" defaultChecked={approve} />
                     </div>
                 </td>
                 <td>
                     <div className="center">
-                        <input id="checkComplete" type="checkbox" defaultChecked={complete} />
+                        <input id="checkComplete" ref={input => inputs.current.complete = input} type="checkbox" defaultChecked={complete} />
                     </div>
                 </td>
                 <td>
-                    <button className="SaveButton">Gem ændringer</button>
+                    <button onClick={() => confirmSave()} className="SaveButton">Gem ændringer</button>
                 </td>
             </tr>
         </>
@@ -71,7 +87,7 @@ export default function ConfigPage() {
             <main id="config-page">
                 <div className="myuserContainer">
                     <div id="myUser">
-                        <div className="wrapper">
+                        <div className="Userwrapper">
                             <div className="userinfoContainer">
                                 <p><span className="greyout">Brugernavn:</span> {auth.user.user.username}</p>
                                 <p><span className="greyout">E-mail:</span> </p>
@@ -96,6 +112,7 @@ export default function ConfigPage() {
                         <thead>
                             <tr>
                                 <th>Brugernavn</th>
+                                <th>E-mail</th>
                                 <th>Administrator</th>
                                 <th>Skab Ordre</th>
                                 <th>Producer</th>
@@ -106,8 +123,11 @@ export default function ConfigPage() {
                         </thead>
                         <tbody>
                             {data && data.map((value, index) => {
-                                return <Row
+                                return <AdminRow
+                                    key={index}
+                                    dbid={value._id}
                                     userName={value.username}
+                                    mail={value.email}
                                     admin={value.permissions.admin}
                                     createOrder={value.permissions.createOrder}
                                     produce={value.permissions.produce}

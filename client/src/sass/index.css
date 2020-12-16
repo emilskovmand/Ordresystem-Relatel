@@ -793,7 +793,7 @@ body {
 }
 
 #config-page > .myuserContainer {
-  padding: 40px 130px;
+  padding: 40px 10px;
   width: 100%;
 }
 
@@ -801,34 +801,36 @@ body {
   border-radius: 10px;
   width: 800px;
   padding: 25px;
-  margin: 0 auto;
   background-color: #faa892;
 }
 
-#config-page > .myuserContainer #myUser > .wrapper {
-  width: 100%;
+#config-page > .myuserContainer #myUser > .Userwrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
 }
 
-#config-page > .myuserContainer #myUser > .wrapper p {
+#config-page > .myuserContainer #myUser > .Userwrapper p {
   font-size: 17px;
   color: #ffffff;
   margin-bottom: 5px;
   margin-top: 5px;
 }
 
-#config-page > .myuserContainer #myUser > .wrapper p.roles {
+#config-page > .myuserContainer #myUser > .Userwrapper p.roles {
   text-align: center;
 }
 
-#config-page > .myuserContainer #myUser > .wrapper > .userinfoContainer {
+#config-page > .myuserContainer #myUser > .Userwrapper > .userinfoContainer {
   width: 35%;
 }
 
-#config-page > .myuserContainer #myUser > .wrapper > .passwordContainer {
+#config-page > .myuserContainer #myUser > .Userwrapper > .passwordContainer {
   width: 35%;
 }
 
-#config-page > .myuserContainer #myUser > .wrapper > .rolesContainer {
+#config-page > .myuserContainer #myUser > .Userwrapper > .rolesContainer {
   width: 30%;
 }
 
@@ -1023,6 +1025,16 @@ body {
   }
 }
 
+#NewUserModal > .modalWrapper > .modalContainer > .errorMessage {
+  display: none;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 6px 2px;
+  background-color: #ff9999;
+  color: whitesmoke;
+}
+
 #NewUserModal > .modalWrapper > .modalContainer > h4 {
   font-size: 22px;
   text-align: center;
@@ -1165,6 +1177,100 @@ body {
 
 #NewUserModal > .modalWrapper > .modalContainer > .buttonsContainer > button.cancelButton:hover {
   background-color: #c70e0e;
+}
+
+.globalNotification {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  color: #ffffff;
+  font-weight: 100;
+  font-size: 13px;
+  width: 350px;
+  height: 90px;
+  -webkit-animation: GoNotifier .2s 1 forwards;
+          animation: GoNotifier .2s 1 forwards;
+  -webkit-animation-timing-function: cubic-bezier(0.26, 0.43, 0.185, 1.23);
+          animation-timing-function: cubic-bezier(0.26, 0.43, 0.185, 1.23);
+  -webkit-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+@-webkit-keyframes GoNotifier {
+  from {
+    bottom: -200px;
+  }
+  to {
+    bottom: 30px;
+  }
+}
+
+@keyframes GoNotifier {
+  from {
+    bottom: -200px;
+  }
+  to {
+    bottom: 30px;
+  }
+}
+
+.globalNotification.status200 {
+  background-color: #2ecc40;
+}
+
+.globalNotification.statusError {
+  background-color: #ff4136;
+}
+
+.globalNotification > .iconContainer {
+  width: 16%;
+  float: left;
+  height: 100%;
+  margin-right: 16px;
+  position: relative;
+}
+
+.globalNotification > .iconContainer.status200 {
+  background-color: #229930;
+}
+
+.globalNotification > .iconContainer.statusError {
+  background-color: #bf3128;
+}
+
+.globalNotification > .iconContainer > i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.globalNotification > .messageContainer {
+  position: relative;
+  width: 84%;
+  height: 100%;
+  padding: 15px 1px 15px 2px;
+}
+
+.globalNotification > .messageContainer > button {
+  margin-top: 14px;
+  padding: 5px 4px;
+  outline: none;
+  width: 100px;
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 400;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.globalNotification > .messageContainer > button.status200 {
+  background-color: #229930;
+}
+
+.globalNotification > .messageContainer > button.statusError {
+  background-color: #bf3128;
 }
 
 body {

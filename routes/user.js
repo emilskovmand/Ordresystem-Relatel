@@ -4,6 +4,7 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 
 const userModel = require('../models/userModel');
+const orderModel = require('../models/orderModel');
 
 const router = express.Router();
 
@@ -59,7 +60,7 @@ router.post('/register', (req, res) => {
             res.status(500);
             throw err;
         };
-        if (doc) res.send("User already exists");
+        if (doc) res.status(200).send("User already exists");
         if (!doc) {
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
@@ -79,7 +80,6 @@ router.post('/register', (req, res) => {
             res.json(`User ${req.body.username} created!`);
             res.status(200);
         }
-
     })
 })
 
@@ -103,10 +103,24 @@ router.get('/userlist', async (req, res) => {
 })
 
 // ROUTE: /api/user/update
-router.put('/update', async (req, res) => {
-    console.log(req.body);
-    res.json("");
-    res.status(200);
+router.put('/updateRoles/:_id', async (req, res) => {
+    try {
+        const updatedUser = await userModel.findByIdAndUpdate(req.params._id, {
+            permissions: {
+                admin: req.body.admin,
+                createOrder: req.body.createOrder,
+                produce: req.body.produceOrder,
+                approve: req.body.approve,
+                complete: req.body.completedOrders
+            }
+        })
+        res.send("Updated user: " + req.params._id);
+        res.status(200);
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+        res.send("Updating user " + req.params._id)
+    }
 })
 
 module.exports = router;

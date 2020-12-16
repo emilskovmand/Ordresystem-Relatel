@@ -7,18 +7,18 @@
     }
 
     >.myuserContainer {
-        padding: 40px 130px;
+        padding: 40px 10px;
         width: 100%;
 
         #myUser {
             border-radius: 10px;
             width: 800px;
             padding: 25px;
-            margin: 0 auto;
             background-color: #faa892;
 
-            >.wrapper {
-                width: 100%;
+            >.Userwrapper {
+                display: flex;
+                position: relative;
 
                 p {
                     font-size: 17px;
@@ -223,6 +223,14 @@
                 to {
                     transform: translateY(0px) rotateY(0deg);
                 }
+            }
+
+            >.errorMessage {
+                display: none;
+                width: fit-content;
+                padding: 6px 2px;
+                background-color: #ff9999;
+                color: whitesmoke;
             }
 
             >h4 {

@@ -11,6 +11,7 @@ import LoginComponent from './components/auth/login'
 import React, { useEffect } from 'react'
 import { GetUser } from './services/userService'
 import { ProvideAuth, useProvideAuth } from './components/context/auth'
+import { APIMessageProvider as ProvideAPI, APIMessageNotification } from './components/context/MessageReceiver'
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -53,39 +54,42 @@ function App() {
 
 	return (
 		<ProvideAuth>
-			<Router>
-				<div id="App" className="wrapper">
-					<Switch>
-						<Route exact path='/login' >
-							<LoginComponent />
-						</Route>
-						<PrivateRoute path='/afventer' >
-							<SideNavigation />
-							<Afventer />
-						</PrivateRoute>
-						<PrivateRoute path='/færdigeordre'>
-							<SideNavigation />
-							<Færdigeordre />
-						</PrivateRoute>
-						<PrivateRoute path='/godkendt'>
-							<SideNavigation />
-							<Godkendt />
-						</PrivateRoute>
-						<PrivateRoute exact={true} path='/'>
-							<SideNavigation />
-							<FrontPage />
-						</PrivateRoute>
-						<PrivateRoute path='/papirkurv'>
-							<SideNavigation />
-							<Papirkurv />
-						</PrivateRoute>
-						<PrivateRoute path='/config'>
-							<SideNavigation />
-							<Config />
-						</PrivateRoute>
-					</Switch>
-				</div>
-			</Router>
+			<ProvideAPI>
+				<Router>
+					<div id="App" className="wrapper">
+						<Switch>
+							<Route exact path='/login' >
+								<LoginComponent />
+							</Route>
+							<PrivateRoute path='/afventer' >
+								<SideNavigation />
+								<Afventer />
+							</PrivateRoute>
+							<PrivateRoute path='/færdigeordre'>
+								<SideNavigation />
+								<Færdigeordre />
+							</PrivateRoute>
+							<PrivateRoute path='/godkendt'>
+								<SideNavigation />
+								<Godkendt />
+							</PrivateRoute>
+							<PrivateRoute exact={true} path='/'>
+								<SideNavigation />
+								<FrontPage />
+							</PrivateRoute>
+							<PrivateRoute path='/papirkurv'>
+								<SideNavigation />
+								<Papirkurv />
+							</PrivateRoute>
+							<PrivateRoute path='/config'>
+								<SideNavigation />
+								<Config />
+							</PrivateRoute>
+						</Switch>
+					</div>
+				</Router>
+				<APIMessageNotification />
+			</ProvideAPI>
 		</ProvideAuth>
 	);
 }

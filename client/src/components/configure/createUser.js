@@ -25,7 +25,8 @@ export default function CreateUserModal({ setModal }) {
 
         // if any validation errors occured
         if (notValidFields.length > 0) {
-
+            errorBox.current.innerText = "Ugyldige felter: " + notValidFields;
+            errorBox.current.style = "display: block;"
             return;
         } else {
             CreateUser(
@@ -87,6 +88,8 @@ export default function CreateUserModal({ setModal }) {
                             <input id="completeBox" name="completeBox" ref={input => inputs.current.complete = input} type="checkbox" defaultChecked={true} />
                             <label className="checkLabel" htmlFor="completeBox"><span>Se færdige ordre & Papirkurv</span></label>
                         </div>
+
+                        <p ref={p => errorBox.current = p} className="errorMessage"></p>
 
                         <div className="buttonsContainer">
                             <button onClick={() => createUser()} className="createUserButton">Skab bruger</button>
