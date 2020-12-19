@@ -455,9 +455,9 @@ body {
 
 #EditModal > .modalWrapper > .modalContainer {
   position: relative;
-  height: 70vh;
+  height: 650px;
   width: 620px;
-  max-width: 35vw;
+  max-width: 40vw;
   background-color: whitesmoke;
   border-radius: 5px;
   padding: 25px;
@@ -659,6 +659,140 @@ body {
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.deleteButton:hover {
   background-color: #8c34ca;
+}
+
+#commentsection {
+  position: absolute;
+  top: 40%;
+  left: 16%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  height: 650px;
+  width: 300px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+}
+
+#commentsection > .commentContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+#commentsection > .commentContainer > .commentWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 92.3%;
+  height: 96.3%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#commentsection > .commentContainer > .commentWrapper > .commentsBox {
+  background-color: white;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  width: 100%;
+  height: 77.5%;
+  overflow-y: auto;
+  vertical-align: bottom;
+  position: relative;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .commentsBox > .loaderWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#commentsection > .commentContainer > .commentWrapper > .commentsBox > .commentContainer {
+  width: 100%;
+  float: left;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .commentsBox > .commentContainer > .commentWrapper {
+  max-width: 70%;
+  margin: 7px 10px;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .commentsBox > .commentContainer > .commentWrapper.left {
+  float: left;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .commentsBox > .commentContainer > .commentWrapper.right {
+  float: right;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .commentsBox > .commentContainer > .commentWrapper > .comment {
+  background-color: #E4E6EB;
+  padding: 7px 10px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 15px;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .commentsBox > .commentContainer > .commentWrapper > .comment > h6 {
+  font-size: 12px;
+  font-weight: 200;
+  color: #faa892;
+  margin-bottom: 3px;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .commentsBox > .commentContainer > .commentWrapper > .comment > p {
+  font-weight: 400;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .createComment {
+  width: 100%;
+  height: 22.5%;
+  background-color: grey;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  position: relative;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .createComment > textarea {
+  margin: 17px 7px 5px 7px;
+  width: 94%;
+  height: 60%;
+  resize: none;
+  overflow-y: auto;
+  outline: none;
+  padding: 1px 3px;
+  line-height: 1.42857143;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+#commentsection > .commentContainer > .commentWrapper > .createComment > textarea:focus {
+  border-color: #9ecaed;
+  -webkit-box-shadow: 0 0 10px #9ecaed;
+          box-shadow: 0 0 10px #9ecaed;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .createComment > button {
+  float: right;
+  margin-right: 7px;
+  color: whitesmoke;
+  background-color: #39a487;
+  padding: 5px 7px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 0px solid transparent;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  outline: none;
+}
+
+#commentsection > .commentContainer > .commentWrapper > .createComment > button:hover {
+  background-color: #2e866e;
 }
 
 #login {

@@ -24,6 +24,10 @@ const OrderSchema = mongoose.Schema({
         type: Number,
         min: 1
     },
+    Comments: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    },
     ValgteSpeaker: {
         type: String
     },

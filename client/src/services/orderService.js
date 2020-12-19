@@ -106,3 +106,21 @@ export async function DeleteOrderFromSystem(_ids) {
 
     return [response.json(), response.status];
 }
+
+export async function GetComments(_orderId) {
+    const response = await fetch(`/api/order/comments/${_orderId}`);
+    return response.json();
+}
+
+export async function AddComment(_orderId, text) {
+    const response = await fetch(`/api/order/addcomment/${_orderId}`, {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text: text })
+    });
+
+    return [response.json(), response.status];
+}

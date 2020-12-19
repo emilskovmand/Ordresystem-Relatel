@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 
 const orderModel = require('../models/orderModel');
 
+const commentModel = require('../models/commentModel');
+
 
 // ROUTE: /api/order/%DYNAMIC%OrderStatus
 router.get('/statusOrders/:status', async (req, res) => {
@@ -65,6 +67,12 @@ router.delete('/permanentlyDelete', async (req, res) => {
 
 // ROUTE: /api/order/createOrder
 router.post('/createOrder', (req, res) => {
+    if (!req.user.permissions.createOrder && !req.user.permissions.admin) {
+        res.status(401);
+        res.json("Missing permissions to create order.");
+        return;
+    }
+
     // Laver en ny ordre
     const order = new orderModel({
         _id: mongoose.Types.ObjectId(),
@@ -115,6 +123,7 @@ router.get('/newid', async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500);
+        res.json("Something went wrong.");
     }
 })
 
@@ -136,6 +145,75 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
         console.log(error);
         res.status(500);
         res.json("Updating order " + req.params._id + " failed...");
+    }
+})
+
+
+router.get('/comments/:_id', async (req, res) => {
+    try {
+        const order = await orderModel.findById(req.params._id);
+        if (order.Comments) {
+            const comments = await commentModel.findById(order.Comments);
+            res.json(comments.array);
+            res.status(200);
+        } else {
+            res.json([]);
+            res.status(200);
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+        res.json([]);
+    }
+})
+
+router.post('/addcomment/:_id', async (req, res) => {
+
+    try {
+        const order = await orderModel.findById(req.params._id);
+        // Make new comment model
+        if (!order.Comments) {
+            const comment = new commentModel({
+                array: [{
+                    message: req.body.text,
+                    username: req.user.username
+                }]
+            })
+
+            comment.save().catch(err => {
+                console.log(err);
+                res.json("Couldn't create comment.")
+                res.status(500);
+            });
+
+            order.Comments = comment._id;
+            order.save().catch(err => {
+                console.log(err);
+                res.json("Couldn't create comment.")
+                res.status(500);
+            });;
+        }
+        // Add to existing model
+        else {
+            const comment = await commentModel.findById(order.Comments);
+            comment.array.push({
+                message: req.body.text,
+                username: req.user.username
+            })
+
+            comment.save().catch(err => {
+                console.log(err);
+                res.json("Couldn't create comment.")
+                res.status(500);
+            });;
+        }
+
+        res.json("Succesfully added comment to: " + order.OrdreId);
+        res.status(200);
+    } catch (error) {
+        console.log(error);
+        res.status(500);
+        res.json("Something went wrong.")
     }
 })
 

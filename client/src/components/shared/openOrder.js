@@ -1,13 +1,36 @@
-import { useState, useRef } from 'react'
-import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem } from '../../services/orderService'
+import { useState, useRef, useEffect } from 'react'
+import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem, GetComments, AddComment } from '../../services/orderService'
 import { useAPINotifier } from '../context/MessageReceiver'
+import { useAuth } from '../context/auth'
+import ReactLoading from 'react-loading'
+
+
+const Comment = ({ username, left = true, date, text }) => {
+    return (
+        <>
+            <div className="commentContainer">
+                <div className={`commentWrapper ${left ? "left" : "right"}`}>
+                    <div className="comment">
+                        <h6>{username} - {date.substring(0, 10)}</h6>
+                        <p>{text}</p>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
 
 export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, setEditState, editState, trashbin = false }) {
     const [closing, Close] = useState(false)
     const { AddMessage } = useAPINotifier();
+    const [comments, setComments] = useState(null);
+    let auth = useAuth();
 
     const inputs = useRef({});
     const errorBox = useRef();
+
+    const commentBox = useRef();
+    const commentText = useRef();
 
     let newStatus = "";
 
@@ -90,6 +113,29 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
         closeAction();
     }
 
+    const getOrderComments = () => {
+        GetComments(_id).then((val) => {
+            setComments(val);
+        });
+    }
+
+    const addComment = async () => {
+        await AddComment(_id, commentText.current.value);
+        commentText.current.value = "";
+
+        getOrderComments();
+    }
+
+
+    useEffect(() => {
+        // effect
+        getOrderComments();
+        return () => {
+            // cleanup
+        }
+    }, [])
+
+
     return (
         <>
             <div id="EditModal" className={`openOrder ${(closing) ? " close" : ""}`}>
@@ -159,7 +205,37 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                             </button>
                         </div>}
                     </div>
+
                 </div>
+
+                <section id="commentsection">
+                    <div className="commentContainer">
+                        <div className="commentWrapper">
+                            <div ref={div => commentBox.current = div} className="commentsBox">
+                                {comments && comments.map((val, index) => {
+                                    return <Comment
+                                        key={val._id}
+                                        text={val.message}
+                                        username={val.username}
+                                        date={val.date}
+                                        left={(val.username !== auth.user.user.username)}
+                                    />
+                                })}
+
+                                {!comments && <>
+                                    <div className="loaderWrapper">
+                                        <ReactLoading type={"spin"} height={30} width={30} color={"black"} />
+                                    </div>
+                                </>}
+                            </div>
+                            <div className="createComment">
+                                <textarea ref={textarea => commentText.current = textarea} placeholder="Skriv en kommentar.."></textarea>
+                                <button onClick={addComment}>Tilføj kommentar</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </>
     )

@@ -49,7 +49,7 @@ router.get('/getUser', async (req, res) => {
         res.status(200);
     } catch (error) {
         res.json(req.user);
-        res.status(500);
+        res.status(401);
     }
 })
 
@@ -85,14 +85,20 @@ router.post('/register', (req, res) => {
 
 // ROUTE: /api/user/userlist
 router.get('/userlist', async (req, res) => {
+
+    if (!req.user.permissions.admin) {
+        res.status(401);
+        res.send("Missing permissions to view list of users.");
+        return;
+    }
+
     if (req.user) {
         try {
             const users = await userModel.find();
             res.json(users);
             res.status(200);
         } catch (error) {
-            console.log(error);
-            res.json(error);
+            res.json("Something went wrong.")
             res.status(500);
         }
     }
@@ -104,6 +110,13 @@ router.get('/userlist', async (req, res) => {
 
 // ROUTE: /api/user/update
 router.put('/updateRoles/:_id', async (req, res) => {
+
+    if (!req.user.permissions.admin) {
+        res.status(401);
+        res.json("Missing permissions to change user roles");
+        return;
+    }
+
     try {
         const updatedUser = await userModel.findByIdAndUpdate(req.params._id, {
             permissions: {
@@ -117,9 +130,8 @@ router.put('/updateRoles/:_id', async (req, res) => {
         res.send("Updated user: " + req.params._id);
         res.status(200);
     } catch (error) {
-        console.log(error);
         res.status(500);
-        res.send("Updating user " + req.params._id)
+        res.send("Updating user " + req.params._id + " failed...")
     }
 })
 

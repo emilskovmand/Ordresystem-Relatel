@@ -61,15 +61,15 @@ function App() {
 							<Route exact path='/login' >
 								<LoginComponent />
 							</Route>
-							<PrivateRoute path='/afventer' >
+							<PrivateRoute path='/afventer' permission="approve">
 								<SideNavigation />
 								<Afventer />
 							</PrivateRoute>
-							<PrivateRoute path='/færdigeordre'>
+							<PrivateRoute path='/færdigeordre' permission="complete">
 								<SideNavigation />
 								<Færdigeordre />
 							</PrivateRoute>
-							<PrivateRoute path='/godkendt'>
+							<PrivateRoute path='/godkendt' permission="produce">
 								<SideNavigation />
 								<Godkendt />
 							</PrivateRoute>
@@ -77,7 +77,7 @@ function App() {
 								<SideNavigation />
 								<FrontPage />
 							</PrivateRoute>
-							<PrivateRoute path='/papirkurv'>
+							<PrivateRoute path='/papirkurv' permission="complete">
 								<SideNavigation />
 								<Papirkurv />
 							</PrivateRoute>

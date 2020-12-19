@@ -19,19 +19,19 @@ export default function Navigation() {
                     <NavLink to='/' exact>
                         <li><p><i className="fas fa-medal"></i>Nye Ordre</p></li>
                     </NavLink>
-                    <NavLink to='/godkendt' exact>
+                    {(auth.user.user.permissions["produce"] || auth.user.user.permissions["admin"]) && <NavLink to='/godkendt' exact>
                         <li><p><i className="fas fa-microphone-alt"></i>Under Produktion</p></li>
-                    </NavLink>
-                    <NavLink to='/afventer' exact>
+                    </NavLink>}
+                    {(auth.user.user.permissions["approve"] || auth.user.user.permissions["admin"]) && <NavLink to='/afventer' exact>
                         <li><p><i className="fas fa-assistive-listening-systems"></i>Godkend Produktion</p></li>
-                    </NavLink>
-                    <NavLink to='/færdigeordre' exact>
+                    </NavLink>}
+                    {(auth.user.user.permissions["complete"] || auth.user.user.permissions["admin"]) && <NavLink to='/færdigeordre' exact>
                         <li><p><i className="fas fa-check"></i>Færdige Ordre</p></li>
-                    </NavLink>
+                    </NavLink>}
                     {/* <li><p><i class="fas fa-file-invoice"></i>Fakturering</p></li> */}
-                    <NavLink to='/papirkurv' exact>
+                    {(auth.user.user.permissions["complete"] || auth.user.user.permissions["admin"]) && <NavLink to='/papirkurv' exact>
                         <li><p><i className="fas fa-trash-alt"></i>Papirkurv</p></li>
-                    </NavLink>
+                    </NavLink>}
                 </ul>
                 <div className="bottom_icons">
                     <NavLink to="/config" exact>

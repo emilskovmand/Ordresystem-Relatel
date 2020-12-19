@@ -9,6 +9,9 @@ function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = fals
     const inputs = useRef({});
 
     const confirmSave = () => {
+
+        if (inputs.current.admin.checked === admin && inputs.current.create.checked === createOrder && inputs.current.produce.checked === produce && inputs.current.approve.checked === approve && inputs.current.complete.checked === complete) return;
+
         UpdateUserRoles(
             dbid,
             inputs.current.admin.checked,
@@ -70,16 +73,38 @@ export default function ConfigPage() {
         setModal(val);
     }
 
+    const ownRoles = () => {
+        const items = [];
+        for (const permission in auth.user.user.permissions) {
+            if (auth.user.user.permissions[permission] && permission === "admin") {
+                items.push(<span key={permission}>Administrator</span>)
+                break;
+            } else if (auth.user.user.permissions[permission] && permission === "createOrder") {
+                items.push(<span key={permission}>Skab ordre, </span>)
+            } else if (auth.user.user.permissions[permission] && permission === "produce") {
+                items.push(<span key={permission}>Producer, </span>)
+            } else if (auth.user.user.permissions[permission] && permission === "approve") {
+                items.push(<span key={permission}>Godkender, </span>)
+            } else if (auth.user.user.permissions[permission] && permission === "complete") {
+                items.push(<span key={permission}>Se færdige ordre & Papirkurv, </span>)
+            }
+        }
+
+        return items;
+    }
+
     useEffect(() => {
         // effect
-        GetUserList().then((response) => {
-            setData(response);
-        });
+        if (auth.user.user.permissions["admin"]) {
+            GetUserList().then((response) => {
+                setData(response);
+            });
+        }
 
         return () => {
             // cleanup
         }
-    }, [showModal])
+    }, [showModal, auth])
 
     return (
         <>
@@ -98,49 +123,51 @@ export default function ConfigPage() {
                             <div className="rolesContainer">
                                 <p className="roles">Bruger roller</p>
                                 <p>
-
+                                    {ownRoles()}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="adminButtons">
-                    <button className="newUser" onClick={() => setParentModalState(true)}>Ny Bruger</button>
-                </div>
-                <div className="userlistContainer">
-                    <table className="content-table info">
-                        <thead>
-                            <tr>
-                                <th>Brugernavn</th>
-                                <th>E-mail</th>
-                                <th>Administrator</th>
-                                <th>Skab Ordre</th>
-                                <th>Producer</th>
-                                <th>Godkender</th>
-                                <th>Se færdige ordre & Papirkurv</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data && data.map((value, index) => {
-                                return <AdminRow
-                                    key={index}
-                                    dbid={value._id}
-                                    userName={value.username}
-                                    mail={value.email}
-                                    admin={value.permissions.admin}
-                                    createOrder={value.permissions.createOrder}
-                                    produce={value.permissions.produce}
-                                    approve={value.permissions.approve}
-                                    complete={value.permissions.complete}
-                                />
-                            })}
-                        </tbody>
-                    </table>
+                {auth.user.user.permissions["admin"] && <>
+                    <div className="adminButtons">
+                        <button className="newUser" onClick={() => setParentModalState(true)}>Ny Bruger</button>
+                    </div>
+                    <div className="userlistContainer">
+                        <table className="content-table info">
+                            <thead>
+                                <tr>
+                                    <th>Brugernavn</th>
+                                    <th>E-mail</th>
+                                    <th>Administrator</th>
+                                    <th>Skab Ordre</th>
+                                    <th>Producer</th>
+                                    <th>Godkender</th>
+                                    <th>Se færdige ordre & Papirkurv</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data && data.map((value, index) => {
+                                    return <AdminRow
+                                        key={index}
+                                        dbid={value._id}
+                                        userName={value.username}
+                                        mail={value.email}
+                                        admin={value.permissions.admin}
+                                        createOrder={value.permissions.createOrder}
+                                        produce={value.permissions.produce}
+                                        approve={value.permissions.approve}
+                                        complete={value.permissions.complete}
+                                    />
+                                })}
+                            </tbody>
+                        </table>
 
-                    {!data && <ReactLoading className="loader" type={"spin"} color={"black"} height={50} width={50} />}
+                        {!data && <ReactLoading className="loader" type={"spin"} color={"black"} height={50} width={50} />}
 
-                </div>
+                    </div>
+                </>}
             </main>
         </>
     )

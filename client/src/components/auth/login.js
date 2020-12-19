@@ -2,29 +2,35 @@ import { useState, useRef } from 'react';
 import { AuthLogin } from '../../services/userService'
 import { useAuth } from '../context/auth'
 import { useHistory } from 'react-router-dom'
+import { useAPINotifier } from '../context/MessageReceiver'
 
 export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const { AddMessage } = useAPINotifier();
 
     const rememberMe = useRef();
 
     let history = useHistory();
     let auth = useAuth();
 
-    let { from } = { from: { pathname: "/" } };
-
     const handleLogin = async () => {
         if (password.length > 0 && username.length > 0) {
-            await AuthLogin(username, password);
+            let answer = await AuthLogin(username, password);
+
+            if (answer === "No user Exists") {
+                AddMessage("Couldn't authenticate user.", 500);
+            } else {
+                AddMessage(`Authenticated user: ${username}`, 200);
+            }
 
             if (rememberMe.current.checked) {
                 auth.memorySignin(() => {
-                    history.replace(from);
+                    history.replace('/');
                 })
             } else {
                 auth.signin(() => {
-                    history.replace(from);
+                    history.replace('/');
                 });
             }
         }
