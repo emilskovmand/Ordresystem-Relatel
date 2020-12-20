@@ -21,7 +21,7 @@ const Comment = ({ username, left = true, date, text }) => {
 }
 
 export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, setEditState, editState, trashbin = false }) {
-    const [closing, Close] = useState(false)
+    const [closing, Close] = useState(false);
     const { AddMessage } = useAPINotifier();
     const [comments, setComments] = useState(null);
     let auth = useAuth();
@@ -120,6 +120,8 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
     }
 
     const addComment = async () => {
+        if (commentText.current.value.length < 1) return;
+
         await AddComment(_id, commentText.current.value);
         commentText.current.value = "";
 
