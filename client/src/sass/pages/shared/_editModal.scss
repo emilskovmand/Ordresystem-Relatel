@@ -286,6 +286,18 @@
                     transform: translate(-50%, -50%);
                 }
 
+                >.nomessageText {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 12px;
+                    width: 100%;
+                    color: #0b0b0b;
+                    font-weight: 100;
+                    text-align: center;
+                }
+
                 >.commentContainer {
                     width: 100%;
                     float: left;

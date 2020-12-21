@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem, GetComments, AddComment } from '../../services/orderService'
 import { useAPINotifier } from '../context/MessageReceiver'
 import { useAuth } from '../context/auth'
@@ -113,11 +113,11 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
         closeAction();
     }
 
-    const getOrderComments = () => {
+    const getOrderComments = useCallback(() => {
         GetComments(_id).then((val) => {
             setComments(val);
         });
-    }
+    }, [_id])
 
     const addComment = async () => {
         if (commentText.current.value.length < 1) return;
@@ -135,7 +135,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
         return () => {
             // cleanup
         }
-    }, [])
+    }, [getOrderComments])
 
 
     return (
@@ -223,6 +223,10 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                                         left={(val.username !== auth.user.user.username)}
                                     />
                                 })}
+
+                                {comments && comments.length === 0 && <div className="nomessageText">
+                                    <p>Ingen beskeder at hente.</p>
+                                </div>}
 
                                 {!comments && <>
                                     <div className="loaderWrapper">
