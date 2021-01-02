@@ -33,6 +33,8 @@ const userRouter = require('./routes/user');
 app.use('/api/user', userRouter);
 const orderRouter = require('./routes/order');
 app.use('/api/order', orderRouter);
+const audioRouter = require('./routes/audio');
+app.use('/api/audio', audioRouter);
 
 // Forbind til MongoDB
 mongoose.connect(process.env.DB_CONNECTION_STRING,

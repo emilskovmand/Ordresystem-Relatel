@@ -148,7 +148,7 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
     }
 })
 
-
+// ROUTE: /api/order/comments/%DYNAMIC%_id
 router.get('/comments/:_id', async (req, res) => {
     try {
         const order = await orderModel.findById(req.params._id);
@@ -167,6 +167,7 @@ router.get('/comments/:_id', async (req, res) => {
     }
 })
 
+// ROUTE: /api/order/addcomment/%DYNAMIC%_id
 router.post('/addcomment/:_id', async (req, res) => {
 
     try {

@@ -4,6 +4,83 @@ import { useAPINotifier } from '../context/MessageReceiver'
 import { useAuth } from '../context/auth'
 import ReactLoading from 'react-loading'
 
+const Narration = ({ audioPath = "https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_2MG.wav", text = "No text", orderId }) => {
+    const [playing, setPlaying] = useState(false);
+
+    const audioTag = useRef();
+    const uploadInput = useRef();
+    const progressTag = useRef();
+    const downloadTag = useRef();
+
+    const upload = () => {
+        console.info(uploadInput.current.value);
+    };
+
+    const togglePlay = () => {
+        if (playing) {
+            audioTag.current.pause();
+            setPlaying(false);
+        } else {
+            audioTag.current.play();
+            setPlaying(true);
+        }
+        audioTag.current.currentTime = 0;
+    };
+
+    const download = () => {
+        downloadTag.current.click();
+    };
+
+    useEffect(() => {
+
+
+
+        return () => {
+
+        }
+    }, [playing])
+
+    return (
+        <>
+            <div className="Narrationcontainer">
+                <div className="textWrapper">
+                    <textarea></textarea>
+                </div>
+                <div className="audioPlayer">
+                    <audio onEnded={() => setPlaying(false)} ref={audioTag} src={audioPath} />
+
+                    <div className="visual">
+                        <div ref={progressTag} className="progress">
+
+                        </div>
+
+                        <div className="audioButtons">
+                            <div className="container">
+                                <div className="uploadButton">
+                                    <button onClick={() => uploadInput.current.click()}>Upload lyd</button>
+                                    <input onChange={upload} id="uploadFile" ref={uploadInput} style={{ display: 'none' }} accept="audio/mp3,audio/*;capture=microphone" type="file" />
+                                </div>
+                                <div className="playButton">
+                                    <span onClick={togglePlay} className="playToggle">
+                                        {!playing && <><i className="fas fa-play"></i></>}
+                                        {playing && <><i className="fas fa-pause"></i></>}
+                                    </span>
+                                </div>
+                                <div className="downloadButton">
+                                    <button onClick={download}>Download lyd</button>
+                                    <a ref={downloadTag} href={audioPath} style={{ display: "none" }} download />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </>
+    )
+};
+
 
 const Comment = ({ username, left = true, date, text }) => {
     return (
@@ -187,6 +264,11 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                         </div>
 
                         <p ref={p => errorBox.current = p} className="errorMessage"></p>
+
+                        <section id="AudioNarrationSection">
+                            <Narration />
+                            <Narration />
+                        </section>
 
                         {!trashbin && <div className="buttonsContainer">
                             {Status !== 'Færdig & Sendt' && <>
