@@ -24,6 +24,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
     const [closing, Close] = useState(false);
     const { AddMessage } = useAPINotifier();
     const [comments, setComments] = useState(null);
+    const [AudioCount, setAudioCount] = useState(AntalIndtalinger);
     let auth = useAuth();
 
     const inputs = useRef({});
@@ -39,6 +40,10 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
         setTimeout(() => {
             setEditState({}, true)
         }, 350);
+    }
+
+    const setOrderAudio = () => {
+        setAudioCount(inputs.current.indtalinger.value * 1);
     }
 
     if (Status === "Ny Ordre") newStatus = "Under Produktion";
@@ -126,7 +131,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
         commentText.current.value = "";
 
         getOrderComments();
-    }
+    };
 
 
     useEffect(() => {

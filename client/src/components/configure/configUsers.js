@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, Fragment } from 'react'
-import { GetUserList, UpdateUserRoles } from '../../services/userService'
+import { GetUserList, UpdateUserRoles, UpdateOwnUser } from '../../services/userService'
+import { useAPINotifier } from '../context/MessageReceiver'
 import { useAuth } from '../context/auth'
 import ReactLoading from 'react-loading'
 import NewUserModal from './createUser'
@@ -7,6 +8,7 @@ import NewUserModal from './createUser'
 function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = false, produce = false, approve = false, complete = false }) {
 
     const inputs = useRef({});
+    const { AddMessage } = useAPINotifier();
 
     const confirmSave = () => {
 
@@ -19,7 +21,11 @@ function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = fals
             inputs.current.produce.checked,
             inputs.current.approve.checked,
             inputs.current.complete.checked
-        )
+        ).then((res) => {
+            res[0].then((val) => {
+                AddMessage(val, res[1]);
+            })
+        });
     }
 
     return (
@@ -65,9 +71,35 @@ function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = fals
 
 export default function ConfigPage() {
     let auth = useAuth();
+
     const [showModal, setModal] = useState(false);
     const [data, setData] = useState(null);
+    const [editUser, setEdituser] = useState(false);
+    const { AddMessage } = useAPINotifier();
 
+    const editUserButton = useRef();
+    const editUserInputs = useRef({});
+
+    const toggleEditUser = () => {
+        if (editUser) {
+            if (editUserInputs.current.newPassword.value === editUserInputs.current.repeatPassword.value && editUserInputs.current.newPassword.value.length > 7) {
+
+                UpdateOwnUser(
+                    auth.user.user._id,
+                    editUserInputs.current.email.value,
+                    editUserInputs.current.newPassword.value
+                ).then((res) => {
+                    res[0].then((val) => {
+                        AddMessage(val, res[1]);
+                    })
+                });
+
+                setEdituser(false);
+            }
+        } else {
+            setEdituser(true);
+        }
+    }
 
     const setParentModalState = (val) => {
         setModal(val);
@@ -114,11 +146,26 @@ export default function ConfigPage() {
                     <div id="myUser">
                         <div className="Userwrapper">
                             <div className="userinfoContainer">
-                                <p><span className="greyout">Brugernavn:</span> {auth.user.user.username}</p>
-                                <p><span className="greyout">E-mail:</span> </p>
+                                {!editUser && <>
+                                    <p><span className="greyout">Brugernavn:</span> {auth.user.user.username}</p>
+                                    <p><span className="greyout">E-mail:</span> {auth.user.user.email}</p>
+                                </>}
+                                {editUser && <>
+                                    <p><span className="greyout">Brugernavn:</span> {auth.user.user.username}</p>
+                                    <label className="greyout">E-mail: </label>
+                                    <input ref={input => editUserInputs.current.email = input} defaultValue={auth.user.user.email} />
+                                </>}
                             </div>
                             <div className="passwordContainer">
-                                <p><span className="greyout">Kodeord:</span> *********</p>
+                                {!editUser && <>
+                                    <p><span className="greyout">Kodeord:</span> *********</p>
+                                </>}
+                                {editUser && <>
+                                    <label className="greyout">Nyt Kodeord: </label>
+                                    <input ref={input => editUserInputs.current.newPassword = input} type="password" />
+                                    <label className="greyout">Gentag nyt kodeord: </label>
+                                    <input ref={input => editUserInputs.current.repeatPassword = input} type="password" />
+                                </>}
                             </div>
                             <div className="rolesContainer">
                                 <p className="roles">Bruger roller</p>
@@ -127,6 +174,10 @@ export default function ConfigPage() {
                                 </p>
                             </div>
                         </div>
+                        <button className="editMyUser" onClick={toggleEditUser} ref={button => editUserButton.current = button}>
+                            {!editUser && <>Rediger bruger</>}
+                            {editUser && <>Gem ændringer</>}
+                        </button>
                     </div>
                 </div>
                 {auth.user.user.permissions["admin"] && <>

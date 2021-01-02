@@ -83,6 +83,35 @@ router.post('/register', (req, res) => {
     })
 })
 
+
+// ROUTE: /api/user/editmyuser
+router.put('/editmyuser/:_id', async (req, res) => {
+    if (req.body.password.length <= 7) {
+        res.status(401);
+        res.json("Password not long enough (Minimum 8 letters)");
+    };
+
+
+    if (req.user._id == req.params._id) {
+        try {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+            const updatedUser = await userModel.findByIdAndUpdate(req.params._id, {
+                password: hashedPassword,
+                email: req.body.email
+            });
+            res.json("Updated user: " + req.params._id);
+            res.status(200);
+        } catch (error) {
+            res.status(500);
+            res.json("Updating user " + req.params._id + " failed...")
+        }
+    } else {
+        res.send("Permission missing");
+        res.status(401);
+    }
+})
+
 // ROUTE: /api/user/userlist
 router.get('/userlist', async (req, res) => {
 
@@ -127,11 +156,11 @@ router.put('/updateRoles/:_id', async (req, res) => {
                 complete: req.body.completedOrders
             }
         })
-        res.send("Updated user: " + req.params._id);
+        res.json("Updated user: " + req.params._id);
         res.status(200);
     } catch (error) {
         res.status(500);
-        res.send("Updating user " + req.params._id + " failed...")
+        res.json("Updating user " + req.params._id + " failed...")
     }
 })
 

@@ -533,7 +533,7 @@ body {
 
 #EditModal > .modalWrapper > .modalContainer > .statusContainer {
   width: 100%;
-  padding: 30px 2px;
+  padding: 10px 2px;
   font-size: 20px;
 }
 
@@ -664,7 +664,7 @@ body {
 #commentsection {
   position: absolute;
   top: 40%;
-  left: 16%;
+  left: 80%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   height: 650px;
@@ -969,6 +969,26 @@ body {
   text-align: center;
 }
 
+#config-page > .myuserContainer #myUser > .Userwrapper label {
+  width: 100%;
+  font-size: 17px;
+  color: #ffffff;
+}
+
+#config-page > .myuserContainer #myUser > .Userwrapper input {
+  margin-bottom: 6px;
+  width: 80%;
+  font-size: 17px;
+  background-color: white;
+  outline: none;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 2px 3px;
+  display: block;
+  text-align: left;
+  font-weight: 300;
+  color: #53e3a6;
+}
+
 #config-page > .myuserContainer #myUser > .Userwrapper > .userinfoContainer {
   width: 35%;
 }
@@ -979,6 +999,22 @@ body {
 
 #config-page > .myuserContainer #myUser > .Userwrapper > .rolesContainer {
   width: 30%;
+}
+
+#config-page > .myuserContainer #myUser > .editMyUser {
+  background-color: #387ec9;
+  padding: 7px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  color: #ffffff;
+  margin-top: 14px;
+  margin-right: 7px;
+  cursor: pointer;
+}
+
+#config-page > .myuserContainer #myUser > .editMyUser:hover {
+  background-color: #2e6aaa;
 }
 
 #config-page > .adminButtons {

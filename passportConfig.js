@@ -29,7 +29,8 @@ module.exports = function (passport) {
                 const userInformation = {
                     _id: user._id,
                     username: (user.username) ? user.username : null,
-                    permissions: user.permissions
+                    permissions: user.permissions,
+                    email: user.email
                 };
                 cb(err, userInformation);
             }

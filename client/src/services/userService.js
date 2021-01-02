@@ -45,7 +45,25 @@ export async function UpdateUserRoles(_id, admin, createOrder, produceOrder, app
             approve: approve,
             completedOrders: completedOrders
         })
-    })
+    });
+
+    return [response.json(), response.status];
+}
+
+export async function UpdateOwnUser(_id, email, password) {
+    const response = await fetch(`/api/user/editmyuser/${_id}`, {
+        method: 'PUT',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
+        })
+    });
+
+    return [response.json(), response.status];
 }
 
 export async function CreateUser(username, password, email, admin, createOrder, produceOrder, approve, completedOrders) {
@@ -65,5 +83,7 @@ export async function CreateUser(username, password, email, admin, createOrder, 
             approve: approve,
             completedOrders: completedOrders
         })
-    })
+    });
+
+    return [response.json(), response.status];
 }

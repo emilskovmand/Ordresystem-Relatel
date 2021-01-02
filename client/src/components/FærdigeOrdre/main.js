@@ -113,10 +113,6 @@ export default function FærdigeOrdre() {
                 {!data && <ReactLoading className="loader" type={"spin"} color={"black"} height={50} width={50} />}
 
                 <div className="info">
-                    <button className="button">Indlæs flere</button>
-                </div>
-
-                <div className="info">
                     <div>Hvis du oplever nogle problemer eller har spørgsmål, så kontakt os venligst på telefon: 71 99 18 14
                     eller
                     email: kontakt@hejfrede.dk</div>
