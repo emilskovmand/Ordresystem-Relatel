@@ -15,10 +15,12 @@ const Narration = ({ audioPath = "https://file-examples-com.github.io/uploads/20
     const downloadTag = useRef();
 
     const upload = () => {
-        UploadAudio(
-            orderId,
-            uploadInput.current.files[0]
-        );
+        if (uploadInput.current.files[0]) {
+            UploadAudio(
+                orderId,
+                uploadInput.current.files[0]
+            );
+        }
     };
 
     const togglePlay = () => {

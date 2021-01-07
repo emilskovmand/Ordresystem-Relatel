@@ -9,16 +9,18 @@ const multer = require('multer');
 let gfs;
 
 const storage = multer.diskStorage({
-    destination: "./uploads/",
+    destination: function (req, file, cb) {
+        cb(null, "/uploads")
+    },
     filename: function (req, file, cb) {
         cb(
             null,
-            file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+            Date.now() + "-" + file.originalname
         );
     },
 });
 
-const upload = multer();
+const upload = multer({ storage: storage }).single('file');
 
 
 mongoose.connection.once('open', () => {
@@ -40,16 +42,20 @@ router.get('/paths/:_id', (req, res) => {
 })
 
 // ROUTE: /api/audio/upload
-router.post('/upload', upload.single('file'), (req, res) => {
-    try {
-        console.log(req.file);
-        res.status(200);
-        res.send("Uploaded file");
-    } catch (error) {
-        res.status(500);
-        console.log(error);
-        res.send("Couldn't upload file");
-    }
+router.post('/upload', function (req, res) {
+
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            console.log(err);
+            res.status(500).json(err);
+        } else if (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
+        res.status(200).json(req.file);
+
+    })
+
 });
 
 

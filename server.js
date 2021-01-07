@@ -4,6 +4,8 @@ const bb = require('express-busboy');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const bodyParser = require("body-parser");
+const multer = require('multer');
 const passport = require("passport");
 const passportLocal = require("passport-local").Strategy;
 const crypto = require("crypto");
@@ -13,9 +15,22 @@ require('dotenv/config');
 //---------------------------------------- END OF IMPORT --------------------------------------
 
 const app = express();
+app.use(multer({
+    limits: {
+        fileSize: 10240000, // limit file size to 10mb
+        files: 1 // limit files to 1
+    },
+    fileFilter: (req, file, next) => {
+        next(null, true);
+    }
+}).single("file"));
+
 const port = process.env.PORT || 3001;
 app.use(methodOverride('_method'));
-bb.extend(app);
+app.use(bodyParser.json()); // parses header requests (req.body)
+app.use(bodyParser.urlencoded({ extended: true })); // allows objects and arrays to be URL-encoded
+// app.use(passport.initialize()); // initialize passport routes to accept req/res/next
+app.set("json spaces", 2); // sets JSON spaces for clarity
 
 
 app.use(session({
@@ -39,6 +54,9 @@ const orderRouter = require('./routes/order');
 app.use('/api/order', orderRouter);
 const audioRouter = require('./routes/audio');
 app.use('/api/audio', audioRouter);
+
+// Static routes
+app.use("/uploads", express.static("uploads"));
 
 // Forbind til MongoDB
 mongoose.connect(process.env.DB_CONNECTION_STRING,
