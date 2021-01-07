@@ -8,7 +8,10 @@ const bodyParser = require("body-parser");
 const multer = require('multer');
 const passport = require("passport");
 const passportLocal = require("passport-local").Strategy;
+const GridFsStorage = require("multer-gridfs-storage");
 const crypto = require("crypto");
+const { path } = require('dotenv/lib/env-options');
+const pather = require('path');
 var methodOverride = require('method-override');
 require('dotenv/config');
 
@@ -21,15 +24,34 @@ app.use(multer({
         files: 1 // limit files to 1
     },
     fileFilter: (req, file, next) => {
+        var ext = pather.extname(file.originalname).toLowerCase();
+        if (ext !== '.mp3' || ext !== '.m4a' || ext !== '.aac' || ext !== '.wav' || ext !== '.oga' || ext !== '.flac' || ext !== '.pcm' || ext !== '.aiff') {
+            next(null, false);
+        }
+
         next(null, true);
     }
+    , storage: new GridFsStorage({
+        url: process.env.DB_CONNECTION_STRING,
+        options: { useNewUrlParser: true, useUnifiedTopology: true },
+        file: async (req, file) => {
+            if (file.mimetype === 'audio/mpeg') {
+                const filename = Date.now() + pather.extname(file.originalname);
+                return {
+                    filename: filename,
+                    bucketName: 'audiofiles'
+                };
+            } else {
+                return null;
+            }
+        }
+    })
 }).single("file"));
 
 const port = process.env.PORT || 3001;
 app.use(methodOverride('_method'));
 app.use(bodyParser.json()); // parses header requests (req.body)
 app.use(bodyParser.urlencoded({ extended: true })); // allows objects and arrays to be URL-encoded
-// app.use(passport.initialize()); // initialize passport routes to accept req/res/next
 app.set("json spaces", 2); // sets JSON spaces for clarity
 
 
@@ -74,7 +96,7 @@ var db = mongoose.connection;
 
 const userSchema = require('./models/userModel');
 const orderSchema = require('./models/orderModel');
-const { path } = require('dotenv/lib/env-options');
+const MulterGridfsStorage = require('multer-gridfs-storage');
 
 
 // Hvis dette er production miljø så skal vi statisk sørge for klientens brugerflade

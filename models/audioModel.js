@@ -5,16 +5,11 @@ const AudioSchema = mongoose.Schema({
     _Id: {
         type: mongoose.Types.ObjectId
     },
-    Order: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Ordre'
-    },
     name: {
         type: String
     },
-    file: {
-        data: Buffer,
-        contentType: String
+    fileID: {
+        type: mongoose.Schema.Types.ObjectId
     }
 });
 

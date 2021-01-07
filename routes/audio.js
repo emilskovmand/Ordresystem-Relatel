@@ -3,24 +3,12 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const audioModel = require('../models/audioModel');
 const GridFsStorage = require("multer-gridfs-storage");
-const path = require("path");
 const multer = require('multer');
+const path = require('path');
 
 let gfs;
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "/uploads")
-    },
-    filename: function (req, file, cb) {
-        cb(
-            null,
-            Date.now() + "-" + file.originalname
-        );
-    },
-});
-
-const upload = multer({ storage: storage }).single('file');
+const upload = multer().single('file');
 
 
 mongoose.connection.once('open', () => {
@@ -46,14 +34,28 @@ router.post('/upload', function (req, res) {
 
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
-            console.log(err);
             res.status(500).json(err);
         } else if (err) {
-            console.log(err);
             res.status(500).json(err);
         }
-        res.status(200).json(req.file);
 
+        const filename = req.file.filename;
+
+        const newAudio = new audioModel({
+            name: filename,
+            fileID: req.file.id
+        })
+
+        newAudio.save()
+            .then(data => {
+                res.json(filename);
+                res.status(200);
+            })
+            .catch(err => {
+                console.log(err);
+                res.json("Couldn't save audio.")
+                res.status(500);
+            })
     })
 
 });
