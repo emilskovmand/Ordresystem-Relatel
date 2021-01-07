@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem, GetComments, AddComment } from '../../services/orderService'
+import { UploadAudio } from '../../services/audioService'
 import { useAPINotifier } from '../context/MessageReceiver'
 import { useAuth } from '../context/auth'
 import ReactLoading from 'react-loading'
+import axios from 'axios'
 
 const Narration = ({ audioPath = "https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_2MG.wav", text = "No text", orderId }) => {
     const [playing, setPlaying] = useState(false);
@@ -13,7 +15,10 @@ const Narration = ({ audioPath = "https://file-examples-com.github.io/uploads/20
     const downloadTag = useRef();
 
     const upload = () => {
-        console.info(uploadInput.current.value);
+        UploadAudio(
+            orderId,
+            uploadInput.current.files[0]
+        );
     };
 
     const togglePlay = () => {
@@ -266,7 +271,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                         <p ref={p => errorBox.current = p} className="errorMessage"></p>
 
                         <section id="AudioNarrationSection">
-                            <Narration />
+                            <Narration orderId={_id} />
                             <Narration />
                         </section>
 

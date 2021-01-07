@@ -7,7 +7,7 @@ const orderModel = require('../models/orderModel');
 const commentModel = require('../models/commentModel');
 
 
-// ROUTE: /api/order/%DYNAMIC%OrderStatus
+// ROUTE: /api/order/statusOrders/%DYNAMIC%OrderStatus
 router.get('/statusOrders/:status', async (req, res) => {
     try {
         const orders = await orderModel.find({ Status: req.params.status, Slettet: false });

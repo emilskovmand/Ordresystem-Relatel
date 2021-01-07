@@ -88,7 +88,8 @@ body {
   display: flex;
 }
 
-.wrapper .sidebar .bottom_icons a {
+.wrapper .sidebar .bottom_icons a,
+.wrapper .sidebar .bottom_icons #logoutButton {
   display: block;
   width: 40px;
   background: #333333;

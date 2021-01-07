@@ -1,18 +1,22 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
+const bb = require('express-busboy');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require("passport");
 const passportLocal = require("passport-local").Strategy;
+const crypto = require("crypto");
+var methodOverride = require('method-override');
 require('dotenv/config');
 
 //---------------------------------------- END OF IMPORT --------------------------------------
 
 const app = express();
 const port = process.env.PORT || 3001;
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+bb.extend(app);
+
 
 app.use(session({
     secret: process.env.SECRET,
@@ -39,8 +43,12 @@ app.use('/api/audio', audioRouter);
 // Forbind til MongoDB
 mongoose.connect(process.env.DB_CONNECTION_STRING,
     { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false },
-    () => {
-        console.log('Connected to MongoDB!');
+    (err) => {
+        if (err) {
+            throw err;
+        } else {
+            console.log('Connected to MongoDB!');
+        }
     }
 );
 
@@ -48,14 +56,7 @@ var db = mongoose.connection;
 
 const userSchema = require('./models/userModel');
 const orderSchema = require('./models/orderModel');
-
-// var db = mongoose.connection;
-// db.on('open', () => {
-
-//     mongoose.model('User', userSchema.schema);
-//     mongoose.model('Ordre', orderSchema.schema);
-
-// })
+const { path } = require('dotenv/lib/env-options');
 
 
 // Hvis dette er production miljø så skal vi statisk sørge for klientens brugerflade
@@ -71,3 +72,5 @@ if (process.env.NODE_ENV === 'production') {
 
 // Lyt til port 3001 ELLLER den dynamiske port fra hosten
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+exports.app = app;
