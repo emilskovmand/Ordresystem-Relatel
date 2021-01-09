@@ -48,7 +48,8 @@ const Narration = ({ audioPath = "", text = "No text", orderId, index, updateMe 
     };
 
     const download = () => {
-        if (audioPath.includes("/audio/") > 4) {
+        if (audioTag.current.src.includes('/audio/')) {
+            console.log("Hej");
             downloadTag.current.click();
         }
     };
