@@ -49,18 +49,15 @@ const Narration = ({ audioPath = "", text = "No text", orderId, index, updateMe 
 
     const download = () => {
         if (audioTag.current.src.includes('/audio/')) {
-            console.log("Hej");
             downloadTag.current.click();
         }
     };
 
     useEffect(() => {
 
-        if (!playing)
+        return () => {
 
-            return () => {
-
-            }
+        }
     }, [playing])
 
     return (
