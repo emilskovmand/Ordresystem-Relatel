@@ -28,6 +28,10 @@ const OrderSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     },
+    Recording: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Recording'
+    },
     ValgteSpeaker: {
         type: String
     },

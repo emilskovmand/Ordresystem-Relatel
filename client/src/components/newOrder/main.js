@@ -140,7 +140,7 @@ function NewOrderModal({ setModal }) {
     )
 }
 
-function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox, deleteRow }) {
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox, deleteRow, recordingId }) {
 
     const row = useRef();
 
@@ -229,6 +229,7 @@ export default function NewOrder() {
                 ValgteSpeaker={openOrder.ValgteSpeaker}
                 Status={openOrder.Status}
                 setEditState={editModal}
+                recordingId={openOrder.recordingId}
             />}
             <div className="main_content">
                 <div className="header">Velkommen til ordresystemet. Du er logget ind som: {auth.user.user.username}</div>
@@ -279,6 +280,7 @@ export default function NewOrder() {
                                     ValgteSpeaker={value.ValgteSpeaker}
                                     Status={value.Status}
                                     orderModal={editModal}
+                                    recordingId={(value.Recording ? value.Recording : null)}
                                     checkBox={el => checkBoxes.current[index] = el}
                                     deleteRow={deleteRow}
                                 />

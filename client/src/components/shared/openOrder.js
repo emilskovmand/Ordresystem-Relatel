@@ -1,27 +1,35 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem, GetComments, AddComment } from '../../services/orderService'
-import { UploadAudio } from '../../services/audioService'
+import { UploadAudio, GetOrderRecordings } from '../../services/audioService'
 import { useAPINotifier } from '../context/MessageReceiver'
 import { useAuth } from '../context/auth'
 import ReactLoading from 'react-loading'
-import axios from 'axios'
 
-const Narration = ({ audioPath = "https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_2MG.wav", text = "No text", orderId }) => {
+const Narration = ({ audioPath = "", text = "No text", orderId, index, updateMe }) => {
     const [playing, setPlaying] = useState(false);
+    const [progress, setProgress] = useState(0);
 
     const audioTag = useRef();
     const uploadInput = useRef();
     const progressTag = useRef();
     const downloadTag = useRef();
+    const textTag = useRef();
 
     const upload = () => {
         if (uploadInput.current.files[0]) {
             UploadAudio(
                 orderId,
                 uploadInput.current.files[0]
-            );
+            ).then((res) => {
+                audioTag.current.src = res[0].data;
+                updateThisComponent();
+            })
         }
     };
+
+    const updateThisComponent = () => {
+        updateMe(index, textTag.current.value, audioTag.current.src);
+    }
 
     const togglePlay = () => {
         if (playing) {
@@ -34,30 +42,37 @@ const Narration = ({ audioPath = "https://file-examples-com.github.io/uploads/20
         audioTag.current.currentTime = 0;
     };
 
+    const progressBarUpdate = () => {
+        var percentage = audioTag.current.currentTime / audioTag.current.duration * 100
+        setProgress(percentage);
+    };
+
     const download = () => {
-        downloadTag.current.click();
+        if (audioPath.includes("/audio/") > 4) {
+            downloadTag.current.click();
+        }
     };
 
     useEffect(() => {
 
+        if (!playing)
 
+            return () => {
 
-        return () => {
-
-        }
+            }
     }, [playing])
 
     return (
         <>
             <div className="Narrationcontainer">
                 <div className="textWrapper">
-                    <textarea></textarea>
+                    <textarea onChange={updateThisComponent} ref={textTag} defaultValue={text}></textarea>
                 </div>
                 <div className="audioPlayer">
-                    <audio onEnded={() => setPlaying(false)} ref={audioTag} src={audioPath} />
+                    <audio onTimeUpdate={progressBarUpdate} onEnded={() => setPlaying(false)} onChange={updateThisComponent} ref={audioTag} src={audioPath} />
 
                     <div className="visual">
-                        <div ref={progressTag} className="progress">
+                        <div ref={progressTag} style={{ width: `${progress}%` }} className="progress">
 
                         </div>
 
@@ -75,7 +90,7 @@ const Narration = ({ audioPath = "https://file-examples-com.github.io/uploads/20
                                 </div>
                                 <div className="downloadButton">
                                     <button onClick={download}>Download lyd</button>
-                                    <a ref={downloadTag} href={audioPath} style={{ display: "none" }} download />
+                                    <a ref={downloadTag} href={(audioPath)} style={{ display: "none" }} download />
                                 </div>
                             </div>
                         </div>
@@ -104,10 +119,11 @@ const Comment = ({ username, left = true, date, text }) => {
     )
 }
 
-export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, setEditState, editState, trashbin = false }) {
+export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, setEditState, editState, trashbin = false }) {
     const [closing, Close] = useState(false);
     const { AddMessage } = useAPINotifier();
     const [comments, setComments] = useState(null);
+    const [recordings, setRecordings] = useState(null);
     const [AudioCount, setAudioCount] = useState(AntalIndtalinger);
     let auth = useAuth();
 
@@ -124,10 +140,6 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
         setTimeout(() => {
             setEditState({}, true)
         }, 350);
-    }
-
-    const setOrderAudio = () => {
-        setAudioCount(inputs.current.indtalinger.value * 1);
     }
 
     if (Status === "Ny Ordre") newStatus = "Under Produktion";
@@ -165,7 +177,9 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                 inputs.current.kundenavn.value,
                 inputs.current.indtalinger.value,
                 inputs.current.speaker.value,
-                orderStatus
+                orderStatus,
+                false,
+                { Id: recordingId, array: recordings }
             ).then((res) => {
                 res[0].then((val) => {
                     AddMessage(val, res[1]);
@@ -174,6 +188,35 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
 
             closeAction();
         }
+    }
+
+    const updateAudioCount = () => {
+        setAudioCount(parseInt(inputs.current.indtalinger.value));
+    }
+
+    const updateRecordingFromChild = (index, text, url) => {
+        var recordingArray = recordings;
+        recordingArray[index].text = text;
+        recordingArray[index].url = url;
+
+        setRecordings(recordingArray);
+    };
+
+    const recordingComponents = (count = 1) => {
+        var array = [];
+        for (let i = 0; i < count; i++) {
+            const recordingfromArray = recordings !== null ? recordings[i] : { text: '', url: '' }
+            array.push(<Narration
+                key={i}
+                index={i}
+                orderId={_id}
+                text={recordingfromArray.text}
+                audioPath={recordingfromArray.url}
+                updateMe={updateRecordingFromChild}
+            />)
+        }
+
+        return array;
     }
 
     const remakeOrder = () => {
@@ -197,10 +240,32 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
     }
 
     const deleteOrder = () => {
-
         DeleteOrders([_id]);
         closeAction();
     }
+
+    const getRecordings = useCallback(() => {
+        GetOrderRecordings(recordingId).then((val) => {
+            var arrayForState = [];
+            for (let i = 0; i < 6; i++) {
+                var currentRecording = val.recordings !== undefined ? val.recordings[i] : null;
+
+                if (currentRecording) {
+                    arrayForState.push({
+                        text: currentRecording.text,
+                        url: currentRecording.url
+                    });
+                } else {
+                    arrayForState.push({
+                        text: "",
+                        url: ""
+                    });
+                }
+            }
+
+            setRecordings(arrayForState);
+        });
+    }, [recordingId])
 
     const getOrderComments = useCallback(() => {
         GetComments(_id).then((val) => {
@@ -221,10 +286,11 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
     useEffect(() => {
         // effect
         getOrderComments();
+        getRecordings();
         return () => {
             // cleanup
         }
-    }, [getOrderComments])
+    }, [getOrderComments, getRecordings])
 
 
     return (
@@ -257,7 +323,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                             <div className="labelfield">
                                 <label htmlFor="indtalinger">Antal Indtalinger</label>
                             </div>
-                            <input ref={input => inputs.current.indtalinger = input} name="indtalinger" type="number" min="1" max="6" maxLength="2" defaultValue={AntalIndtalinger}></input>
+                            <input ref={input => inputs.current.indtalinger = input} name="indtalinger" onChange={updateAudioCount} type="number" min="1" max="6" maxLength="2" defaultValue={AntalIndtalinger}></input>
                         </div>
                         <div className="inputField">
                             <div className="labelfield">
@@ -273,8 +339,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                         <p ref={p => errorBox.current = p} className="errorMessage"></p>
 
                         <section id="AudioNarrationSection">
-                            <Narration orderId={_id} />
-                            <Narration />
+                            {recordingComponents(AudioCount)}
                         </section>
 
                         {!trashbin && <div className="buttonsContainer">
@@ -314,6 +379,7 @@ export default function OpenOrder({ _id, OrdreId, BestillingsDato, Virksomhed, K
                                         text={val.message}
                                         username={val.username}
                                         date={val.date}
+                                        index={index}
                                         left={(val.username !== auth.user.user.username)}
                                     />
                                 })}

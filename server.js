@@ -19,10 +19,19 @@ require('dotenv/config');
 
 const app = express();
 app.use(multer({
+    dest: './uploads',
     limits: {
         fileSize: 10240000, // limit file size to 10mb
         files: 1 // limit files to 1
     },
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, './uploads')
+        },
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + pather.extname(file.originalname).toLowerCase());
+        }
+    }),
     fileFilter: (req, file, next) => {
         var ext = pather.extname(file.originalname).toLowerCase();
         if (ext !== '.mp3' || ext !== '.m4a' || ext !== '.aac' || ext !== '.wav' || ext !== '.oga' || ext !== '.flac' || ext !== '.pcm' || ext !== '.aiff') {
@@ -31,21 +40,6 @@ app.use(multer({
 
         next(null, true);
     }
-    , storage: new GridFsStorage({
-        url: process.env.DB_CONNECTION_STRING,
-        options: { useNewUrlParser: true, useUnifiedTopology: true },
-        file: async (req, file) => {
-            if (file.mimetype === 'audio/mpeg') {
-                const filename = Date.now() + pather.extname(file.originalname);
-                return {
-                    filename: filename,
-                    bucketName: 'audiofiles'
-                };
-            } else {
-                return null;
-            }
-        }
-    })
 }).single("file"));
 
 const port = process.env.PORT || 3001;

@@ -4,7 +4,7 @@ import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
 
-function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal }) {
+function Row({ OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, recordingId }) {
     return (
         <>
             <tr>
@@ -64,6 +64,7 @@ export default function FærdigeOrdre() {
                 ValgteSpeaker={openOrder.ValgteSpeaker}
                 Status={openOrder.Status}
                 setEditState={editModal}
+                recordingId={openOrder.recordingId}
             />}
             <div className="main_content">
                 <div className="header">Velkommen til ordresystemet. Du er logget ind som: {auth.user.user.username}</div>
@@ -104,6 +105,7 @@ export default function FærdigeOrdre() {
                                     ValgteSpeaker={value.ValgteSpeaker}
                                     Status={value.Status}
                                     orderModal={editModal}
+                                    recordingId={(value.Recording ? value.Recording : null)}
                                 />
                             }
                         })}

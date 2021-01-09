@@ -4,7 +4,7 @@ import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
 
-function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox }) {
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox, recordingId }) {
 
     return (
         <>
@@ -66,6 +66,7 @@ export default function Papirkurv() {
                 Status={openOrder.Status}
                 setEditState={editModal}
                 trashbin={true}
+                recordingId={openOrder.recordingId}
             />}
             <div className="main_content">
                 <div className="header">Velkommen til ordresystemet. Du er logget ind som: {auth.user.user.username}</div>
@@ -104,6 +105,7 @@ export default function Papirkurv() {
                                     ValgteSpeaker={value.ValgteSpeaker}
                                     Status={value.Status}
                                     orderModal={editModal}
+                                    recordingId={(value.Recording ? value.Recording : null)}
                                 />
                             }
                         })}

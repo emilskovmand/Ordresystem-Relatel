@@ -4,7 +4,7 @@ import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
 
-function Row({ OrdreId, dbId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, deleteRow }) {
+function Row({ OrdreId, dbId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, deleteRow, recordingId }) {
 
     const row = useRef();
 
@@ -77,6 +77,7 @@ export default function GodkendProduktion() {
                 ValgteSpeaker={openOrder.ValgteSpeaker}
                 Status={openOrder.Status}
                 setEditState={editModal}
+                recordingId={openOrder.recordingId}
             />}
             <div className="main_content">
                 <div className="header">Velkommen til ordresystemet. Du er logget ind som: {auth.user.user.username}</div>
@@ -116,6 +117,7 @@ export default function GodkendProduktion() {
                                     ValgteSpeaker={value.ValgteSpeaker}
                                     Status={value.Status}
                                     orderModal={editModal}
+                                    recordingId={(value.Recording ? value.Recording : null)}
                                     deleteRow={deleteRow}
                                 />
                             }

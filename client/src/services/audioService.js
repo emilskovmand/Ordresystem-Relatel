@@ -10,6 +10,7 @@ export async function UploadAudio(OrdreId, file) {
     return [response, response.status];
 };
 
-export async function GetOrderAudioPaths(OrdreId) {
-
+export async function GetOrderRecordings(RecordingsId) {
+    const response = await fetch(`/api/order/recordings/${RecordingsId}`);
+    return response.json();
 };

@@ -6,6 +6,8 @@ const orderModel = require('../models/orderModel');
 
 const commentModel = require('../models/commentModel');
 
+const recodingModel = require('../models/recordingModel');
+const recordingModel = require('../models/recordingModel');
 
 // ROUTE: /api/order/statusOrders/%DYNAMIC%OrderStatus
 router.get('/statusOrders/:status', async (req, res) => {
@@ -130,6 +132,8 @@ router.get('/newid', async (req, res) => {
 // ROUTE: /api/order/updateSingleorder/%DYNAMIC%_id
 router.put('/updateSingleOrder/:_id', async (req, res) => {
     try {
+        const recordingId = await UpdateOrderRecordings(req.body.recordingArrays.Id, req.body.recordingArrays.array);
+
         const updatedOrder = await orderModel.findByIdAndUpdate(req.params._id, {
             BestillingsDato: req.body.Bestillingsdato,
             Virksomhed: req.body.Virksomhed,
@@ -137,7 +141,8 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
             AntalIndtalinger: req.body.AntalIndtalinger,
             ValgteSpeaker: req.body.ValgteSpeaker,
             Status: req.body.Status,
-            Slettet: req.body.Slettet
+            Slettet: req.body.Slettet,
+            Recording: recordingId
         });
         res.json("Updated order nr.: " + updatedOrder.OrdreId);
         res.status(200);
@@ -169,7 +174,6 @@ router.get('/comments/:_id', async (req, res) => {
 
 // ROUTE: /api/order/addcomment/%DYNAMIC%_id
 router.post('/addcomment/:_id', async (req, res) => {
-
     try {
         const order = await orderModel.findById(req.params._id);
         // Make new comment model
@@ -216,6 +220,67 @@ router.post('/addcomment/:_id', async (req, res) => {
         res.status(500);
         res.json("Something went wrong.")
     }
-})
+});
+
+async function UpdateOrderRecordings(recordingId, recordingArray) {
+    try {
+        // Update existing
+        if (recordingId) {
+            const recording = await recordingModel.findByIdAndUpdate(recordingId, {
+                recordings: recordingArray
+            });
+
+            if (!recording) {
+                const recording = new recordingModel({
+                    recordings: recordingArray
+                });
+
+                await recording.save().catch(err => {
+                    console.log(err);
+                });
+
+                return recording.id;
+            } else {
+                return recordingId;
+            }
+        }
+        // Create new
+        else {
+            const recording = new recordingModel({
+                recordings: recordingArray
+            });
+
+            await recording.save().catch(err => {
+                console.log(err);
+            });
+
+            return recording.id;
+        }
+    } catch (error) {
+        console.log(error);
+        return undefined;
+    }
+};
+
+// ROUTE: /api/order/recordings/%DYNAMIC%_id
+router.get('/recordings/:_id', async (req, res) => {
+
+    if (req.params._id.length < 10) {
+        res.status(200).json([]);
+        return;
+    }
+
+    try {
+        const recording = await recordingModel.findById(req.params._id);
+        if (recording) {
+            res.status(200).json(recording);
+        } else {
+            res.status(404).json([]);
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Something went wrong getting the recodings");
+    }
+});
 
 module.exports = router;

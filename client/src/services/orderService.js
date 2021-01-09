@@ -41,7 +41,7 @@ export function searchFilter(criteria, row) {
     return true;
 }
 
-export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, Slettet = false) {
+export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, Slettet = false, recordingsArray) {
 
     const load = {
         OrdreId: parseInt(OrdreId),
@@ -51,7 +51,8 @@ export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhe
         AntalIndtalinger: AntalIndtalinger,
         ValgteSpeaker: ValgteSpeaker,
         Status: Status,
-        Slettet: Slettet
+        Slettet: Slettet,
+        recordingArrays: recordingsArray
     }
 
     const response = await fetch(`/api/order/updateSingleOrder/${_id}`, {
