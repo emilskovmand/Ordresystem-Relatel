@@ -1,5 +1,5 @@
 import { Fragment, useState, useRef, useEffect } from 'react'
-import { searchFilter, GetDeletedOrders } from '../../services/orderService'
+import { searchFilter, GetDeletedOrders, ListenForKey } from '../../services/orderService'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
@@ -38,7 +38,7 @@ export default function Papirkurv() {
         setOpenOrder(rowArguments);
     }
 
-    const searchButton = (criteria) => {
+    const searchButton = (criteria = search.current.value) => {
         setSearchCriteria(criteria);
     }
 
@@ -73,7 +73,7 @@ export default function Papirkurv() {
 
                 <h2 className="info">Papirkurv</h2>
 
-                <input ref={input => search.current = input} type="text" className="selector move space" placeholder="Søgeord..." />
+                <input ref={input => search.current = input} onKeyDown={(ev) => ListenForKey(ev, 'Enter', searchButton)} type="text" className="selector move space" placeholder="Søgeord..." />
                 <button onClick={() => searchButton(search.current.value)} type="button" className="button">Søg</button>
 
                 <table className="content-table info">

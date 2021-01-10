@@ -21,6 +21,22 @@ export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenav
     });
 
     return [response.json(), response.status];
+};
+
+export async function ApproveMultipleOrders(OrdreIds) {
+
+    const response = await fetch('/api/order/massapprove', {
+        method: 'PUT',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            orderIds: OrdreIds
+        })
+    });
+
+    return [response.json(), response.status];
 }
 
 export function searchFilter(criteria, row) {
@@ -39,6 +55,12 @@ export function searchFilter(criteria, row) {
         }
     }
     return true;
+}
+
+export function ListenForKey(ev, keyName, cb) {
+    if (ev.key === keyName) {
+        cb();
+    }
 }
 
 export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, Slettet = false, recordingsArray) {

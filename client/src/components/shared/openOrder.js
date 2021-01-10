@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem, GetComments, AddComment } from '../../services/orderService'
+import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem, GetComments, AddComment, ListenForKey } from '../../services/orderService'
 import { UploadAudio, GetOrderRecordings } from '../../services/audioService'
 import { useAPINotifier } from '../context/MessageReceiver'
 import { useAuth } from '../context/auth'
@@ -227,7 +227,8 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
             inputs.current.indtalinger.value,
             inputs.current.speaker.value,
             Status,
-            false
+            false,
+            { Id: recordingId, array: recordings }
         )
         closeAction();
     }
@@ -393,7 +394,7 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
                                 </>}
                             </div>
                             <div className="createComment">
-                                <textarea ref={textarea => commentText.current = textarea} placeholder="Skriv en kommentar.."></textarea>
+                                <textarea onKeyDown={(ev) => ListenForKey(ev, 'Enter', addComment)} ref={textarea => commentText.current = textarea} placeholder="Skriv en kommentar.."></textarea>
                                 <button onClick={addComment}>Tilføj kommentar</button>
                             </div>
                         </div>

@@ -151,7 +151,22 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
         res.status(500);
         res.json("Updating order " + req.params._id + " failed...");
     }
-})
+});
+
+// ROUTE: /api/order/massaction
+router.put('/massapprove', async (req, res) => {
+    try {
+        await orderModel.updateMany(
+            { _id: { $in: req.body.orderIds } },
+            { $set: { Status: "Under Produktion" } }, (err) => {
+                if (err) { console.log(err); res.status(500).json("Mass action failed...");; }
+            });
+        res.status(200).json("Mass action performed on multiple orders.");
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Mass action failed...");
+    }
+});
 
 // ROUTE: /api/order/comments/%DYNAMIC%_id
 router.get('/comments/:_id', async (req, res) => {

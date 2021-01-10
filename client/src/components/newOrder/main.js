@@ -1,5 +1,5 @@
 import { Fragment, useState, useRef, useEffect } from 'react'
-import { CreateOrder, GetOrders, searchFilter, getOrderId, DeleteOrders } from '../../services/orderService'
+import { CreateOrder, GetOrders, searchFilter, getOrderId, DeleteOrders, ApproveMultipleOrders, ListenForKey } from '../../services/orderService'
 import { useAPINotifier } from '../context/MessageReceiver'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
@@ -173,7 +173,9 @@ export default function NewOrder() {
     const [openOrder, setOpenOrder] = useState({});
     const [searchCriteria, setSearchCriteria] = useState("");
     let auth = useAuth();
+    const { AddMessage } = useAPINotifier();
 
+    const massActionSelect = useRef();
     const checkBoxes = useRef([]);
     const search = useRef();
 
@@ -181,8 +183,47 @@ export default function NewOrder() {
         setModal(val);
     }
 
-    const searchButton = (criteria) => {
+    const searchButton = (criteria = search.current.value) => {
         setSearchCriteria(criteria);
+    }
+
+    const PerformMassAction = async () => {
+        var performActionOnSelected = checkBoxes.current.filter(c => {
+            if (c != null) {
+                if (c.checked === true) return true;
+            }
+            return false;
+        }).map((val, index) => val.value);
+        // Godkend alle valgte ordre
+        if (massActionSelect.current.value === "godkend") {
+            await ApproveMultipleOrders(performActionOnSelected).then((res) => {
+                res[0].then((val) => {
+                    AddMessage(val, res[1]);
+                })
+            });
+
+            GetOrders('Ny%20Ordre').then((response) => {
+                setData(response);
+            })
+        }
+        // Send alle valgte ordre til papirkurv
+        else if (massActionSelect.current.value === "slet") {
+            await DeleteOrders(performActionOnSelected).then((res) => {
+                res[0].then((val) => {
+                    AddMessage(val, res[1]);
+                })
+            });
+
+            GetOrders('Ny%20Ordre').then((response) => {
+                setData(response);
+            })
+        }
+
+        for (let i = 0; i < checkBoxes.current.length; i++) {
+            if (checkBoxes.current[i] != null) {
+                checkBoxes.current[i].checked = false;
+            }
+        }
     }
 
     const editModal = (rowArguments = {}, empty = false) => {
@@ -237,14 +278,14 @@ export default function NewOrder() {
                 <h2 className="info">Nye Ordre</h2>
                 <div>
                 </div>
-                <select className="info selector space">
+                <select ref={massActionSelect} className="info selector space">
                     <option style={{ display: "none" }} value="">--Massehandling--</option>
                     <option value="godkend">Godkend Valgte</option>
                     <option value="slet">Slet Alle</option>
                 </select>
-                <a className="space" href="google.dk"><button type="button" className="button">Anvend</button></a>
+                <button style={{ marginRight: "5px" }} type="button" onClick={PerformMassAction} className="button">Anvend</button>
 
-                <input ref={input => search.current = input} type="text" className="selector space" placeholder="Søgeord..." />
+                <input ref={input => search.current = input} onKeyDown={(ev) => ListenForKey(ev, 'Enter', searchButton)} type="text" className="selector space" placeholder="Søgeord..." />
                 <button onClick={() => searchButton(search.current.value)} type="button" className="button space">Søg</button>
 
                 <button type="button" onClick={() => setModal(true)} className="button2 space">Opret Ny Ordre</button>
