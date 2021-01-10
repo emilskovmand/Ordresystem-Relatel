@@ -8,7 +8,6 @@ const bodyParser = require("body-parser");
 const multer = require('multer');
 const passport = require("passport");
 const passportLocal = require("passport-local").Strategy;
-const GridFsStorage = require("multer-gridfs-storage");
 const crypto = require("crypto");
 const { path } = require('dotenv/lib/env-options');
 const pather = require('path');
@@ -90,7 +89,6 @@ var db = mongoose.connection;
 
 const userSchema = require('./models/userModel');
 const orderSchema = require('./models/orderModel');
-const MulterGridfsStorage = require('multer-gridfs-storage');
 
 
 // Hvis dette er production miljø så skal vi statisk sørge for klientens brugerflade
