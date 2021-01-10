@@ -1,4 +1,4 @@
-# OrdreSystem besåtende af upload af lydfiler og ordreflow
+# Ordresystem besåtende af upload af lydfiler og ordreflow
 
 * CRUD - Skab, læs, opdatere, slet ordrer
 * Relationsdata mellem ordre, deres indindtalinger & kommentarer
