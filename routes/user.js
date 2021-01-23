@@ -100,11 +100,11 @@ router.put('/editmyuser/:_id', async (req, res) => {
                 password: hashedPassword,
                 email: req.body.email
             });
-            res.json("Updated user: " + req.params._id);
+            res.json("Opdaterede dine egne bruger informationer");
             res.status(200);
         } catch (error) {
             res.status(500);
-            res.json("Updating user " + req.params._id + " failed...")
+            res.json("Serverfejl: editmyuser")
         }
     } else {
         res.send("Manglende tilladelse");
@@ -156,11 +156,11 @@ router.put('/updateRoles/:_id', async (req, res) => {
                 complete: req.body.completedOrders
             }
         })
-        res.json("Opdaterede bruger: " + req.params._id);
+        res.json("Opdaterede bruger: " + updatedUser.username);
         res.status(200);
     } catch (error) {
         res.status(500);
-        res.json("Opdatering af bruger: " + req.params._id + " gik galt.")
+        res.json("Serverfejl: userUpdate")
     }
 })
 

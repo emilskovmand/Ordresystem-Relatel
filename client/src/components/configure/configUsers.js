@@ -6,13 +6,17 @@ import ReactLoading from 'react-loading'
 import NewUserModal from './createUser'
 
 function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = false, produce = false, approve = false, complete = false }) {
+    const [changed, setChanged] = useState(false);
 
     const inputs = useRef({});
     const { AddMessage } = useAPINotifier();
 
     const confirmSave = () => {
 
-        if (inputs.current.admin.checked === admin && inputs.current.create.checked === createOrder && inputs.current.produce.checked === produce && inputs.current.approve.checked === approve && inputs.current.complete.checked === complete) return;
+        if (!changed) return;
+        else {
+            setChanged(false);
+        }
 
         UpdateUserRoles(
             dbid,
@@ -37,27 +41,27 @@ function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = fals
                 </td>
                 <td>
                     <div className="center">
-                        <input id="checkAdmin" ref={input => inputs.current.admin = input} type="checkbox" defaultChecked={admin} />
+                        <input id="checkAdmin" ref={input => inputs.current.admin = input} onChange={() => setChanged(true)} type="checkbox" defaultChecked={admin} />
                     </div>
                 </td>
                 <td>
                     <div className="center">
-                        <input id="checkCreate" ref={input => inputs.current.create = input} type="checkbox" defaultChecked={createOrder} />
+                        <input id="checkCreate" ref={input => inputs.current.create = input} onChange={() => setChanged(true)} type="checkbox" defaultChecked={createOrder} />
                     </div>
                 </td>
                 <td>
                     <div className="center">
-                        <input id="checkProduce" ref={input => inputs.current.produce = input} type="checkbox" defaultChecked={produce} />
+                        <input id="checkProduce" ref={input => inputs.current.produce = input} onChange={() => setChanged(true)} type="checkbox" defaultChecked={produce} />
                     </div>
                 </td>
                 <td>
                     <div className="center">
-                        <input id="checkApprove" ref={input => inputs.current.approve = input} type="checkbox" defaultChecked={approve} />
+                        <input id="checkApprove" ref={input => inputs.current.approve = input} onChange={() => setChanged(true)} type="checkbox" defaultChecked={approve} />
                     </div>
                 </td>
                 <td>
                     <div className="center">
-                        <input id="checkComplete" ref={input => inputs.current.complete = input} type="checkbox" defaultChecked={complete} />
+                        <input id="checkComplete" ref={input => inputs.current.complete = input} onChange={() => setChanged(true)} type="checkbox" defaultChecked={complete} />
                     </div>
                 </td>
                 <td>
