@@ -9,8 +9,13 @@ const OrderSchema = mongoose.Schema({
     recordings: [{
         text: {
             type: String
-        },
+        }
+    }],
+    audio: [{
         url: {
+            type: String
+        },
+        name: {
             type: String
         }
     }]

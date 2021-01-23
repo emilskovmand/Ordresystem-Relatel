@@ -1,6 +1,7 @@
 const express = require('express');
 // const bodyParser = require('body-parser');
 const bb = require('express-busboy');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -104,5 +105,13 @@ if (process.env.NODE_ENV === 'production') {
 
 // Lyt til port 3001 ELLLER den dynamiske port fra hosten
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+if (!fs.existsSync("uploads")) {
+    fs.mkdir("uploads", (err) => {
+        if (err) throw err;
+
+        console.log("Uploads directory created.");
+    });
+}
 
 exports.app = app;

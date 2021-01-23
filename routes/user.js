@@ -27,7 +27,7 @@ router.post('/login', (req, res, next) => {
                     res.status(500);
                     console.log(err);
                 }
-                res.json("Succesfully Authenticated");
+                res.json("Loggede ind med succes.");
             })
         }
     })(req, res, next);
@@ -38,7 +38,7 @@ router.post('/login', (req, res, next) => {
 // ROUTE: /api/user/logout
 router.get('/logout', (req, res) => {
     req.logOut();
-    res.send("Successfully logged out.")
+    res.send("Loggede ud.")
     res.status(200);
 })
 
@@ -60,7 +60,7 @@ router.post('/register', (req, res) => {
             res.status(500);
             throw err;
         };
-        if (doc) res.status(200).send("User already exists");
+        if (doc) res.status(200).send("Bruger eksisterer allerede");
         if (!doc) {
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
@@ -77,7 +77,7 @@ router.post('/register', (req, res) => {
                 }
             })
             await newUser.save();
-            res.json(`User ${req.body.username} created!`);
+            res.json(`Bruger med brugernavn: "${req.body.username}" blev skabt!`);
             res.status(200);
         }
     })
@@ -88,7 +88,7 @@ router.post('/register', (req, res) => {
 router.put('/editmyuser/:_id', async (req, res) => {
     if (req.body.password.length <= 7) {
         res.status(401);
-        res.json("Password not long enough (Minimum 8 letters)");
+        res.json("Kodeords kriterier ikke mødt.");
     };
 
 
@@ -107,7 +107,7 @@ router.put('/editmyuser/:_id', async (req, res) => {
             res.json("Updating user " + req.params._id + " failed...")
         }
     } else {
-        res.send("Permission missing");
+        res.send("Manglende tilladelse");
         res.status(401);
     }
 })
@@ -117,7 +117,7 @@ router.get('/userlist', async (req, res) => {
 
     if (!req.user.permissions.admin) {
         res.status(401);
-        res.send("Missing permissions to view list of users.");
+        res.send("Manglende tilladelse til at se liste af brugere.");
         return;
     }
 
@@ -127,12 +127,12 @@ router.get('/userlist', async (req, res) => {
             res.json(users);
             res.status(200);
         } catch (error) {
-            res.json("Something went wrong.")
+            res.json("Serverfejl: userlist")
             res.status(500);
         }
     }
     else {
-        res.send("Permission missing");
+        res.send("Manglende tilladelse");
         res.status(401);
     }
 })
@@ -142,7 +142,7 @@ router.put('/updateRoles/:_id', async (req, res) => {
 
     if (!req.user.permissions.admin) {
         res.status(401);
-        res.json("Missing permissions to change user roles");
+        res.json("Manglende tilladelser til at ændre brugerroller.");
         return;
     }
 
@@ -156,11 +156,11 @@ router.put('/updateRoles/:_id', async (req, res) => {
                 complete: req.body.completedOrders
             }
         })
-        res.json("Updated user: " + req.params._id);
+        res.json("Opdaterede bruger: " + req.params._id);
         res.status(200);
     } catch (error) {
         res.status(500);
-        res.json("Updating user " + req.params._id + " failed...")
+        res.json("Opdatering af bruger: " + req.params._id + " gik galt.")
     }
 })
 

@@ -662,6 +662,38 @@ body {
   background-color: #8c34ca;
 }
 
+#noSound {
+  margin-left: 5px;
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.RecordingContainer {
+  height: 30px;
+  width: 80%;
+  margin: 0 10% 0% 5px;
+}
+
+.RecordingContainer > .visual {
+  display: inline-block;
+}
+
+.RecordingContainer > .visual > * {
+  font-size: 18px;
+  margin-right: 3px;
+}
+
+.RecordingContainer > .visual > .trashcan {
+  margin-left: 0px !important;
+  color: red;
+}
+
+.RecordingContainer > .visual > i {
+  margin: 0px 6px;
+  cursor: pointer;
+}
+
 #AudioNarrationSection {
   height: 250px;
   width: 100%;
@@ -670,10 +702,45 @@ body {
   overflow-y: auto;
 }
 
+#AudioNarrationSection .maj-AudioButtons {
+  margin-bottom: 5px;
+}
+
+#AudioNarrationSection .maj-AudioButtons button {
+  background-color: #faa892;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0px 5px;
+}
+
+#AudioNarrationSection .maj-AudioButtons #uploadButton:hover {
+  background-color: #fbb4a1;
+}
+
+#AudioNarrationSection .maj-AudioButtons #downloadAll {
+  background-color: #387ec9;
+}
+
+#AudioNarrationSection .maj-AudioButtons #downloadAll:hover {
+  background-color: dodgerblue;
+}
+
 #AudioNarrationSection .Narrationcontainer {
-  height: 100%;
+  height: 67%;
   width: 100%;
   margin-bottom: 8px;
+}
+
+#AudioNarrationSection .Narrationcontainer > p {
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 #AudioNarrationSection .Narrationcontainer:last-child {
@@ -686,8 +753,7 @@ body {
 }
 
 #AudioNarrationSection .Narrationcontainer > .textWrapper > textarea {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-radius: 5px;
   height: 100%;
   width: 100%;
   resize: none;
@@ -695,7 +761,6 @@ body {
   padding: 15px;
   font-size: 17px;
   outline: none;
-  border-bottom-width: 0px;
 }
 
 #AudioNarrationSection .Narrationcontainer > .textWrapper > textarea:focus {
@@ -801,13 +866,14 @@ body {
 #commentsection {
   position: absolute;
   top: 45%;
-  left: 80%;
+  left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  height: 650px;
+  height: 750px;
   width: 300px;
   background-color: whitesmoke;
   border-radius: 10px;
+  margin-left: 35%;
 }
 
 #commentsection > .commentContainer {

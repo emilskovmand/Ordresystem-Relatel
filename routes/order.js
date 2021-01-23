@@ -42,7 +42,7 @@ router.delete('/delete', async (req, res) => {
                 if (err) { console.log(err); res.status(500); }
             });
         res.status(200);
-        res.json("Successfully deleted these orders");
+        res.json("Ordrer blev slettet med succes!");
     } catch (error) {
         console.log(error);
         res.status(500);
@@ -57,7 +57,7 @@ router.delete('/permanentlyDelete', async (req, res) => {
                 console.log(err);
                 res.status(500);
             } else {
-                res.json("Deleted orders: " + req.body.deleteList)
+                res.json("Slettede ordrer: " + req.body.deleteList)
             }
         });
         res.status(200);
@@ -71,7 +71,7 @@ router.delete('/permanentlyDelete', async (req, res) => {
 router.post('/createOrder', (req, res) => {
     if (!req.user.permissions.createOrder && !req.user.permissions.admin) {
         res.status(401);
-        res.json("Missing permissions to create order.");
+        res.json("Manglende tilladelser til at skabe ordre");
         return;
     }
 
@@ -89,12 +89,12 @@ router.post('/createOrder', (req, res) => {
     // Gemmer den nye ordre i databasen
     order.save()
         .then(data => {
-            res.json("Succesfully created order!")
+            res.json("Ordre skabt!")
             res.status(200);
         })
         .catch(err => {
             console.log(err);
-            res.json("Couldn't create order.")
+            res.json("Kunne ikke skabe ordre...")
             res.status(500);
         })
 });
@@ -125,14 +125,14 @@ router.get('/newid', async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500);
-        res.json("Something went wrong.");
+        res.json("Serverfejl: newid");
     }
 })
 
 // ROUTE: /api/order/updateSingleorder/%DYNAMIC%_id
 router.put('/updateSingleOrder/:_id', async (req, res) => {
     try {
-        const recordingId = await UpdateOrderRecordings(req.body.recordingArrays.Id, req.body.recordingArrays.array);
+        const recordingId = await UpdateOrderRecordings(req.body.recordingArrays.Id, req.body.recordingArrays.array, req.body.recordingArrays.audio);
 
         const updatedOrder = await orderModel.findByIdAndUpdate(req.params._id, {
             BestillingsDato: req.body.Bestillingsdato,
@@ -144,12 +144,12 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
             Slettet: req.body.Slettet,
             Recording: recordingId
         });
-        res.json("Updated order nr.: " + updatedOrder.OrdreId);
+        res.json("Opdaterede ordre nr.: " + updatedOrder.OrdreId);
         res.status(200);
     } catch (error) {
         console.log(error);
         res.status(500);
-        res.json("Updating order " + req.params._id + " failed...");
+        res.json("Kunne ikke gemme ændringer til ordre " + req.params._id);
     }
 });
 
@@ -159,12 +159,12 @@ router.put('/massapprove', async (req, res) => {
         await orderModel.updateMany(
             { _id: { $in: req.body.orderIds } },
             { $set: { Status: "Under Produktion" } }, (err) => {
-                if (err) { console.log(err); res.status(500).json("Mass action failed...");; }
+                if (err) { console.log(err); res.status(500).json("Massehandling databasefejl.");; }
             });
-        res.status(200).json("Mass action performed on multiple orders.");
+        res.status(200).json("Massehandling udført på " + req.body.orderIds.length);
     } catch (error) {
         console.log(error);
-        res.status(500).json("Mass action failed...");
+        res.status(500).json("Massehandling virkede ikke.");
     }
 });
 
@@ -202,14 +202,14 @@ router.post('/addcomment/:_id', async (req, res) => {
 
             comment.save().catch(err => {
                 console.log(err);
-                res.json("Couldn't create comment.")
+                res.json("Kunne ikke skabe kommentar.")
                 res.status(500);
             });
 
             order.Comments = comment._id;
             order.save().catch(err => {
                 console.log(err);
-                res.json("Couldn't create comment.")
+                res.json("Kunne ikke skabe kommentar.")
                 res.status(500);
             });;
         }
@@ -223,31 +223,33 @@ router.post('/addcomment/:_id', async (req, res) => {
 
             comment.save().catch(err => {
                 console.log(err);
-                res.json("Couldn't create comment.")
+                res.json("Kunne ikke skabe kommentar.")
                 res.status(500);
             });;
         }
 
-        res.json("Succesfully added comment to: " + order.OrdreId);
+        res.json("Skrev kommentar til: " + order.OrdreId);
         res.status(200);
     } catch (error) {
         console.log(error);
         res.status(500);
-        res.json("Something went wrong.")
+        res.json("Serverfejl: addcomment")
     }
 });
 
-async function UpdateOrderRecordings(recordingId, recordingArray) {
+async function UpdateOrderRecordings(recordingId, recordingArray, recordingAudio) {
     try {
         // Update existing
         if (recordingId) {
             const recording = await recordingModel.findByIdAndUpdate(recordingId, {
-                recordings: recordingArray
+                recordings: recordingArray,
+                audio: recordingAudio
             });
 
             if (!recording) {
                 const recording = new recordingModel({
-                    recordings: recordingArray
+                    recordings: recordingArray,
+                    audio: recordingAudio
                 });
 
                 await recording.save().catch(err => {
@@ -262,7 +264,8 @@ async function UpdateOrderRecordings(recordingId, recordingArray) {
         // Create new
         else {
             const recording = new recordingModel({
-                recordings: recordingArray
+                recordings: recordingArray,
+                audio: recordingAudio
             });
 
             await recording.save().catch(err => {
@@ -294,7 +297,7 @@ router.get('/recordings/:_id', async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json("Something went wrong getting the recodings");
+        res.status(500).json("Serverfejl da applikationen forsøgte at indsamle indtalinger.");
     }
 });
 

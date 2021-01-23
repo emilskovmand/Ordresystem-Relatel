@@ -5,53 +5,59 @@ import { useAPINotifier } from '../context/MessageReceiver'
 import { useAuth } from '../context/auth'
 import ReactLoading from 'react-loading'
 
-const Narration = ({ audioPath = "", text = "No text", orderId, index, updateMe }) => {
+const Recording = ({ audioPath, id, orderId, filename, parentAction, parentDownload }) => {
     const [playing, setPlaying] = useState(false);
-    const [progress, setProgress] = useState(0);
 
     const audioTag = useRef();
-    const uploadInput = useRef();
-    const progressTag = useRef();
     const downloadTag = useRef();
-    const textTag = useRef();
 
-    const upload = () => {
-        if (uploadInput.current.files[0]) {
-            UploadAudio(
-                orderId,
-                uploadInput.current.files[0]
-            ).then((res) => {
-                audioTag.current.src = res[0].data;
-                updateThisComponent();
-            })
-        }
-    };
-
-    const updateThisComponent = () => {
-        updateMe(index, textTag.current.value, audioTag.current.src);
+    const beginPlaying = () => {
+        setPlaying(true);
+        audioTag.current.play();
     }
 
-    const togglePlay = () => {
-        if (playing) {
-            audioTag.current.pause();
-            setPlaying(false);
-        } else {
-            audioTag.current.play();
-            setPlaying(true);
-        }
+    const stopPlaying = () => {
+        setPlaying(false);
+        audioTag.current.pause();
         audioTag.current.currentTime = 0;
-    };
+    }
 
-    const progressBarUpdate = () => {
-        var percentage = audioTag.current.currentTime / audioTag.current.duration * 100
-        setProgress(percentage);
-    };
+    const downloadFile = () => {
+        downloadTag.current.click();
+    }
 
-    const download = () => {
-        if (audioTag.current.src.includes('/audio/')) {
-            downloadTag.current.click();
-        }
-    };
+    return (
+        <>
+            <div className="RecordingContainer">
+                <audio onEnded={() => setPlaying(false)} ref={audioTag} src={audioPath} />
+
+                <div className="visual">
+                    <i onClick={() => parentAction(audioPath, true)} className="fa fa-trash trashcan" aria-hidden="true"></i>
+                    <span>{filename}</span>
+                    {playing && <>
+                        <i onClick={stopPlaying} className="fas fa-pause"></i>
+                    </>}
+                    {!playing && <>
+                        <i onClick={beginPlaying} className="fas fa-play"></i>
+                    </>}
+                    <i onClick={downloadFile} className="fa fa-download"></i>
+                    <a ref={downloadTag} href={(audioPath)} style={{ display: "none" }} download />
+                    <a ref={a => parentDownload(a)} href={(audioPath)} style={{ display: "none" }} download />
+                </div>
+
+            </div>
+        </>
+    )
+}
+
+const Narration = ({ text = "No text", orderId, index, updateMe }) => {
+    const [playing, setPlaying] = useState(false);
+
+    const textTag = useRef();
+
+    const updateThisComponent = () => {
+        updateMe(index, textTag.current.value);
+    }
 
     useEffect(() => {
 
@@ -63,38 +69,9 @@ const Narration = ({ audioPath = "", text = "No text", orderId, index, updateMe 
     return (
         <>
             <div className="Narrationcontainer">
+                <p>Indtalelse: {index + 1}</p>
                 <div className="textWrapper">
                     <textarea onChange={updateThisComponent} ref={textTag} defaultValue={text}></textarea>
-                </div>
-                <div className="audioPlayer">
-                    <audio onTimeUpdate={progressBarUpdate} onEnded={() => setPlaying(false)} onChange={updateThisComponent} ref={audioTag} src={audioPath} />
-
-                    <div className="visual">
-                        <div ref={progressTag} style={{ width: `${progress}%` }} className="progress">
-
-                        </div>
-
-                        <div className="audioButtons">
-                            <div className="container">
-                                <div className="uploadButton">
-                                    <button onClick={() => uploadInput.current.click()}>Upload lyd</button>
-                                    <input onChange={upload} id="uploadFile" ref={uploadInput} style={{ display: 'none' }} accept="audio/mp3,audio/*;capture=microphone" type="file" />
-                                </div>
-                                <div className="playButton">
-                                    <span onClick={togglePlay} className="playToggle">
-                                        {!playing && <><i className="fas fa-play"></i></>}
-                                        {playing && <><i className="fas fa-pause"></i></>}
-                                    </span>
-                                </div>
-                                <div className="downloadButton">
-                                    <button onClick={download}>Download lyd</button>
-                                    <a ref={downloadTag} href={(audioPath)} style={{ display: "none" }} download />
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
                 </div>
             </div>
         </>
@@ -122,8 +99,12 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
     const { AddMessage } = useAPINotifier();
     const [comments, setComments] = useState(null);
     const [recordings, setRecordings] = useState(null);
+    const [soundFiles, setSoundFiles] = useState([]);
     const [AudioCount, setAudioCount] = useState(AntalIndtalinger);
     let auth = useAuth();
+
+    const uploadInput = useRef();
+    const downloadTags = useRef([]);
 
     const inputs = useRef({});
     const errorBox = useRef();
@@ -177,7 +158,7 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
                 inputs.current.speaker.value,
                 orderStatus,
                 false,
-                { Id: recordingId, array: recordings }
+                { Id: recordingId, array: recordings, audio: soundFiles }
             ).then((res) => {
                 res[0].then((val) => {
                     AddMessage(val, res[1]);
@@ -189,18 +170,42 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
     }
 
     const updateAudioCount = () => {
-        setAudioCount(parseInt(inputs.current.indtalinger.value));
+        if (inputs.current.indtalinger.value <= 10) {
+            setAudioCount(parseInt(inputs.current.indtalinger.value));
+        } else {
+            inputs.current.indtalinger.value = 10
+        }
     }
 
-    const updateRecordingFromChild = (index, text, url) => {
-        var recordingArray = recordings;
+    const updateRecordingFromChild = (index, text) => {
+        var recordingArray = [...recordings];
         recordingArray[index].text = text;
-        recordingArray[index].url = url;
 
         setRecordings(recordingArray);
     };
 
-    const recordingComponents = (count = 1) => {
+    const soundFileFromChild = (key, deleteAction = false) => {
+        if (deleteAction) {
+            var soundFileArray = [...soundFiles];
+            soundFileArray.splice(soundFileArray.findIndex((v) => v.url === key), 1);
+            setSoundFiles(soundFileArray);
+        }
+    }
+
+    const upload = () => {
+        if (uploadInput.current.files[0]) {
+            UploadAudio(
+                OrdreId,
+                uploadInput.current.files[0]
+            ).then((res) => {
+                var newArray = [...soundFiles];
+                newArray.push(res[0].data);
+                setSoundFiles(newArray);
+            })
+        }
+    }
+
+    const narrationComponents = (count = 1) => {
         var array = [];
         for (let i = 0; i < count; i++) {
             const recordingfromArray = recordings !== null ? recordings[i] : { text: '', url: '' }
@@ -209,12 +214,40 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
                 index={i}
                 orderId={_id}
                 text={recordingfromArray.text}
-                audioPath={recordingfromArray.url}
+                down
                 updateMe={updateRecordingFromChild}
             />)
         }
 
         return array;
+    }
+
+    const recordingsComponents = (sf) => {
+        var array = [];
+        if (sf) {
+            for (let i = 0; i < sf.length; i++) {
+                array.push(<Recording
+                    key={i}
+                    index={i}
+                    audioPath={sf[i].url}
+                    filename={sf[i].name}
+                    parentAction={soundFileFromChild}
+                    parentDownload={el => downloadTags.current[i] = el}
+                />)
+            }
+        }
+
+        if (array.length === 0) {
+            array.push(<div key={1} id="noSound">Ingen lydfiler uploadet.</div>)
+        }
+
+        return array;
+    }
+
+    const downloadAllFiles = () => {
+        downloadTags.current.forEach(element => {
+            element.click();
+        });
     }
 
     const remakeOrder = () => {
@@ -228,7 +261,7 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
             inputs.current.speaker.value,
             Status,
             false,
-            { Id: recordingId, array: recordings }
+            { Id: recordingId, array: recordings, audio: soundFiles }
         )
         closeAction();
     }
@@ -246,22 +279,21 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
     const getRecordings = useCallback(() => {
         GetOrderRecordings(recordingId).then((val) => {
             var arrayForState = [];
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 10; i++) {
                 var currentRecording = val.recordings !== undefined ? val.recordings[i] : null;
 
                 if (currentRecording) {
                     arrayForState.push({
-                        text: currentRecording.text,
-                        url: currentRecording.url
+                        text: currentRecording.text
                     });
                 } else {
                     arrayForState.push({
-                        text: "",
-                        url: ""
+                        text: ""
                     });
                 }
             }
 
+            setSoundFiles(val.audio);
             setRecordings(arrayForState);
         });
     }, [recordingId])
@@ -322,7 +354,7 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
                             <div className="labelfield">
                                 <label htmlFor="indtalinger">Antal Indtalinger</label>
                             </div>
-                            <input ref={input => inputs.current.indtalinger = input} name="indtalinger" onChange={updateAudioCount} type="number" min="1" max="6" maxLength="2" defaultValue={AntalIndtalinger}></input>
+                            <input ref={input => inputs.current.indtalinger = input} name="indtalinger" onChange={updateAudioCount} type="number" min="1" max="10" maxLength="2" defaultValue={AntalIndtalinger}></input>
                         </div>
                         <div className="inputField">
                             <div className="labelfield">
@@ -338,7 +370,15 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
                         <p ref={p => errorBox.current = p} className="errorMessage"></p>
 
                         <section id="AudioNarrationSection">
-                            {recordingComponents(AudioCount)}
+                            {narrationComponents(AudioCount)}
+                            {recordingsComponents(soundFiles)}
+
+                            <div className="maj-AudioButtons">
+                                <button id="uploadButton" onClick={() => uploadInput.current.click()}>Upload Lyd</button>
+                                <input onChange={upload} id="uploadFile" ref={uploadInput} style={{ display: 'none' }} accept="audio/mp3,audio/*;capture=microphone" type="file" />
+                                <button id="downloadAll" onClick={downloadAllFiles}><i className="fa fa-download"></i> Download alle</button>
+
+                            </div>
                         </section>
 
                         {!trashbin && <div className="buttonsContainer">

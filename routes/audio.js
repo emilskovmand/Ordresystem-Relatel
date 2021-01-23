@@ -25,7 +25,10 @@ router.post('/upload', function (req, res) {
         }
 
         res.status(200);
-        res.json(`/api/audio/${req.file.filename}`);
+        res.json({
+            url: `/api/audio/${req.file.filename}`,
+            name: req.file.originalname
+        });
     });
 });
 
