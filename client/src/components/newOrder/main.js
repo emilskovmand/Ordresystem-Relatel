@@ -8,6 +8,10 @@ import { useAuth } from '../context/auth'
 function NewOrderModal({ setModal }) {
     const { AddMessage } = useAPINotifier();
 
+    const [AudioCount, setAudioCount] = useState(1);
+
+    const indtalingsBoxes = useRef([]);
+
     const inputs = useRef([]);
     const errorBox = useRef();
     let [givenId, setGivenId] = useState(0);
@@ -39,13 +43,20 @@ function NewOrderModal({ setModal }) {
             errorBox.current.style = "display: block;"
             return;
         } else {
+
+            let indtalinger = [];
+            for (let i = 0; i < indtalingsBoxes.current.length; i++) {
+                indtalinger.push({ text: indtalingsBoxes.current[i].value });
+            }
+
             CreateOrder(
                 inputs.current.id.value,
                 inputs.current.dato.value,
                 inputs.current.virksomhed.value,
                 inputs.current.kundenavn.value,
                 inputs.current.indtalinger.value,
-                inputs.current.speaker.value
+                inputs.current.speaker.value,
+                indtalinger
             ).then((res) => {
                 res[0].then((val) => {
                     AddMessage(val, res[1]);
@@ -54,6 +65,15 @@ function NewOrderModal({ setModal }) {
             setModal(false);
         }
     }
+
+    const updateAudioCount = () => {
+        if (inputs.current.indtalinger.value <= 10) {
+            setAudioCount(parseInt(inputs.current.indtalinger.value));
+        } else {
+            inputs.current.indtalinger.value = 10
+        }
+    }
+
 
     const readonly = (element) => {
         element.readOnly = true;
@@ -68,6 +88,21 @@ function NewOrderModal({ setModal }) {
 
     const getId = async () => {
         return await getOrderId();
+    }
+
+    const narrationComponents = (count) => {
+        let array = [];
+        for (let i = 0; i < count; i++) {
+            array.push(<Fragment key={i}>
+                <div className="Narrationcontainer">
+                    <p>Indtalelse: {i + 1}</p>
+                    <div className="textWrapper">
+                        <textarea ref={text => indtalingsBoxes.current[i] = text}></textarea>
+                    </div>
+                </div>
+            </Fragment>)
+        }
+        return array;
     }
 
     useEffect(() => {
@@ -114,7 +149,7 @@ function NewOrderModal({ setModal }) {
                             <div className="labelfield">
                                 <label htmlFor="Indtalinger">Antal Indtalinger</label>
                             </div>
-                            <input ref={input => inputs.current.indtalinger = input} name="Indtalinger" type="number" min="1" max="6" maxLength="2" defaultValue={1}></input>
+                            <input ref={input => inputs.current.indtalinger = input} onChange={updateAudioCount} name="Indtalinger" type="number" min="1" max="10" maxLength="2" defaultValue={1}></input>
                         </div>
                         <div className="inputField">
                             <div className="labelfield">
@@ -124,6 +159,10 @@ function NewOrderModal({ setModal }) {
                         </div>
 
                         <p ref={p => errorBox.current = p} className="errorMessage"></p>
+
+                        <section id="newOrderAudioNarrationSection">
+                            {narrationComponents(AudioCount)}
+                        </section>
 
                         <div className="buttonsContainer">
                             <button onClick={() => handleOprettelse()} className="submitButton">

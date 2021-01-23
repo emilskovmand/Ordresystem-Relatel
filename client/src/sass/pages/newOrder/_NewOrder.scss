@@ -25,7 +25,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         background-color: whitesmoke;
-        height: 70vh;
+        height: 675px;
         width: 700px;
 
         border-radius: 3px;
@@ -139,5 +139,178 @@
         padding: 6px 2px;
         background-color: lighten(red, 30%);
         color: whitesmoke;
+    }
+}
+
+#newOrderAudioNarrationSection {
+    height: 130px;
+    width: 100%;
+    border: 1px solid #ced0d4;
+    border-radius: 5px;
+    overflow-y: auto;
+
+    .maj-AudioButtons {
+        margin-bottom: 5px;
+
+        button {
+            background-color: #faa892;
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 0px 5px;
+        }
+
+        #uploadButton {
+            &:hover {
+                background-color: lighten($color: #faa892, $amount: 3%);
+            }
+        }
+
+        #downloadAll {
+            background-color: #387ec9;
+
+            &:hover {
+                background-color: dodgerblue;
+            }
+        }
+    }
+
+
+    .Narrationcontainer {
+        height: 67%;
+        width: 100%;
+
+        margin-bottom: 8px;
+
+        >p {
+            margin-top: 3px;
+            margin-bottom: 3px;
+        }
+
+        &:last-child {
+            margin-bottom: 0px;
+        }
+
+        >.textWrapper {
+            height: 80%;
+            width: 100%;
+
+            >textarea {
+                border-radius: 5px;
+                height: 100%;
+                width: 100%;
+                resize: none;
+                overflow-y: auto;
+                padding: 15px;
+                font-size: 17px;
+                outline: none;
+
+                &:focus {
+                    border-color: #9ecaed;
+                    box-shadow: 0 0 10px #9ecaed;
+                }
+            }
+        }
+
+        >.audioPlayer {
+            height: 26%;
+            width: 100%;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            position: relative;
+            background-color: #0f0f0f;
+
+            >.visual {
+
+                >.progress {
+                    background-color: #318d74;
+                    width: 50%;
+                    height: 3px;
+                }
+
+                >.audioButtons {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+
+                    >.container {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        grid-template-rows: 1fr;
+                        grid-column-gap: 0px;
+                        grid-row-gap: 0px;
+
+                        >.uploadButton {
+                            position: relative;
+                            height: 32px;
+                            width: 110px;
+
+                            >button {}
+                        }
+
+                        >.playButton {
+                            position: relative;
+                            height: 32px;
+                            width: 80px;
+
+                            >.playToggle {
+                                font-size: 24px;
+                                color: #387ec9;
+                                display: block;
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                padding: 3px;
+                                cursor: pointer;
+                                transform: translate(-50%, -50%);
+
+                                &:hover {
+                                    opacity: .7;
+                                }
+                            }
+                        }
+
+                        >.downloadButton {
+                            position: relative;
+                            height: 32px;
+                            width: 110px;
+
+                            >button {}
+                        }
+
+                        button {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+
+                            border: 1px solid transparent;
+                            outline: none;
+                            padding: 7px 4px;
+                            border: 2px solid #BFC0C0;
+                            color: #BFC0C0;
+                            text-transform: uppercase;
+                            letter-spacing: 1.5px;
+                            text-align: center;
+                            background-color: #2D3142;
+                            cursor: pointer;
+                            transition: all .23s ease-in-out;
+
+                            &:hover {
+                                background-color: #BFC0C0;
+                                color: #2D3142;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

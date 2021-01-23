@@ -269,7 +269,7 @@ body {
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   background-color: whitesmoke;
-  height: 70vh;
+  height: 675px;
   width: 700px;
   border-radius: 3px;
   padding: 25px;
@@ -385,6 +385,175 @@ body {
   padding: 6px 2px;
   background-color: #ff9999;
   color: whitesmoke;
+}
+
+#newOrderAudioNarrationSection {
+  height: 130px;
+  width: 100%;
+  border: 1px solid #ced0d4;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+
+#newOrderAudioNarrationSection .maj-AudioButtons {
+  margin-bottom: 5px;
+}
+
+#newOrderAudioNarrationSection .maj-AudioButtons button {
+  background-color: #faa892;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0px 5px;
+}
+
+#newOrderAudioNarrationSection .maj-AudioButtons #uploadButton:hover {
+  background-color: #fbb4a1;
+}
+
+#newOrderAudioNarrationSection .maj-AudioButtons #downloadAll {
+  background-color: #387ec9;
+}
+
+#newOrderAudioNarrationSection .maj-AudioButtons #downloadAll:hover {
+  background-color: dodgerblue;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer {
+  height: 67%;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > p {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer:last-child {
+  margin-bottom: 0px;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .textWrapper {
+  height: 80%;
+  width: 100%;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .textWrapper > textarea {
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+  resize: none;
+  overflow-y: auto;
+  padding: 15px;
+  font-size: 17px;
+  outline: none;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .textWrapper > textarea:focus {
+  border-color: #9ecaed;
+  -webkit-box-shadow: 0 0 10px #9ecaed;
+          box-shadow: 0 0 10px #9ecaed;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer {
+  height: 26%;
+  width: 100%;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: relative;
+  background-color: #0f0f0f;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .progress {
+  background-color: #318d74;
+  width: 50%;
+  height: 3px;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .audioButtons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .audioButtons > .container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .audioButtons > .container > .uploadButton {
+  position: relative;
+  height: 32px;
+  width: 110px;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .audioButtons > .container > .playButton {
+  position: relative;
+  height: 32px;
+  width: 80px;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .audioButtons > .container > .playButton > .playToggle {
+  font-size: 24px;
+  color: #387ec9;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 3px;
+  cursor: pointer;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .audioButtons > .container > .playButton > .playToggle:hover {
+  opacity: .7;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .audioButtons > .container > .downloadButton {
+  position: relative;
+  height: 32px;
+  width: 110px;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .audioButtons > .container button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  border: 1px solid transparent;
+  outline: none;
+  padding: 7px 4px;
+  border: 2px solid #BFC0C0;
+  color: #BFC0C0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-align: center;
+  background-color: #2D3142;
+  cursor: pointer;
+  -webkit-transition: all .23s ease-in-out;
+  transition: all .23s ease-in-out;
+}
+
+#newOrderAudioNarrationSection .Narrationcontainer > .audioPlayer > .visual > .audioButtons > .container button:hover {
+  background-color: #BFC0C0;
+  color: #2D3142;
 }
 
 #EditModal {

@@ -1,5 +1,5 @@
 
-export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status = "Ny Ordre") {
+export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, indtalinger, Status = "Ny Ordre") {
 
     const load = {
         OrdreId: parseInt(OrdreId),
@@ -8,7 +8,8 @@ export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenav
         Kundenavn: Kundenavn,
         AntalIndtalinger: AntalIndtalinger,
         ValgteSpeaker: ValgteSpeaker,
-        Status: Status
+        Status: Status,
+        indtalinger: indtalinger
     }
 
     const response = await fetch('/api/order/createOrder', {

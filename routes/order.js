@@ -68,12 +68,14 @@ router.delete('/permanentlyDelete', async (req, res) => {
 })
 
 // ROUTE: /api/order/createOrder
-router.post('/createOrder', (req, res) => {
+router.post('/createOrder', async (req, res) => {
     if (!req.user.permissions.createOrder && !req.user.permissions.admin) {
         res.status(401);
         res.json("Manglende tilladelser til at skabe ordre");
         return;
     }
+
+    const recordingId = await UpdateOrderRecordings(null, req.body.indtalinger, []);
 
     // Laver en ny ordre
     const order = new orderModel({
@@ -84,12 +86,13 @@ router.post('/createOrder', (req, res) => {
         Kundenavn: req.body.Kundenavn,
         AntalIndtalinger: req.body.AntalIndtalinger,
         ValgteSpeaker: req.body.ValgteSpeaker,
-        Status: req.body.Status
+        Status: req.body.Status,
+        Recording: recordingId
     })
     // Gemmer den nye ordre i databasen
     order.save()
         .then(data => {
-            res.json("Ordre skabt!")
+            res.json(`Ordre nr.: '${req.body.OrdreId}' skabt!`)
             res.status(200);
         })
         .catch(err => {
@@ -161,7 +164,7 @@ router.put('/massapprove', async (req, res) => {
             { $set: { Status: "Under Produktion" } }, (err) => {
                 if (err) { console.log(err); res.status(500).json("Massehandling databasefejl.");; }
             });
-        res.status(200).json("Massehandling udført på " + req.body.orderIds.length);
+        res.status(200).json("Massehandling udført på " + req.body.orderIds.length + " Antal ordre.");
     } catch (error) {
         console.log(error);
         res.status(500).json("Massehandling virkede ikke.");
