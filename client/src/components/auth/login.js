@@ -3,6 +3,7 @@ import { AuthLogin } from '../../services/userService'
 import { useAuth } from '../context/auth'
 import { useHistory } from 'react-router-dom'
 import { useAPINotifier } from '../context/MessageReceiver'
+import { ListenForKey } from '../../services/orderService'
 
 export default function LoginPage() {
     const [password, setPassword] = useState("");
@@ -43,8 +44,8 @@ export default function LoginPage() {
                     <div></div>
                     <h1>Velkommen</h1>
                     <div className="form">
-                        <input id="usernameField" className="credential" type="text" maxLength={60} placeholder="Username" onChange={e => setUsername(e.target.value)} />
-                        <input id="passwordField" className="credential" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+                        <input onKeyDown={(ev) => ListenForKey(ev, 'Enter', handleLogin)} id="usernameField" className="credential" type="text" maxLength={60} placeholder="Username" onChange={e => setUsername(e.target.value)} />
+                        <input onKeyDown={(ev) => ListenForKey(ev, 'Enter', handleLogin)} id="passwordField" className="credential" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
                         <input ref={input => rememberMe.current = input} type="checkbox" /> <p>Husk mig</p>
                         <button onClick={handleLogin} type="submit" id="login-button">Login</button>
                     </div>
