@@ -9,9 +9,18 @@ const upload = multer().single('file');
 
 // ROUTE: /api/audio/%DYNAMIC%filename
 router.get('/:filename', async (req, res) => {
-    res.setHeader("content-type", "audio/*");
-    fs.createReadStream(`./uploads/${req.params.filename}`).pipe(res);
-    res.status(200);
+    try {
+        res.setHeader("content-type", "audio/*");
+        if (fs.existsSync(`./uploads/${req.params.filename}`)) {
+            fs.createReadStream(`./uploads/${req.params.filename}`).pipe(res);
+        } else {
+            throw "No such file or directory found.";
+        }
+        res.status(200);
+    } catch (error) {
+        res.status(404);
+        res.json([]);
+    }
 });
 
 // ROUTE: /api/audio/upload
