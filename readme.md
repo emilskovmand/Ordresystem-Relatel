@@ -75,14 +75,14 @@ Vær sikker på at være i root mappen af applikationen og derefter skriv disse 
 
 ~/Ordresystem-Relatel$ cd .client/
 
-~/Ordre-system-Relatel/client$ npm install
+~/Ordresystem-Relatel/client$ npm install
 ```
 
 #### **3. Build React-app**
 
 Vær sikker på at være i client mappen under root og skriv derefter:
 ```bash
-~/Ordre-system-Relatel/client$ npm run build
+~/Ordresystem-Relatel/client$ npm run build
 ```
 Dette vil skabe en produktions klar react-app til ordresystemet
 
@@ -108,7 +108,7 @@ pm2 er en proces manager som sørger for at holde applikationen igang; dvs. at i
 For at starte systemet op for første gang:
 ```bash
 (Bemærk: Vi er i root mappen af applikationen)
-~/Ordre-system-Relatel$ pm2 start server.js
+~/Ordresystem-Relatel$ pm2 start server.js
 ```
 For at vise listen af apps registreret i din lokale proces manager:
 ```bash
