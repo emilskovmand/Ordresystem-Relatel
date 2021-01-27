@@ -93,7 +93,7 @@ Inde i root mappen skal der skabes en *.env* fil som skal indeholde:
 
 (Bemærk at dette er eksempler!)
 ```
-DB_CONNECTION_STRING = mongodb+srv://emilskovmand:<password>@realmcluster.cpuwi.mongodb.net/<MongoDB-Databasenavn>?retryWrites=true&w=majority
+DB_CONNECTION_STRING = mongodb+srv://<username>:<password>@realmcluster.cpuwi.mongodb.net/<MongoDB-Databasenavn>?retryWrites=true&w=majority
 SECRET = EKGEZUjZ6efnRxOA3hey31SsE6wt9xWruMLzvM
 - I nogle tilfælde skal der også tilføjes disse variabler:
 NODE_ENV = production
@@ -119,7 +119,7 @@ For at stoppe et system:
 (Id kan ses i listen)
 ~$ pm2 stop <id>
 ```
-For at starte et registreret system
+For at starte et registreret system:
 ```bash
 (Id kan ses i listen)
 ~$ pm2 start <id>
