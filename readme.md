@@ -54,5 +54,5 @@ Den består også af:
 
 ## Udvikling
 
-
-## License
+## Author
+This tool is created by Emil Skovmand: email: emilskovmand@gmail.com
