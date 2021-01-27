@@ -119,7 +119,7 @@ For at stoppe et system:
 (Id kan ses i listen)
 ~$ pm2 stop <id>
 ```
-For at starte et registreret system
+For at starte et registreret system:
 ```bash
 (Id kan ses i listen)
 ~$ pm2 start <id>
