@@ -1828,6 +1828,78 @@ body {
   background-color: #bf3128;
 }
 
+#confirmAlert {
+  position: absolute;
+  z-index: 2300;
+  top: 20%;
+  left: 50%;
+  height: 200px;
+  -webkit-transform: translate(-50%, 50%);
+          transform: translate(-50%, 50%);
+  width: 200px;
+  text-align: center;
+  width: 500px;
+  padding: 40px;
+  background: #39a487;
+  -webkit-box-shadow: 0 20px 75px rgba(0, 0, 0, 0.23);
+          box-shadow: 0 20px 75px rgba(0, 0, 0, 0.23);
+  color: #fff;
+  opacity: 0;
+  -webkit-animation: AlertTransition 1 .36s ease-in-out .07s forwards;
+          animation: AlertTransition 1 .36s ease-in-out .07s forwards;
+}
+
+@-webkit-keyframes AlertTransition {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes AlertTransition {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#confirmAlert > h1 {
+  margin: 7px;
+}
+
+#confirmAlert > p {
+  margin: 6px;
+}
+
+#confirmAlert > button {
+  width: 160px;
+  padding: 10px;
+  border: 1px solid #fff;
+  margin: 10px;
+  cursor: pointer;
+  background: none;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+#alertBackground {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  background: rgba(255, 255, 255, 0.84);
+  background-position: center;
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+  width: 100vw;
+  height: 100vh;
+  z-index: 2200;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;

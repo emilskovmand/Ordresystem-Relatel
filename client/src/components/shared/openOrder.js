@@ -3,6 +3,7 @@ import { UpdateSingleOrder, DeleteOrders, DeleteOrderFromSystem, GetComments, Ad
 import { UploadAudio, GetOrderRecordings } from '../../services/audioService'
 import { useAPINotifier } from '../context/MessageReceiver'
 import { useAuth } from '../context/auth'
+import { useAlertContext } from '../context/confirmAlert'
 import ReactLoading from 'react-loading'
 
 const Recording = ({ audioPath, id, orderId, filename, parentAction, parentDownload }) => {
@@ -101,6 +102,7 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
     const [recordings, setRecordings] = useState(null);
     const [soundFiles, setSoundFiles] = useState([]);
     const [AudioCount, setAudioCount] = useState(AntalIndtalinger);
+    const { AddAlert } = useAlertContext()
     let auth = useAuth();
 
     const uploadInput = useRef();
@@ -186,9 +188,11 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
 
     const soundFileFromChild = (key, deleteAction = false) => {
         if (deleteAction) {
-            var soundFileArray = [...soundFiles];
-            soundFileArray.splice(soundFileArray.findIndex((v) => v.url === key), 1);
-            setSoundFiles(soundFileArray);
+            AddAlert("Er du sikker?", "Du er ved at fjerne en lydfil fra en ordre.", () => {
+                var soundFileArray = [...soundFiles];
+                soundFileArray.splice(soundFileArray.findIndex((v) => v.url === key), 1);
+                setSoundFiles(soundFileArray);
+            })
         }
     }
 
@@ -272,8 +276,10 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
     }
 
     const deleteOrder = () => {
-        DeleteOrders([_id]);
-        closeAction();
+        AddAlert("Er du sikker?", "Du er ved at slette en ordre.", () => {
+            DeleteOrders([_id]);
+            closeAction();
+        })
     }
 
     const getRecordings = useCallback(() => {
@@ -383,7 +389,11 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
 
                         {!trashbin && <div className="buttonsContainer">
                             {Status !== 'Færdig & Sendt' && <>
-                                <button onClick={() => updateOrder(newStatus)} className="nextButton">
+                                <button onClick={() => {
+                                    AddAlert("Er du sikker?", `Du er ved at sende en ordre videre til "${newStatus}"!`, () => {
+                                        updateOrder(newStatus);
+                                    })
+                                }} className="nextButton">
                                     {Status === "Ny Ordre" && <>Send til produktion</>}
                                     {Status === "Under Produktion" && <>Produceret</>}
                                     {Status === "Godkend Produktion" && <>Godkend</>}

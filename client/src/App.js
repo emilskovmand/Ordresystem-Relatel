@@ -12,7 +12,7 @@ import React, { useEffect } from 'react'
 import { GetUser } from './services/userService'
 import { ProvideAuth, useProvideAuth } from './components/context/auth'
 import { APIMessageProvider as ProvideAPI, APIMessageNotification } from './components/context/MessageReceiver'
-
+import { AlertUI, AlertConfirmProvider as ProvideAlert } from './components/context/confirmAlert'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -55,40 +55,43 @@ function App() {
 	return (
 		<ProvideAuth>
 			<ProvideAPI>
-				<Router>
-					<div id="App" className="wrapper">
-						<Switch>
-							<Route exact path='/login' >
-								<LoginComponent />
-							</Route>
-							<PrivateRoute path='/afventer' permission="approve">
-								<SideNavigation />
-								<Afventer />
-							</PrivateRoute>
-							<PrivateRoute path='/færdigeordre' permission="complete">
-								<SideNavigation />
-								<Færdigeordre />
-							</PrivateRoute>
-							<PrivateRoute path='/godkendt' permission="produce">
-								<SideNavigation />
-								<Godkendt />
-							</PrivateRoute>
-							<PrivateRoute exact={true} path='/'>
-								<SideNavigation />
-								<FrontPage />
-							</PrivateRoute>
-							<PrivateRoute path='/papirkurv' permission="complete">
-								<SideNavigation />
-								<Papirkurv />
-							</PrivateRoute>
-							<PrivateRoute path='/config'>
-								<SideNavigation />
-								<Config />
-							</PrivateRoute>
-						</Switch>
-					</div>
-				</Router>
-				<APIMessageNotification />
+				<ProvideAlert>
+					<Router>
+						<div id="App" className="wrapper">
+							<Switch>
+								<Route exact path='/login' >
+									<LoginComponent />
+								</Route>
+								<PrivateRoute path='/afventer' permission="approve">
+									<SideNavigation />
+									<Afventer />
+								</PrivateRoute>
+								<PrivateRoute path='/færdigeordre' permission="complete">
+									<SideNavigation />
+									<Færdigeordre />
+								</PrivateRoute>
+								<PrivateRoute path='/godkendt' permission="produce">
+									<SideNavigation />
+									<Godkendt />
+								</PrivateRoute>
+								<PrivateRoute exact={true} path='/'>
+									<SideNavigation />
+									<FrontPage />
+								</PrivateRoute>
+								<PrivateRoute path='/papirkurv' permission="complete">
+									<SideNavigation />
+									<Papirkurv />
+								</PrivateRoute>
+								<PrivateRoute path='/config'>
+									<SideNavigation />
+									<Config />
+								</PrivateRoute>
+							</Switch>
+						</div>
+					</Router>
+					<APIMessageNotification />
+					<AlertUI />
+				</ProvideAlert>
 			</ProvideAPI>
 		</ProvideAuth>
 	);

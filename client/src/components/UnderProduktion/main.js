@@ -3,14 +3,16 @@ import { GetOrders, searchFilter, DeleteOrders, ListenForKey } from '../../servi
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
+import { useAlertContext } from '../context/confirmAlert'
 
 function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, deleteRow, recordingId }) {
 
     const row = useRef();
 
     const deleteAction = () => {
-        deleteRow(dbId);
-        row.current.style = "display: none;"
+        deleteRow(dbId, () => {
+            row.current.style = "display: none;"
+        });
     }
 
     return (
@@ -35,6 +37,7 @@ export default function GodtkendtTilProduktion() {
     const [openOrder, setOpenOrder] = useState({});
     const [searchCriteria, setSearchCriteria] = useState("");
     let auth = useAuth();
+    const { AddAlert } = useAlertContext();
 
     const search = useRef();
 
@@ -50,8 +53,11 @@ export default function GodtkendtTilProduktion() {
         setSearchCriteria(criteria);
     }
 
-    const deleteRow = (_id) => {
-        DeleteOrders([_id]);
+    const deleteRow = (_id, cb) => {
+        AddAlert("Er du sikker?", `Du er ved at slette en ordre fra "Under Produktion"`, () => {
+            DeleteOrders([_id]);
+            cb();
+        });
     }
 
     useEffect(() => {

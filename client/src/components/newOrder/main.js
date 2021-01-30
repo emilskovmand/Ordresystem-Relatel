@@ -4,6 +4,7 @@ import { useAPINotifier } from '../context/MessageReceiver'
 import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
+import { useAlertContext } from '../context/confirmAlert'
 
 function NewOrderModal({ setModal }) {
     const { AddMessage } = useAPINotifier();
@@ -184,8 +185,9 @@ function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndta
     const row = useRef();
 
     const deleteAction = () => {
-        deleteRow(dbId);
-        row.current.style = "display: none;"
+        deleteRow(dbId, () => {
+            row.current.style = "display: none;"
+        });
     }
 
     return (
@@ -213,6 +215,7 @@ export default function NewOrder() {
     const [searchCriteria, setSearchCriteria] = useState("");
     let auth = useAuth();
     const { AddMessage } = useAPINotifier();
+    const { AddAlert } = useAlertContext();
 
     const massActionSelect = useRef();
     const checkBoxes = useRef([]);
@@ -279,8 +282,11 @@ export default function NewOrder() {
         }
     }
 
-    const deleteRow = (_id) => {
-        DeleteOrders([_id]);
+    const deleteRow = (_id, cb) => {
+        AddAlert("Er du sikker?", `Du er ved at slette en ordre fra "Nye Ordre"`, () => {
+            DeleteOrders([_id]);
+            cb();
+        });
     }
 
     useEffect(() => {
@@ -322,7 +328,11 @@ export default function NewOrder() {
                     <option value="godkend">Godkend Valgte</option>
                     <option value="slet">Slet Alle</option>
                 </select>
-                <button style={{ marginRight: "5px" }} type="button" onClick={PerformMassAction} className="button">Anvend</button>
+                <button style={{ marginRight: "5px" }} type="button" onClick={() => {
+                    if (massActionSelect.current.value) {
+                        AddAlert("Er du sikker?", `Du er ved at udføre massehandling: "${massActionSelect.current.value}"!`, () => { PerformMassAction() })
+                    }
+                }} className="button">Anvend</button>
 
                 <input ref={input => search.current = input} onKeyDown={(ev) => ListenForKey(ev, 'Enter', searchButton)} type="text" className="selector space" placeholder="Søgeord..." />
                 <button onClick={() => searchButton(search.current.value)} type="button" className="button space">Søg</button>
