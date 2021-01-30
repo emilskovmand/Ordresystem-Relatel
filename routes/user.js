@@ -8,10 +8,6 @@ const orderModel = require('../models/orderModel');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('This is the user API');
-});
-
 // ROUTE: /api/user/login
 router.post('/login', (req, res, next) => {
 
@@ -44,6 +40,11 @@ router.get('/logout', (req, res) => {
 
 // ROUTE: /api/user/getUser
 router.get('/getUser', async (req, res) => {
+    if (!req.user) {
+        res.json(req.user);
+        res.status(401);
+    }
+
     try {
         res.json({ user: req.user }); // The req.user stores the entire user information that has been authenticated inside of it.
         res.status(200);
@@ -55,6 +56,11 @@ router.get('/getUser', async (req, res) => {
 
 // ROUTE: /api/user/register
 router.post('/register', (req, res) => {
+    if (!req.user) {
+        res.json("Intet brugerinformationer tilgængeligt.");
+        res.status(401);
+    }
+
     userModel.findOne({ username: req.body.username }, async (err, doc) => {
         if (err) {
             res.status(500);
@@ -86,6 +92,11 @@ router.post('/register', (req, res) => {
 
 // ROUTE: /api/user/editmyuser
 router.put('/editmyuser/:_id', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json("Intet brugerinformationer tilgængelige.")
+    }
+
     if (req.body.password.length <= 7) {
         res.status(401);
         res.json("Kodeords kriterier ikke mødt.");

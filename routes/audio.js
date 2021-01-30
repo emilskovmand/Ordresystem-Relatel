@@ -9,6 +9,11 @@ const upload = multer().single('file');
 
 // ROUTE: /api/audio/%DYNAMIC%filename
 router.get('/:filename', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json([]);
+    }
+
     try {
         res.setHeader("content-type", "audio/*");
         if (fs.existsSync(`./uploads/${req.params.filename}`)) {
@@ -25,6 +30,10 @@ router.get('/:filename', async (req, res) => {
 
 // ROUTE: /api/audio/upload
 router.post('/upload', function (req, res) {
+    if (!req.user) {
+        res.status(401);
+        res.json({});
+    }
 
     upload(req, res, async function (err) {
         if (err instanceof multer.MulterError) {

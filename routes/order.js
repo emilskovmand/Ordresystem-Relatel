@@ -11,6 +11,12 @@ const recordingModel = require('../models/recordingModel');
 
 // ROUTE: /api/order/statusOrders/%DYNAMIC%OrderStatus
 router.get('/statusOrders/:status', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json([]);
+        return;
+    }
+
     try {
         const orders = await orderModel.find({ Status: req.params.status, Slettet: false });
         res.json(orders.reverse());
@@ -24,6 +30,12 @@ router.get('/statusOrders/:status', async (req, res) => {
 
 // ROUTE: /api/order/deleted
 router.get('/deleted', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json([]);
+        return;
+    }
+
     try {
         const orders = await orderModel.find({ Slettet: true });
         res.json(orders.reverse());
@@ -35,6 +47,12 @@ router.get('/deleted', async (req, res) => {
 
 // ROUTE: /api/order/delete
 router.delete('/delete', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json("Intet login informationer");
+        return;
+    }
+
     try {
         orderModel.updateMany(
             { _id: { $in: req.body.deleteList } },
@@ -51,6 +69,12 @@ router.delete('/delete', async (req, res) => {
 
 // ROUTE: /api/order/permanentlyDelete
 router.delete('/permanentlyDelete', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json("Intet login informationer");
+        return;
+    }
+
     try {
         orderModel.deleteMany({ _id: { $in: req.body.deleteList }, Slettet: true }, (err) => {
             if (err) {
@@ -134,6 +158,11 @@ router.get('/newid', async (req, res) => {
 
 // ROUTE: /api/order/updateSingleorder/%DYNAMIC%_id
 router.put('/updateSingleOrder/:_id', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json("Ingen brugerinformationer");
+    }
+
     try {
         const recordingId = await UpdateOrderRecordings(req.body.recordingArrays.Id, req.body.recordingArrays.array, req.body.recordingArrays.audio);
 
@@ -158,6 +187,11 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
 
 // ROUTE: /api/order/massaction
 router.put('/massapprove', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json("Ingen brugerinformationer");
+    }
+
     try {
         await orderModel.updateMany(
             { _id: { $in: req.body.orderIds } },
@@ -173,6 +207,11 @@ router.put('/massapprove', async (req, res) => {
 
 // ROUTE: /api/order/comments/%DYNAMIC%_id
 router.get('/comments/:_id', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json("Ingen brugerinformationer");
+    }
+
     try {
         const order = await orderModel.findById(req.params._id);
         if (order.Comments) {
@@ -192,6 +231,11 @@ router.get('/comments/:_id', async (req, res) => {
 
 // ROUTE: /api/order/addcomment/%DYNAMIC%_id
 router.post('/addcomment/:_id', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json("Ingen brugerinformationer");
+    }
+
     try {
         const order = await orderModel.findById(req.params._id);
         // Make new comment model
@@ -285,6 +329,10 @@ async function UpdateOrderRecordings(recordingId, recordingArray, recordingAudio
 
 // ROUTE: /api/order/recordings/%DYNAMIC%_id
 router.get('/recordings/:_id', async (req, res) => {
+    if (!req.user) {
+        res.status(401);
+        res.json([]);
+    }
 
     if (req.params._id.length < 10) {
         res.status(200).json([]);
