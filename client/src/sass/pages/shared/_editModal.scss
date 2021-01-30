@@ -53,7 +53,6 @@
             position: relative;
             height: 750px;
             width: 620px;
-            max-width: 40vw;
             background-color: whitesmoke;
             border-radius: 5px;
             padding: 25px;
@@ -454,14 +453,13 @@
 #commentsection {
     position: absolute;
     top: 45%;
-    left: 50%;
+    left: calc(50% + 470px);
     transform: translate(-50%, -50%);
 
     height: 750px;
     width: 300px;
     background-color: whitesmoke;
     border-radius: 10px;
-    margin-left: 35%;
 
     >.commentContainer {
         height: 100%;
