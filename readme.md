@@ -128,7 +128,7 @@ For at starte et registreret system:
 Hvis du har problemer med opsætning må du gerne kontakte mig, jeg har erfaring i at opsætte systemet på Ubuntu/Linux.
 
 ## Udvikling
-Kontakt author(s) vedrørende udvikling af systemet da det er beskyttet af en GNU General Public license.
+Kontakt author(s) vedrørende udvikling af systemet.
 
 ## License
 [GNU](https://www.gnu.org/licenses/gpl-3.0.html)
