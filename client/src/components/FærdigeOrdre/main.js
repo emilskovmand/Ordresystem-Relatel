@@ -85,7 +85,7 @@ export default function FærdigeOrdre() {
                             <th>Kundenavn</th>
                             <th>Antal Indtalinger</th>
                             <th>Valgte Speaker</th>
-                            <th>Tidligere Status</th>
+                            <th>Status</th>
                             <th>Ordre Information</th>
                         </tr>
                     </thead>
