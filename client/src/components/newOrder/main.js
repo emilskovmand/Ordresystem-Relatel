@@ -10,6 +10,7 @@ function NewOrderModal({ setModal }) {
     const { AddMessage } = useAPINotifier();
 
     const [AudioCount, setAudioCount] = useState(1);
+    const [loading, setLoading] = useState(false);
 
     const indtalingsBoxes = useRef([]);
 
@@ -44,6 +45,8 @@ function NewOrderModal({ setModal }) {
             errorBox.current.style = "display: block;"
             return;
         } else {
+            // Show loader while creating order.
+            setLoading(true);
 
             let indtalinger = [];
             for (let i = 0; i < indtalingsBoxes.current.length; i++) {
@@ -61,9 +64,9 @@ function NewOrderModal({ setModal }) {
             ).then((res) => {
                 res[0].then((val) => {
                     AddMessage(val, res[1]);
+                    setModal(false);
                 })
             });
-            setModal(false);
         }
     }
 
@@ -119,8 +122,14 @@ function NewOrderModal({ setModal }) {
     return (
         <>
             <div id="newOrderModal" className="modal">
-                <div className="modalContainer">
-                    <section className="modal-context">
+                {loading && <>
+                    <div className="loaderWrapper">
+                        <ReactLoading className="loader" type={"spin"} color={"black"} height={50} width={50} />
+                        <h2>Creating order.</h2>
+                    </div>
+                </>}
+                <div className={`modalContainer ${loading === true ? "hide" : ""}`}>
+                    <section className={`modal-context`}>
                         <h4>Opret ny ordre</h4>
                         <div className="inputField">
                             <div className="labelfield">

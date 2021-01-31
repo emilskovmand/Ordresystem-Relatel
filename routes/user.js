@@ -41,8 +41,9 @@ router.get('/logout', (req, res) => {
 // ROUTE: /api/user/getUser
 router.get('/getUser', async (req, res) => {
     if (!req.user) {
-        res.json(req.user);
+        res.json({ user: req.user });
         res.status(401);
+        return;
     }
 
     try {

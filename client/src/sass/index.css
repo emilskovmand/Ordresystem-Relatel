@@ -262,6 +262,25 @@ body {
   }
 }
 
+.modal > .loaderWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.modal > .loaderWrapper > .loader {
+  margin: 0 auto !important;
+}
+
+.modal > .loaderWrapper > h2 {
+  margin-top: 13px;
+  text-align: center;
+  color: #bababa;
+  font-weight: 200;
+}
+
 .modal .modalContainer {
   position: absolute;
   top: 40%;
@@ -273,6 +292,11 @@ body {
   width: 700px;
   border-radius: 3px;
   padding: 25px;
+}
+
+.modal .modalContainer.hide {
+  display: none;
+  visibility: hidden;
 }
 
 #newOrderModal .modal-context {
