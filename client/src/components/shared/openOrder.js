@@ -95,7 +95,7 @@ const Comment = ({ username, left = true, date, text }) => {
     )
 }
 
-export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, setEditState, editState, trashbin = false }) {
+export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, Mail, Virksomhed, Kundenavn, AntalIndtalinger, Sprog, ValgteSpeaker, Status, setEditState, editState, trashbin = false }) {
     const [closing, Close] = useState(false);
     const { AddMessage } = useAPINotifier();
     const [comments, setComments] = useState(null);
@@ -158,6 +158,8 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
                 inputs.current.kundenavn.value,
                 inputs.current.indtalinger.value,
                 inputs.current.speaker.value,
+                inputs.current.mail.value,
+                inputs.current.language.value,
                 orderStatus,
                 false,
                 { Id: recordingId, array: recordings, audio: soundFiles }
@@ -263,6 +265,8 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
             inputs.current.kundenavn.value,
             inputs.current.indtalinger.value,
             inputs.current.speaker.value,
+            inputs.current.mail.value,
+            inputs.current.language.value,
             Status,
             false,
             { Id: recordingId, array: recordings, audio: soundFiles }
@@ -346,6 +350,12 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
                         </div>
                         <div className="inputField">
                             <div className="labelfield">
+                                <label htmlFor="Mail">Mail</label>
+                            </div>
+                            <input ref={input => inputs.current.mail = input} name="mail" defaultValue={Mail}></input>
+                        </div>
+                        <div className="inputField">
+                            <div className="labelfield">
                                 <label htmlFor="Virksomhed">Virksomhed</label>
                             </div>
                             <input ref={input => inputs.current.virksomhed = input} name="Virksomhed" type="text" defaultValue={Virksomhed}></input>
@@ -361,6 +371,17 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
                                 <label htmlFor="indtalinger">Antal Indtalinger</label>
                             </div>
                             <input ref={input => inputs.current.indtalinger = input} name="indtalinger" onChange={updateAudioCount} type="number" min="1" max="10" maxLength="2" defaultValue={AntalIndtalinger}></input>
+                        </div>
+                        <div className="inputField">
+                            <div className="labelfield">
+                                <label htmlFor="valgteSpeaker">Sprog</label>
+                            </div>
+                            <select ref={select => inputs.current.language = select} id="language" name="language" className="dropDown" defaultValue={Sprog}>
+                                <option value="Engelsk">Engelsk</option>
+                                <option value="Dansk">Dansk</option>
+                                <option value="Svensk">Svensk</option>
+                                <option value="Norsk">Norsk</option>
+                            </select>
                         </div>
                         <div className="inputField">
                             <div className="labelfield">

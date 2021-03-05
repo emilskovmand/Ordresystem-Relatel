@@ -111,8 +111,10 @@ router.post('/createOrder', async (req, res) => {
         AntalIndtalinger: req.body.AntalIndtalinger,
         ValgteSpeaker: req.body.ValgteSpeaker,
         Status: req.body.Status,
-        Recording: recordingId
-    })
+        Recording: recordingId,
+        Mail: req.body.mail,
+        Language: req.body.sprog
+    });
     // Gemmer den nye ordre i databasen
     order.save()
         .then(data => {
@@ -163,6 +165,8 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
         res.json("Ingen brugerinformationer");
     }
 
+    console.log(req.body);
+
     try {
         const recordingId = await UpdateOrderRecordings(req.body.recordingArrays.Id, req.body.recordingArrays.array, req.body.recordingArrays.audio);
 
@@ -174,7 +178,9 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
             ValgteSpeaker: req.body.ValgteSpeaker,
             Status: req.body.Status,
             Slettet: req.body.Slettet,
-            Recording: recordingId
+            Recording: recordingId,
+            Mail: req.body.mail,
+            Language: req.body.sprog
         });
         res.json("Opdaterede ordre nr.: " + updatedOrder.OrdreId);
         res.status(200);
@@ -275,6 +281,9 @@ router.post('/addcomment/:_id', async (req, res) => {
             });;
         }
 
+        order.CommentAmount += 1;
+        order.save();
+
         res.json("Skrev kommentar til: " + order.OrdreId);
         res.status(200);
     } catch (error) {
@@ -351,5 +360,50 @@ router.get('/recordings/:_id', async (req, res) => {
         res.status(500).json("Serverfejl da applikationen forsøgte at indsamle indtalinger.");
     }
 });
+
+// ROUTE: /api/order/count
+router.get('/count', async (req, res) => {
+
+    const orderCount = {
+        nyeOrdre: 0,
+        underProduktion: 0,
+        GodkendProduktion: 0,
+        FærdigeOrder: 0,
+        PapirKurv: 0
+    }
+
+    if (!req.user) {
+        res.status(401);
+        res.json(orderCount);
+        return;
+    }
+
+    try {
+        const orders = await orderModel.find();
+
+        orders.forEach((doc) => {
+            if (doc.Slettet === true) {
+                orderCount.PapirKurv++;
+            } else {
+                if (doc.Status == "Færdig & Sendt") {
+                    orderCount.FærdigeOrder++;
+                } else if (doc.Status == "Ny Ordre") {
+                    orderCount.nyeOrdre++;
+                } else if (doc.Status == "Under Produktion") {
+                    orderCount.underProduktion++;
+                } else if (doc.Status == "Godkend Produktion") {
+                    orderCount.GodkendProduktion++;
+                }
+            }
+        })
+
+        res.json(orderCount).status(200);
+
+    } catch (error) {
+        console.log(error);
+        res.json(orderCount);
+        res.status(500);
+    }
+})
 
 module.exports = router;

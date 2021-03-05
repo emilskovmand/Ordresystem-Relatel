@@ -34,16 +34,17 @@
             text-align: center;
             color: rgb(186, 186, 186);
             font-weight: 200;
+            font-size: 16px;
         }
     }
 
     .modalContainer {
         position: absolute;
-        top: 40%;
+        top: 43.5%;
         left: 50%;
         transform: translate(-50%, -50%);
         background-color: whitesmoke;
-        height: 675px;
+        height: 725px;
         width: 700px;
 
         border-radius: 3px;
@@ -63,7 +64,7 @@
     animation: walk-in .3s ease-in 1;
 
     >h4 {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 300;
         text-align: center;
     }
@@ -75,7 +76,7 @@
         >.labelfield {
             margin-bottom: 3px;
             font-weight: 100;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         >input {
@@ -85,9 +86,26 @@
             border-right: 0px solid transparent;
             border-bottom: 1px solid #39a487;
             padding: 6px 3px;
-            font-size: 20px;
+            font-size: 16px;
             width: 100%;
             background-color: whitesmoke;
+        }
+
+        .dropDown {
+            margin-top: 2.3px;
+            color: black;
+            line-height: 13px;
+            outline: none;
+            background-color: transparent;
+            border: none;
+            padding: 3px 0px;
+            width: 50%;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 1px solid #39a487;
         }
     }
 
@@ -166,7 +184,7 @@
 }
 
 #newOrderAudioNarrationSection {
-    height: 130px;
+    height: 120px;
     width: 100%;
     border: 1px solid #ced0d4;
     border-radius: 5px;

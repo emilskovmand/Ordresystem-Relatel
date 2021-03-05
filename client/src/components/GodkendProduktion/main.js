@@ -5,7 +5,7 @@ import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
 import { useAlertContext } from '../context/confirmAlert'
 
-function Row({ OrdreId, dbId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, deleteRow, recordingId }) {
+function Row({ OrdreId, dbId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, deleteRow, Mail, Sprog, Comments, recordingId }) {
 
     const row = useRef();
 
@@ -20,11 +20,14 @@ function Row({ OrdreId, dbId, BestillingsDato, Virksomhed, Kundenavn, AntalIndta
             <tr ref={tr => row.current = tr}>
                 <td>{OrdreId}</td>
                 <td>{BestillingsDato.replace('T', " kl. ")}</td>
+                <td className="mail"><a href={`mailto:${Mail}`}>{Mail}</a></td>
                 <td className={(Virksomhed.length > 40) ? "break" : ""}>{Virksomhed}</td>
                 <td className={(Kundenavn.length > 40) ? "break" : ""}>{Kundenavn}</td>
                 <td>{AntalIndtalinger}</td>
+                <td>{Sprog}</td>
                 <td className={(ValgteSpeaker.length > 40) ? "break" : ""}>{ValgteSpeaker}</td>
                 <td>{Status}</td>
+                <td className="commentAmount"><div>{Comments}</div></td>
                 <td><button onClick={() => orderModal(arguments[0])} type="button" className="button">Åben Ordre</button></td>
                 <td><button onClick={() => deleteAction()} type="button" className="deleteRow" >Slet</button></td>
             </tr>
@@ -79,6 +82,8 @@ export default function GodkendProduktion() {
                 BestillingsDato={openOrder.BestillingsDato}
                 Virksomhed={openOrder.Virksomhed}
                 Kundenavn={openOrder.Kundenavn}
+                Mail={openOrder.Mail}
+                Sprog={openOrder.Sprog}
                 AntalIndtalinger={openOrder.AntalIndtalinger}
                 ValgteSpeaker={openOrder.ValgteSpeaker}
                 Status={openOrder.Status}
@@ -98,11 +103,14 @@ export default function GodkendProduktion() {
                         <tr>
                             <th>Ordre ID</th>
                             <th>Bestillingsdato</th>
+                            <th>Mail</th>
                             <th>Virksomhed</th>
                             <th>Kundenavn</th>
                             <th>Antal Indtalinger</th>
+                            <th>Sprog</th>
                             <th>Valgte Speaker</th>
                             <th>Status</th>
+                            <th>#</th>
                             <th>Ordre Information</th>
                             <td></td>
                         </tr>
@@ -122,6 +130,9 @@ export default function GodkendProduktion() {
                                     AntalIndtalinger={value.AntalIndtalinger}
                                     ValgteSpeaker={value.ValgteSpeaker}
                                     Status={value.Status}
+                                    Mail={value.Mail}
+                                    Sprog={value.Language}
+                                    Comments={value.CommentAmount}
                                     orderModal={editModal}
                                     recordingId={(value.Recording ? value.Recording : null)}
                                     deleteRow={deleteRow}

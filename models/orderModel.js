@@ -24,6 +24,12 @@ const OrderSchema = mongoose.Schema({
         type: Number,
         min: 1
     },
+    Language: {
+        type: String
+    },
+    Mail: {
+        type: String
+    },
     Comments: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
@@ -37,6 +43,10 @@ const OrderSchema = mongoose.Schema({
     },
     Status: {
         type: String
+    },
+    CommentAmount: {
+        type: Number,
+        default: 0
     },
     Slettet: {
         type: Boolean,

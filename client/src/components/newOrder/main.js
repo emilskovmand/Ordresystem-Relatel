@@ -60,6 +60,8 @@ function NewOrderModal({ setModal }) {
                 inputs.current.kundenavn.value,
                 inputs.current.indtalinger.value,
                 inputs.current.speaker.value,
+                inputs.current.mail.value,
+                inputs.current.language.value,
                 indtalinger
             ).then((res) => {
                 res[0].then((val) => {
@@ -145,6 +147,12 @@ function NewOrderModal({ setModal }) {
                         </div>
                         <div className="inputField">
                             <div className="labelfield">
+                                <label htmlFor="mail">Mail</label>
+                            </div>
+                            <input ref={input => inputs.current.mail = input} name="mail" type="text" placeholder=""></input>
+                        </div>
+                        <div className="inputField">
+                            <div className="labelfield">
                                 <label htmlFor="virksomhed">Virksomhed</label>
                             </div>
                             <input ref={input => inputs.current.virksomhed = input} name="virksomhed" type="text" placeholder=""></input>
@@ -160,6 +168,17 @@ function NewOrderModal({ setModal }) {
                                 <label htmlFor="Indtalinger">Antal Indtalinger</label>
                             </div>
                             <input ref={input => inputs.current.indtalinger = input} onChange={updateAudioCount} name="Indtalinger" type="number" min="1" max="10" maxLength="2" defaultValue={1}></input>
+                        </div>
+                        <div className="inputField">
+                            <div className="labelfield">
+                                <label htmlFor="speaker">Vælg sprog</label>
+                            </div>
+                            <select ref={select => inputs.current.language = select} id="language" name="language" className="dropDown">
+                                <option value="Engelsk" selected>Engelsk</option>¨
+                                <option value="Dansk">Dansk</option>
+                                <option value="Svensk">Svensk</option>
+                                <option value="Norsk">Norsk</option>
+                            </select>
                         </div>
                         <div className="inputField">
                             <div className="labelfield">
@@ -189,7 +208,7 @@ function NewOrderModal({ setModal }) {
     )
 }
 
-function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox, deleteRow, recordingId }) {
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox, deleteRow, Mail, Sprog, Comments, recordingId }) {
 
     const row = useRef();
 
@@ -205,11 +224,14 @@ function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndta
                 <td><input ref={input => checkBox(input)} type="checkbox" name="CheckBox" value={dbId} /></td>
                 <td>{OrdreId}</td>
                 <td>{BestillingsDato.replace('T', " kl. ")}</td>
-                <td className={(Virksomhed.length > 40) ? "break" : ""}>{Virksomhed}</td>
-                <td className={(Kundenavn.length > 40) ? "break" : ""}>{Kundenavn}</td>
+                <td className="mail"><a href={`mailto:${Mail}`}>{Mail}</a></td>
+                <td className={(Virksomhed.length > 35) ? "break" : ""}>{Virksomhed}</td>
+                <td className={(Kundenavn.length > 35) ? "break" : ""}>{Kundenavn}</td>
                 <td>{AntalIndtalinger}</td>
+                <td>{Sprog}</td>
                 <td className={(ValgteSpeaker.length > 40) ? "break" : ""}>{ValgteSpeaker}</td>
                 <td>{Status}</td>
+                <td className="commentAmount"><div>{Comments}</div></td>
                 <td><button onClick={() => orderModal(arguments[0])} type="button" className="button">Åben Ordre</button></td>
                 <td><button onClick={() => deleteAction()} type="button" className="deleteRow" >Slet</button></td>
             </tr>
@@ -319,6 +341,8 @@ export default function NewOrder() {
                 OrdreId={openOrder.OrdreId}
                 BestillingsDato={openOrder.BestillingsDato}
                 Virksomhed={openOrder.Virksomhed}
+                Mail={openOrder.Mail}
+                Sprog={openOrder.Sprog}
                 Kundenavn={openOrder.Kundenavn}
                 AntalIndtalinger={openOrder.AntalIndtalinger}
                 ValgteSpeaker={openOrder.ValgteSpeaker}
@@ -354,11 +378,14 @@ export default function NewOrder() {
                             <th><input type="CheckBox" onChange={(_) => toggleMark(_.target)} name="CheckAll" /> Vælg Alle</th>
                             <th>Ordre ID</th>
                             <th>Bestillingsdato</th>
+                            <th>Mail</th>
                             <th>Virksomhed</th>
                             <th>Kundenavn</th>
                             <th>Antal Indtalinger</th>
+                            <th>Sprog</th>
                             <th>Valgte Speaker</th>
                             <th>Status</th>
+                            <th>#</th>
                             <th>Ordre Information</th>
                             <th></th>
                         </tr>
@@ -378,7 +405,10 @@ export default function NewOrder() {
                                     AntalIndtalinger={value.AntalIndtalinger}
                                     ValgteSpeaker={value.ValgteSpeaker}
                                     Status={value.Status}
+                                    Mail={value.Mail}
+                                    Sprog={value.Language}
                                     orderModal={editModal}
+                                    Comments={value.CommentAmount}
                                     recordingId={(value.Recording ? value.Recording : null)}
                                     checkBox={el => checkBoxes.current[index] = el}
                                     deleteRow={deleteRow}

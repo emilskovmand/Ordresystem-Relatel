@@ -50,10 +50,29 @@ body {
 }
 
 .wrapper .sidebar ul li {
+  position: relative;
   padding: 15px;
   border-bottom: 1px solid #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.wrapper .sidebar ul li .Count {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  -webkit-transform: translate(0%, -50%);
+          transform: translate(0%, -50%);
+  text-align: center;
+  display: inline-block;
+  border-radius: 12px;
+  background-color: #005156;
+  color: whitesmoke !important;
+  padding: 6px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 30px;
 }
 
 .wrapper .sidebar ul a.active li {
@@ -232,6 +251,20 @@ body {
   margin-bottom: 5px;
 }
 
+.commentAmount > div {
+  text-align: center;
+  display: inline-block;
+  border-radius: 12px;
+  background-color: #E4E6EB;
+  color: black !important;
+  padding: 3px !important;
+  margin: 0 0 0 0 !important;
+  width: -moz-fit-content;
+  width: -webkit-fit-content;
+  width: fit-content;
+  min-width: 30px;
+}
+
 .modal {
   left: 0;
   top: 0;
@@ -279,16 +312,17 @@ body {
   text-align: center;
   color: #bababa;
   font-weight: 200;
+  font-size: 16px;
 }
 
 .modal .modalContainer {
   position: absolute;
-  top: 40%;
+  top: 43.5%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   background-color: whitesmoke;
-  height: 675px;
+  height: 725px;
   width: 700px;
   border-radius: 3px;
   padding: 25px;
@@ -307,7 +341,7 @@ body {
 }
 
 #newOrderModal .modal-context > h4 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 300;
   text-align: center;
 }
@@ -319,7 +353,7 @@ body {
 #newOrderModal .modal-context > .inputField > .labelfield {
   margin-bottom: 3px;
   font-weight: 100;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 #newOrderModal .modal-context > .inputField > input {
@@ -329,9 +363,26 @@ body {
   border-right: 0px solid transparent;
   border-bottom: 1px solid #39a487;
   padding: 6px 3px;
-  font-size: 20px;
+  font-size: 16px;
   width: 100%;
   background-color: whitesmoke;
+}
+
+#newOrderModal .modal-context > .inputField .dropDown {
+  margin-top: 2.3px;
+  color: black;
+  line-height: 13px;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  padding: 3px 0px;
+  width: 50%;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #39a487;
 }
 
 #newOrderModal .modal-context .submitOrder {
@@ -412,7 +463,7 @@ body {
 }
 
 #newOrderAudioNarrationSection {
-  height: 130px;
+  height: 120px;
   width: 100%;
   border: 1px solid #ced0d4;
   border-radius: 5px;
@@ -699,17 +750,17 @@ body {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  margin-bottom: 20px;
+  margin-bottom: 11px;
 }
 
 #EditModal > .modalWrapper > .modalContainer > .inputField {
-  margin-bottom: 10px;
+  margin-bottom: 7px;
 }
 
 #EditModal > .modalWrapper > .modalContainer > .inputField > .labelfield {
   margin-bottom: 3px;
   font-weight: 100;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 #EditModal > .modalWrapper > .modalContainer > .inputField > input {
@@ -719,15 +770,32 @@ body {
   border-right: 0px solid transparent;
   border-bottom: 1px solid #39a487;
   padding: 6px 3px;
-  font-size: 16px;
+  font-size: 13.5px;
   width: 100%;
   background-color: whitesmoke;
 }
 
+#EditModal > .modalWrapper > .modalContainer > .inputField .dropDown {
+  margin-top: 2.3px;
+  color: black;
+  line-height: 13px;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  padding: 3px 0px;
+  width: 50%;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #39a487;
+}
+
 #EditModal > .modalWrapper > .modalContainer > .statusContainer {
   width: 100%;
-  padding: 10px 2px;
-  font-size: 20px;
+  padding: 6px 2px;
+  font-size: 17.3px;
 }
 
 #EditModal > .modalWrapper > .modalContainer > .statusContainer span.NyOrdre {
@@ -751,7 +819,7 @@ body {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 6px 2px;
+  padding: 5px 2px;
   background-color: #ff9999;
   color: whitesmoke;
 }
@@ -887,7 +955,7 @@ body {
 }
 
 #AudioNarrationSection {
-  height: 250px;
+  height: 215px;
   width: 100%;
   border: 1px solid #ced0d4;
   border-radius: 5px;

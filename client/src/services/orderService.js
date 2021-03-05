@@ -1,5 +1,5 @@
 
-export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, indtalinger, Status = "Ny Ordre") {
+export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, mail, sprog, indtalinger, Status = "Ny Ordre") {
 
     const load = {
         OrdreId: parseInt(OrdreId),
@@ -9,7 +9,9 @@ export async function CreateOrder(OrdreId, Bestillingsdato, Virksomhed, Kundenav
         AntalIndtalinger: AntalIndtalinger,
         ValgteSpeaker: ValgteSpeaker,
         Status: Status,
-        indtalinger: indtalinger
+        indtalinger: indtalinger,
+        mail: mail,
+        sprog: sprog
     }
 
     const response = await fetch('/api/order/createOrder', {
@@ -49,7 +51,11 @@ export function searchFilter(criteria, row) {
         }
     } else if (criteria.length > 0) {
         criteria = criteria.toLowerCase();
-        if (row.Virksomhed.toLowerCase().includes(criteria) || row.Kundenavn.toLowerCase().includes(criteria) || row.ValgteSpeaker.toLowerCase().includes(criteria)) {
+        if (row.Virksomhed.toLowerCase().includes(criteria)
+            || row.Kundenavn.toLowerCase().includes(criteria)
+            || row.ValgteSpeaker.toLowerCase().includes(criteria)
+            || row.Sprog.toLowerCase().includes(criteria)
+            || row.Mail.toLowerCase().includes(criteria)) {
             return true;
         } else {
             return false;
@@ -64,7 +70,7 @@ export function ListenForKey(ev, keyName, cb) {
     }
 }
 
-export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, Slettet = false, recordingsArray) {
+export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, mail, sprog, Status, Slettet = false, recordingsArray) {
 
     const load = {
         OrdreId: parseInt(OrdreId),
@@ -75,7 +81,9 @@ export async function UpdateSingleOrder(_id, OrdreId, Bestillingsdato, Virksomhe
         ValgteSpeaker: ValgteSpeaker,
         Status: Status,
         Slettet: Slettet,
-        recordingArrays: recordingsArray
+        recordingArrays: recordingsArray,
+        sprog: sprog,
+        mail: mail
     }
 
     const response = await fetch(`/api/order/updateSingleOrder/${_id}`, {
@@ -147,4 +155,9 @@ export async function AddComment(_orderId, text) {
     });
 
     return [response.json(), response.status];
+}
+
+export async function OrderCount() {
+    const response = await fetch(`/api/order/count`);
+    return response.json();
 }

@@ -4,18 +4,21 @@ import OpenOrder from '../shared/openOrder'
 import ReactLoading from 'react-loading'
 import { useAuth } from '../context/auth'
 
-function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, checkBox, recordingId }) {
+function Row({ dbId, OrdreId, BestillingsDato, Virksomhed, Kundenavn, AntalIndtalinger, ValgteSpeaker, Status, orderModal, Mail, Sprog, Comments, checkBox, recordingId }) {
 
     return (
         <>
             <tr>
                 <td>{OrdreId}</td>
                 <td>{BestillingsDato.replace('T', " kl. ")}</td>
+                <td className="mail"><a href={`mailto:${Mail}`}>{Mail}</a></td>
                 <td className={(Virksomhed.length > 40) ? "break" : ""}>{Virksomhed}</td>
                 <td className={(Kundenavn.length > 40) ? "break" : ""}>{Kundenavn}</td>
                 <td>{AntalIndtalinger}</td>
+                <td>{Sprog}</td>
                 <td className={(ValgteSpeaker.length > 40) ? "break" : ""}>{ValgteSpeaker}</td>
                 <td>{Status}</td>
+                <td className="commentAmount"><div>{Comments}</div></td>
                 <td><button onClick={() => orderModal(arguments[0])} type="button" className="button">Åben Ordre</button></td>
             </tr>
         </>
@@ -61,6 +64,8 @@ export default function Papirkurv() {
                 BestillingsDato={openOrder.BestillingsDato}
                 Virksomhed={openOrder.Virksomhed}
                 Kundenavn={openOrder.Kundenavn}
+                Mail={openOrder.Mail}
+                Sprog={openOrder.Sprog}
                 AntalIndtalinger={openOrder.AntalIndtalinger}
                 ValgteSpeaker={openOrder.ValgteSpeaker}
                 Status={openOrder.Status}
@@ -81,11 +86,14 @@ export default function Papirkurv() {
                         <tr>
                             <th>Ordre ID</th>
                             <th>Bestillingsdato</th>
+                            <th>Mail</th>
                             <th>Virksomhed</th>
                             <th>Kundenavn</th>
                             <th>Antal Indtalinger</th>
+                            <th>Sprog</th>
                             <th>Valgte Speaker</th>
                             <th>Status</th>
+                            <th>#</th>
                             <th>Ordre Information</th>
                         </tr>
                     </thead>
@@ -104,6 +112,9 @@ export default function Papirkurv() {
                                     AntalIndtalinger={value.AntalIndtalinger}
                                     ValgteSpeaker={value.ValgteSpeaker}
                                     Status={value.Status}
+                                    Mail={value.Mail}
+                                    Comments={value.CommentAmount}
+                                    Sprog={value.Language}
                                     orderModal={editModal}
                                     recordingId={(value.Recording ? value.Recording : null)}
                                 />
