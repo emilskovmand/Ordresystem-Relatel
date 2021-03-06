@@ -4,8 +4,9 @@ import { useAPINotifier } from '../context/MessageReceiver'
 import { useAuth } from '../context/auth'
 import ReactLoading from 'react-loading'
 import NewUserModal from './createUser'
+import UserLogs from './UserLogs'
 
-function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = false, produce = false, approve = false, complete = false }) {
+function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = false, produce = false, approve = false, complete = false, toggleLogs }) {
     const [changed, setChanged] = useState(false);
 
     const inputs = useRef({});
@@ -67,6 +68,9 @@ function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = fals
                 <td>
                     <button onClick={() => confirmSave()} className="SaveButton">Gem ændringer</button>
                 </td>
+                <td>
+                    <button onClick={() => toggleLogs(dbid, userName)} className="logButton">Se logs</button>
+                </td>
             </tr>
         </>
     )
@@ -77,6 +81,7 @@ export default function ConfigPage() {
     let auth = useAuth();
 
     const [showModal, setModal] = useState(false);
+    const [Logs, setLogs] = useState({ active: false });
     const [data, setData] = useState(null);
     const [editUser, setEdituser] = useState(false);
     const { AddMessage } = useAPINotifier();
@@ -107,6 +112,10 @@ export default function ConfigPage() {
 
     const setParentModalState = (val) => {
         setModal(val);
+    }
+
+    const setLogModalState = (userId, userName, active = false) => {
+        setLogs({ userId: userId, userName: userName, active: active });
     }
 
     const ownRoles = () => {
@@ -145,6 +154,7 @@ export default function ConfigPage() {
     return (
         <>
             {showModal && <NewUserModal setModal={setParentModalState} />}
+            {Logs.active && <UserLogs userId={Logs.userId} userName={Logs.userName} setLogModal={() => setLogModalState({ active: false })} />}
             <main id="config-page">
                 <div className="myuserContainer">
                     <div id="myUser">
@@ -200,6 +210,7 @@ export default function ConfigPage() {
                                     <th>Godkender</th>
                                     <th>Se færdige ordre & Papirkurv</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -214,6 +225,7 @@ export default function ConfigPage() {
                                         produce={value.permissions.produce}
                                         approve={value.permissions.approve}
                                         complete={value.permissions.complete}
+                                        toggleLogs={(id, userName) => setLogModalState(id, userName, true)}
                                     />
                                 })}
                             </tbody>

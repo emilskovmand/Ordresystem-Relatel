@@ -9,6 +9,8 @@ const commentModel = require('../models/commentModel');
 const recodingModel = require('../models/recordingModel');
 const recordingModel = require('../models/recordingModel');
 
+const SubmitUserLog = require('../CreateLog');
+
 // ROUTE: /api/order/statusOrders/%DYNAMIC%OrderStatus
 router.get('/statusOrders/:status', async (req, res) => {
     if (!req.user) {
@@ -59,6 +61,9 @@ router.delete('/delete', async (req, res) => {
             { $set: { Slettet: true } }, (err) => {
                 if (err) { console.log(err); res.status(500); }
             });
+
+        SubmitUserLog(req.user, `Sendte ordre/ordrer til papirkurven`, 'Delete');
+
         res.status(200);
         res.json("Ordrer blev slettet med succes!");
     } catch (error) {
@@ -84,6 +89,9 @@ router.delete('/permanentlyDelete', async (req, res) => {
                 res.json("Slettede ordrer: " + req.body.deleteList)
             }
         });
+
+        SubmitUserLog(req.user, `Slettede permanent ordre fra papirkurven`, 'Delete');
+
         res.status(200);
     } catch (error) {
         console.log(error);
@@ -118,6 +126,9 @@ router.post('/createOrder', async (req, res) => {
     // Gemmer den nye ordre i databasen
     order.save()
         .then(data => {
+
+            SubmitUserLog(req.user, `Skabte ordre med Id: ${req.body.OrdreId}`, 'Create');
+
             res.json(`Ordre nr.: '${req.body.OrdreId}' skabt!`)
             res.status(200);
         })
@@ -182,6 +193,9 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
             Mail: req.body.mail,
             Language: req.body.sprog
         });
+
+        SubmitUserLog(req.user, `Opdaterede ordre med Id: ${updatedOrder.OrdreId}`, 'Update');
+
         res.json("Opdaterede ordre nr.: " + updatedOrder.OrdreId);
         res.status(200);
     } catch (error) {
@@ -191,7 +205,7 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
     }
 });
 
-// ROUTE: /api/order/massaction
+// ROUTE: /api/order/massapprove
 router.put('/massapprove', async (req, res) => {
     if (!req.user) {
         res.status(401);
@@ -204,6 +218,9 @@ router.put('/massapprove', async (req, res) => {
             { $set: { Status: "Under Produktion" } }, (err) => {
                 if (err) { console.log(err); res.status(500).json("Massehandling databasefejl.");; }
             });
+
+        SubmitUserLog(req.user, `Massehandling "Godkend valgte" udført på ${req.body.orderIds.length} Antal ordre.`, 'Update');
+
         res.status(200).json("Massehandling udført på " + req.body.orderIds.length + " Antal ordre.");
     } catch (error) {
         console.log(error);
@@ -283,6 +300,8 @@ router.post('/addcomment/:_id', async (req, res) => {
 
         order.CommentAmount += 1;
         order.save();
+
+        SubmitUserLog(req.user, `Tilføjede en kommentar til ordreId: ${order.OrdreId}.`, 'Create');
 
         res.json("Skrev kommentar til: " + order.OrdreId);
         res.status(200);

@@ -1,0 +1,143 @@
+#logModal {
+    position: fixed;
+    top: 0;
+    z-index: 2000;
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    background-color: rgba($color: #575555, $alpha: .7);
+
+    animation: fade-in .3s ease-in 1;
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .modalWrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        >.modalContainer {
+            height: 80vh;
+            width: 600px;
+            background-color: whitesmoke;
+            border-radius: 5px;
+            padding: 25px;
+
+            >h3 {
+                font-size: 22px;
+                text-align: center;
+            }
+
+            animation: walk-inEdit .35s ease-out 1;
+
+            @keyframes walk-inEdit {
+                from {
+                    transform: translateY(-30px) rotateY(16deg);
+                }
+
+                to {
+                    transform: translateY(0px) rotateY(0deg);
+                }
+            }
+
+            >.logBox {
+                background-color: white;
+                border-radius: 10px;
+                width: 100%;
+                height: 85%;
+                margin: 13px 0px;
+                overflow-y: auto;
+                vertical-align: bottom;
+                position: relative;
+                overflow: auto;
+            }
+
+            .closeButton {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translate(-50%, 0%);
+                border-radius: 10px;
+                width: 40%;
+                background-color: #e41010;
+                outline: none;
+                font-size: 16px;
+                border: 0px solid transparent;
+                padding: 14px 0px;
+                color: whitesmoke;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #c70e0e;
+                }
+            }
+        }
+    }
+}
+
+
+.Log {
+    background: #F0F2F1;
+    text-align: left;
+    border-radius: 5px;
+    margin: 10px 2%;
+    min-height: 45px;
+    width: 96%;
+    color: gray;
+
+    >.operation {
+        font-size: 14px;
+        padding-top: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-bottom: 1px solid #D2D3D5;
+    }
+
+    >.underInfo {
+        font-size: 12.3px;
+
+        >* {
+            float: left;
+            padding-top: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        >.username {
+            border-right: 1px solid #D2D3D5;
+        }
+
+        >.action {
+            float: right;
+
+            >.Update {
+                color: yellow;
+            }
+
+            >.Create {
+                color: green;
+            }
+
+            >.Delete {
+                color: red;
+            }
+
+            >.Read {
+                color: blue;
+            }
+
+            span {
+                text-transform: uppercase;
+            }
+        }
+    }
+}

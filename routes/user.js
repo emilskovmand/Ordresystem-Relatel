@@ -5,8 +5,12 @@ const bcrypt = require('bcryptjs');
 
 const userModel = require('../models/userModel');
 const orderModel = require('../models/orderModel');
+const logModel = require('../models/logModel');
+
+const SubmitUserLog = require('../CreateLog');
 
 const router = express.Router();
+
 
 // ROUTE: /api/user/login
 router.post('/login', (req, res, next) => {
@@ -84,6 +88,9 @@ router.post('/register', (req, res) => {
                 }
             })
             await newUser.save();
+
+            SubmitUserLog(req.user, `Bruger med brugernavn: "${req.body.username}" skabt.`, 'Create');
+
             res.json(`Bruger med brugernavn: "${req.body.username}" blev skabt!`);
             res.status(200);
         }
@@ -112,6 +119,9 @@ router.put('/editmyuser/:_id', async (req, res) => {
                 password: hashedPassword,
                 email: req.body.email
             });
+
+            SubmitUserLog(req.user, "Opdaterede sine egne bruger informationer", 'Update');
+
             res.json("Opdaterede dine egne bruger informationer");
             res.status(200);
         } catch (error) {
@@ -149,7 +159,7 @@ router.get('/userlist', async (req, res) => {
     }
 })
 
-// ROUTE: /api/user/update
+// ROUTE: /api/user/updateRoles/%DYNAMIC%_id
 router.put('/updateRoles/:_id', async (req, res) => {
 
     if (!req.user.permissions.admin) {
@@ -168,11 +178,32 @@ router.put('/updateRoles/:_id', async (req, res) => {
                 complete: req.body.completedOrders
             }
         })
+
+        SubmitUserLog(`Opdaterede brugernavn: ${updatedUser.username}`)
+
         res.json("Opdaterede bruger: " + updatedUser.username);
         res.status(200);
     } catch (error) {
         res.status(500);
         res.json("Serverfejl: userUpdate")
+    }
+})
+
+// ROUTE: /api/user/userlogs/%DYNAMIC%_id
+router.get('/userlogs/:_id', async (req, res) => {
+    if (!req.user.permissions.admin) {
+        res.status(401);
+        res.json("Manglende tilladelser til at hente brugerlogs");
+        return;
+    }
+
+    try {
+        const logs = await logModel.find({ userId: req.params._id });
+        res.json(logs.reverse());
+        res.status(200);
+    } catch (error) {
+        res.status(500);
+        res.json("Serverfejl: userlogs")
     }
 })
 

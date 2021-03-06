@@ -185,6 +185,20 @@
                     background-color: darken($color: #387ec9, $amount: 8%);
                 }
             }
+
+            .logButton {
+                background-color: #faa892;
+                padding: 11px 20px;
+                border-radius: 5px;
+                border: 1px solid transparent;
+                color: #ffffff;
+                margin-right: 7px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: darken($color: #faa892, $amount: 8%);
+                }
+            }
         }
     }
 }

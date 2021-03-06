@@ -1589,6 +1589,20 @@ body {
   background-color: #2e6aaa;
 }
 
+#config-page > .userlistContainer .userRow .logButton {
+  background-color: #faa892;
+  padding: 11px 20px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  color: #ffffff;
+  margin-right: 7px;
+  cursor: pointer;
+}
+
+#config-page > .userlistContainer .userRow .logButton:hover {
+  background-color: #f8896b;
+}
+
 #NewUserModal {
   position: fixed;
   top: 0;
@@ -1988,6 +2002,151 @@ body {
   width: 100vw;
   height: 100vh;
   z-index: 2200;
+}
+
+#logModal {
+  position: fixed;
+  top: 0;
+  z-index: 2000;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  background-color: rgba(87, 85, 85, 0.7);
+  -webkit-animation: fade-in .3s ease-in 1;
+          animation: fade-in .3s ease-in 1;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#logModal .modalWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#logModal .modalWrapper > .modalContainer {
+  height: 80vh;
+  width: 600px;
+  background-color: whitesmoke;
+  border-radius: 5px;
+  padding: 25px;
+  -webkit-animation: walk-inEdit .35s ease-out 1;
+          animation: walk-inEdit .35s ease-out 1;
+}
+
+#logModal .modalWrapper > .modalContainer > h3 {
+  font-size: 22px;
+  text-align: center;
+}
+
+@keyframes walk-inEdit {
+  from {
+    -webkit-transform: translateY(-30px) rotateY(16deg);
+            transform: translateY(-30px) rotateY(16deg);
+  }
+  to {
+    -webkit-transform: translateY(0px) rotateY(0deg);
+            transform: translateY(0px) rotateY(0deg);
+  }
+}
+
+#logModal .modalWrapper > .modalContainer > .logBox {
+  background-color: white;
+  border-radius: 10px;
+  width: 100%;
+  height: 85%;
+  margin: 13px 0px;
+  overflow-y: auto;
+  vertical-align: bottom;
+  position: relative;
+  overflow: auto;
+}
+
+#logModal .modalWrapper > .modalContainer .closeButton {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0%);
+          transform: translate(-50%, 0%);
+  border-radius: 10px;
+  width: 40%;
+  background-color: #e41010;
+  outline: none;
+  font-size: 16px;
+  border: 0px solid transparent;
+  padding: 14px 0px;
+  color: whitesmoke;
+  cursor: pointer;
+}
+
+#logModal .modalWrapper > .modalContainer .closeButton:hover {
+  background-color: #c70e0e;
+}
+
+.Log {
+  background: #F0F2F1;
+  text-align: left;
+  border-radius: 5px;
+  margin: 10px 2%;
+  min-height: 45px;
+  width: 96%;
+  color: gray;
+}
+
+.Log > .operation {
+  font-size: 14px;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-bottom: 1px solid #D2D3D5;
+}
+
+.Log > .underInfo {
+  font-size: 12.3px;
+}
+
+.Log > .underInfo > * {
+  float: left;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.Log > .underInfo > .username {
+  border-right: 1px solid #D2D3D5;
+}
+
+.Log > .underInfo > .action {
+  float: right;
+}
+
+.Log > .underInfo > .action > .Update {
+  color: yellow;
+}
+
+.Log > .underInfo > .action > .Create {
+  color: green;
+}
+
+.Log > .underInfo > .action > .Delete {
+  color: red;
+}
+
+.Log > .underInfo > .action > .Read {
+  color: blue;
+}
+
+.Log > .underInfo > .action span {
+  text-transform: uppercase;
 }
 
 body {

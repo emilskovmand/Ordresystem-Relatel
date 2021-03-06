@@ -87,3 +87,8 @@ export async function CreateUser(username, password, email, admin, createOrder, 
 
     return [response.json(), response.status];
 }
+
+export async function GetUserLogs(userId) {
+    const response = await fetch(`/api/user/userlogs/${userId}`);
+    return response.json();
+}
