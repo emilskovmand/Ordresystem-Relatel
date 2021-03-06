@@ -709,11 +709,13 @@ body {
           animation: walk-inEdit .35s ease-out 1;
 }
 
-#EditModal > .modalWrapper > .modalContainer #trashcan {
+#EditModal > .modalWrapper > .modalContainer #cross {
   cursor: pointer;
   position: absolute;
+  font-size: 21px;
   right: 25px;
   top: 25px;
+  padding: 5px;
 }
 
 @-webkit-keyframes walk-inEdit {
@@ -830,23 +832,31 @@ body {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  width: 70%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button {
   cursor: pointer;
+  border-radius: 5px;
+  width: 160px;
+  height: 48px;
+  margin-right: 15px;
+  padding: 10px 16px;
+}
+
+#EditModal > .modalWrapper > .modalContainer .buttonsContainer > button:last-child {
+  margin-right: 0px;
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.nextButton {
   font-size: 16px;
   background-color: #387ec9;
   outline: none;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
   border: 0px solid transparent;
-  padding: 20px 0px;
   color: whitesmoke;
-  width: calc(100% / 3);
+  margin-right: 15px;
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.nextButton:hover {
@@ -858,9 +868,7 @@ body {
   background-color: #39a487;
   outline: none;
   border: 0px solid transparent;
-  padding: 20px 0px;
   color: whitesmoke;
-  width: calc(100% / 3);
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.submitButton:hover {
@@ -869,15 +877,10 @@ body {
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.cancelButton {
   font-size: 16px;
-  height: 100%;
-  width: calc(100% / 3);
   color: whitesmoke;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   background-color: #e41010;
   outline: none;
   border: 0px solid transparent;
-  padding: 20px 0px;
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.cancelButton:hover {
@@ -887,21 +890,14 @@ body {
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.cancelButton.closeButton {
   border-radius: 10px;
   margin: 0 auto;
-  width: 40%;
-  margin-left: 30%;
-  margin-right: 30%;
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.genskabButton {
   font-size: 16px;
   background-color: #39a487;
   outline: none;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
   border: 0px solid transparent;
-  padding: 20px 0px;
   color: whitesmoke;
-  width: calc(100% / 3);
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.genskabButton:hover {
@@ -913,9 +909,7 @@ body {
   background-color: #9a4bd1;
   outline: none;
   border: 0px solid transparent;
-  padding: 20px 0px;
   color: whitesmoke;
-  width: calc(100% / 3);
 }
 
 #EditModal > .modalWrapper > .modalContainer .buttonsContainer > button.deleteButton:hover {

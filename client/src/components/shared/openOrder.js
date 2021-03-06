@@ -339,7 +339,7 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
             <div id="EditModal" className={`openOrder ${(closing) ? " close" : ""}`}>
                 <div className="modalWrapper">
                     <div className={`modalContainer${(closing) ? " close" : ""}`}>
-                        {!trashbin && <i id="trashcan" className="fa fa-trash" aria-hidden="true" onClick={() => deleteOrder()} ></i>}
+                        <i id="cross" className="fa fa-times" aria-hidden="true" onClick={() => setEditState({}, false)} ></i>
                         <h4>OrdreId: {OrdreId}</h4>
                         <p>{_id}</p>
                         <div className="inputField">
@@ -423,17 +423,16 @@ export default function OpenOrder({ _id, OrdreId, recordingId, BestillingsDato, 
                                     Opdater Ordre
                             </button>
                             </>}
-                            <button onClick={() => setEditState({}, false)} className={`cancelButton ${(Status === 'Færdig & Sendt') ? "closeButton" : ""}`}>
-                                {Status === 'Færdig & Sendt' ? <>Luk</> : <>Annuller</>}
-                            </button>
+                            {Status === 'Færdig & Sendt' && <>
+                                <button onClick={() => setEditState({}, false)} className={`cancelButton ${(Status === 'Færdig & Sendt') ? "closeButton" : ""}`}>
+                                    Luk
+                                </button>
+                            </>}
                         </div>}
 
                         {trashbin && <div className="buttonsContainer">
                             <button onClick={() => remakeOrder()} className="genskabButton">Genskab Ordre</button>
                             <button onClick={() => permanentlyDelete()} className="deleteButton">Slet Permanent</button>
-                            <button onClick={() => setEditState({}, false)} className={`cancelButton`}>
-                                Annuller
-                            </button>
                         </div>}
                     </div>
 
