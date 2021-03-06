@@ -56,13 +56,20 @@ router.delete('/delete', async (req, res) => {
     }
 
     try {
+
+        if (req.body.deleteList.length === 1) {
+            const order = await orderModel.findById(req.body.deleteList[0]);
+
+            SubmitUserLog(req.user, `Sendte ordre til papirkurven. Id: ${order.OrdreId}`, 'Delete');
+        } else {
+            SubmitUserLog(req.user, `Sendte flere ordrer til papirkurven`, 'Delete');
+        }
+
         orderModel.updateMany(
             { _id: { $in: req.body.deleteList } },
             { $set: { Slettet: true } }, (err) => {
                 if (err) { console.log(err); res.status(500); }
             });
-
-        SubmitUserLog(req.user, `Sendte ordre/ordrer til papirkurven`, 'Delete');
 
         res.status(200);
         res.json("Ordrer blev slettet med succes!");
@@ -81,6 +88,10 @@ router.delete('/permanentlyDelete', async (req, res) => {
     }
 
     try {
+
+        const ordre = await orderModel.findById(req.body.deleteList[0]);
+        SubmitUserLog(req.user, `Slettede permanent ordre. Id: ${ordre.OrdreId}`, 'Delete');
+
         orderModel.deleteMany({ _id: { $in: req.body.deleteList }, Slettet: true }, (err) => {
             if (err) {
                 console.log(err);
@@ -89,8 +100,6 @@ router.delete('/permanentlyDelete', async (req, res) => {
                 res.json("Slettede ordrer: " + req.body.deleteList)
             }
         });
-
-        SubmitUserLog(req.user, `Slettede permanent ordre fra papirkurven`, 'Delete');
 
         res.status(200);
     } catch (error) {
@@ -175,8 +184,6 @@ router.put('/updateSingleOrder/:_id', async (req, res) => {
         res.status(401);
         res.json("Ingen brugerinformationer");
     }
-
-    console.log(req.body);
 
     try {
         const recordingId = await UpdateOrderRecordings(req.body.recordingArrays.Id, req.body.recordingArrays.array, req.body.recordingArrays.audio);
