@@ -179,7 +179,7 @@ router.put('/updateRoles/:_id', async (req, res) => {
             }
         })
 
-        SubmitUserLog(`Opdaterede brugernavn: ${updatedUser.username}`)
+        SubmitUserLog(req.user, `Opdaterede brugernavn: ${updatedUser.username}`, 'Update');
 
         res.json("Opdaterede bruger: " + updatedUser.username);
         res.status(200);

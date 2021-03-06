@@ -2071,6 +2071,18 @@ body {
   overflow: auto;
 }
 
+#logModal .modalWrapper > .modalContainer > .logBox > .loaderWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#logModal .modalWrapper > .modalContainer > .logBox > .loaderWrapper > .loader {
+  margin-left: 0px;
+}
+
 #logModal .modalWrapper > .modalContainer .closeButton {
   position: absolute;
   bottom: 20px;
@@ -2093,17 +2105,31 @@ body {
 }
 
 .Log {
+  display: inline-block;
   background: #F0F2F1;
   text-align: left;
   border-radius: 5px;
   margin: 10px 2%;
   min-height: 45px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   width: 96%;
   color: gray;
+  -webkit-transition: all .15s ease-in-out;
+  transition: all .15s ease-in-out;
+}
+
+.Log:hover {
+  background: black;
+  color: whitesmoke;
 }
 
 .Log > .operation {
   font-size: 14px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   padding-top: 5px;
   padding-left: 10px;
   padding-right: 10px;
@@ -2130,7 +2156,7 @@ body {
 }
 
 .Log > .underInfo > .action > .Update {
-  color: yellow;
+  color: #24baff;
 }
 
 .Log > .underInfo > .action > .Create {
@@ -2142,11 +2168,12 @@ body {
 }
 
 .Log > .underInfo > .action > .Read {
-  color: blue;
+  color: #2b2b8d;
 }
 
 .Log > .underInfo > .action span {
   text-transform: uppercase;
+  font-weight: 500;
 }
 
 body {

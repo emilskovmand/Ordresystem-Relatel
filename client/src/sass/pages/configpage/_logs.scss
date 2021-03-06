@@ -59,6 +59,17 @@
                 vertical-align: bottom;
                 position: relative;
                 overflow: auto;
+
+                >.loaderWrapper {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+
+                    >.loader {
+                        margin-left: 0px;
+                    }
+                }
             }
 
             .closeButton {
@@ -86,16 +97,25 @@
 
 
 .Log {
+    display: inline-block;
     background: #F0F2F1;
     text-align: left;
     border-radius: 5px;
     margin: 10px 2%;
     min-height: 45px;
+    height: fit-content;
     width: 96%;
     color: gray;
+    transition: all .15s ease-in-out;
+
+    &:hover {
+        background: black;
+        color: whitesmoke;
+    }
 
     >.operation {
         font-size: 14px;
+        height: fit-content;
         padding-top: 5px;
         padding-left: 10px;
         padding-right: 10px;
@@ -120,7 +140,7 @@
             float: right;
 
             >.Update {
-                color: yellow;
+                color: rgb(36, 186, 255);
             }
 
             >.Create {
@@ -132,11 +152,12 @@
             }
 
             >.Read {
-                color: blue;
+                color: rgb(43, 43, 141);
             }
 
             span {
                 text-transform: uppercase;
+                font-weight: 500;
             }
         }
     }

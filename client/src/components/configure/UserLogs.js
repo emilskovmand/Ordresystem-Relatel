@@ -2,7 +2,7 @@ import { GetUserLogs } from '../../services/userService'
 import ReactLoading from 'react-loading'
 import { useEffect, useState } from 'react'
 
-function Log({ operation, action, username, userId, date }) {
+function Log({ operation = "No operation", action = "No action", username = "No username", userId, date = "No date" }) {
 
     return (
         <>
@@ -48,6 +48,12 @@ export default function UserLogs({ userId, userName, setLogModal }) {
                                     userId={log.userId}
                                 />
                             })}
+
+                            {!Logs && <>
+                                <div className="loaderWrapper">
+                                    <ReactLoading className="loader" type={"spin"} color={"black"} height={45} width={45} />
+                                </div>
+                            </>}
                         </div>
                         <button onClick={() => setLogModal()} className="closeButton">Luk</button>
                     </div>
