@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react'
 import { CreateUser } from '../../services/userService'
+import { useAPINotifier } from '../context/MessageReceiver'
 
 export default function CreateUserModal({ setModal }) {
     const [closing, Close] = useState(false);
+    const { AddMessage } = useAPINotifier();
 
     const inputs = useRef({});
     const errorBox = useRef();
@@ -34,11 +36,16 @@ export default function CreateUserModal({ setModal }) {
                 inputs.current.password.value,
                 inputs.current.mail.value,
                 inputs.current.admin.checked,
+                inputs.current.createUser.checked,
                 inputs.current.create.checked,
                 inputs.current.produce.checked,
                 inputs.current.approve.checked,
                 inputs.current.complete.checked
-            )
+            ).then((res) => {
+                res[0].then((val) => {
+                    AddMessage(val, res[1]);
+                })
+            });
             closeAction();
         }
     }
@@ -71,6 +78,10 @@ export default function CreateUserModal({ setModal }) {
                         <div className="inputField checkBoxField">
                             <input id="adminBox" name="adminBox" ref={input => inputs.current.admin = input} type="checkbox" defaultChecked={false} />
                             <label className="checkLabel" htmlFor="adminBox"><span>Administrator</span></label>
+                        </div>
+                        <div className="inputField checkBoxField">
+                            <input id="createUserBox" name="adminBox" ref={input => inputs.current.createUser = input} type="checkbox" defaultChecked={false} />
+                            <label className="checkLabel" htmlFor="createUserBox"><span>Skab bruger</span></label>
                         </div>
                         <div className="inputField checkBoxField">
                             <input id="createBox" name="adminBox" ref={input => inputs.current.create = input} type="checkbox" defaultChecked={true} />

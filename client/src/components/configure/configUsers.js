@@ -6,7 +6,7 @@ import ReactLoading from 'react-loading'
 import NewUserModal from './createUser'
 import UserLogs from './UserLogs'
 
-function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = false, produce = false, approve = false, complete = false, toggleLogs }) {
+function AdminRow({ dbid, userName, mail = "", admin = false, createUser = false, createOrder = false, produce = false, approve = false, complete = false, toggleLogs }) {
     const [changed, setChanged] = useState(false);
 
     const inputs = useRef({});
@@ -22,6 +22,7 @@ function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = fals
         UpdateUserRoles(
             dbid,
             inputs.current.admin.checked,
+            inputs.current.createUser.checked,
             inputs.current.create.checked,
             inputs.current.produce.checked,
             inputs.current.approve.checked,
@@ -43,6 +44,11 @@ function AdminRow({ dbid, userName, mail = "", admin = false, createOrder = fals
                 <td>
                     <div className="center">
                         <input id="checkAdmin" ref={input => inputs.current.admin = input} onChange={() => setChanged(true)} type="checkbox" defaultChecked={admin} />
+                    </div>
+                </td>
+                <td>
+                    <div className="center">
+                        <input id="checkAdmin" ref={input => inputs.current.createUser = input} onChange={() => setChanged(true)} type="checkbox" defaultChecked={createUser} />
                     </div>
                 </td>
                 <td>
@@ -194,10 +200,12 @@ export default function ConfigPage() {
                         </button>
                     </div>
                 </div>
-                {auth.user.user.permissions["admin"] && <>
+                {(auth.user.user.permissions["admin"] || auth.user.user.permissions["createUser"]) && <>
                     <div className="adminButtons">
                         <button className="newUser" onClick={() => setParentModalState(true)}>Ny Bruger</button>
                     </div>
+                </>}
+                {auth.user.user.permissions["admin"] && <>
                     <div className="userlistContainer">
                         <table className="content-table info">
                             <thead>
@@ -205,6 +213,7 @@ export default function ConfigPage() {
                                     <th>Brugernavn</th>
                                     <th>E-mail</th>
                                     <th>Administrator</th>
+                                    <th>Skab Bruger</th>
                                     <th>Skab Ordre</th>
                                     <th>Producer</th>
                                     <th>Godkender</th>
@@ -223,6 +232,7 @@ export default function ConfigPage() {
                                         admin={value.permissions.admin}
                                         createOrder={value.permissions.createOrder}
                                         produce={value.permissions.produce}
+                                        createUser={(value.permissions.createUser != undefined) ? value.permissions.createUser : false}
                                         approve={value.permissions.approve}
                                         complete={value.permissions.complete}
                                         toggleLogs={(id, userName) => setLogModalState(id, userName, true)}

@@ -26,7 +26,7 @@ const UserSchema = mongoose.Schema({
             type: Boolean,
             default: false
         },
-        relatelAdmin: {
+        createUser: {
             type: Boolean,
             default: false
         },
@@ -43,10 +43,6 @@ const UserSchema = mongoose.Schema({
             default: false
         },
         complete: {
-            type: Boolean,
-            default: false
-        },
-        RelatelUser: {
             type: Boolean,
             default: false
         }

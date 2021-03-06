@@ -31,7 +31,7 @@ export async function GetUserList() {
     return response.json();
 }
 
-export async function UpdateUserRoles(_id, admin, createOrder, produceOrder, approve, completedOrders) {
+export async function UpdateUserRoles(_id, admin, createUser, createOrder, produceOrder, approve, completedOrders) {
     const response = await fetch(`/api/user/updateRoles/${_id}`, {
         method: 'PUT',
         cache: 'no-cache',
@@ -40,6 +40,7 @@ export async function UpdateUserRoles(_id, admin, createOrder, produceOrder, app
         },
         body: JSON.stringify({
             admin: admin,
+            createUser: createUser,
             createOrder: createOrder,
             produceOrder: produceOrder,
             approve: approve,
@@ -66,7 +67,7 @@ export async function UpdateOwnUser(_id, email, password) {
     return [response.json(), response.status];
 }
 
-export async function CreateUser(username, password, email, admin, createOrder, produceOrder, approve, completedOrders) {
+export async function CreateUser(username, password, email, admin, createUser, createOrder, produceOrder, approve, completedOrders) {
     const response = await fetch(`/api/user/register`, {
         method: 'POST',
         cache: 'no-cache',
@@ -78,6 +79,7 @@ export async function CreateUser(username, password, email, admin, createOrder, 
             password: password,
             email: email,
             admin: admin,
+            createUser: createUser,
             createOrder: createOrder,
             produceOrder: produceOrder,
             approve: approve,

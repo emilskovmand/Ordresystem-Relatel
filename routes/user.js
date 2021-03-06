@@ -64,6 +64,11 @@ router.post('/register', (req, res) => {
     if (!req.user) {
         res.json("Intet brugerinformationer tilgængeligt.");
         res.status(401);
+        return;
+    } else if (!req.user.permissions.createUser && !req.user.permissions.admin) {
+        res.json("Manglende tilladelser til at skabe bruger");
+        res.status(401);
+        return;
     }
 
     userModel.findOne({ username: req.body.username }, async (err, doc) => {
@@ -81,6 +86,7 @@ router.post('/register', (req, res) => {
                 email: req.body.email,
                 permissions: {
                     admin: req.body.admin,
+                    createUser: req.body.createUser,
                     createOrder: req.body.createOrder,
                     produce: req.body.produceOrder,
                     approve: req.body.approve,
@@ -172,6 +178,7 @@ router.put('/updateRoles/:_id', async (req, res) => {
         const updatedUser = await userModel.findByIdAndUpdate(req.params._id, {
             permissions: {
                 admin: req.body.admin,
+                createUser: req.body.createUser,
                 createOrder: req.body.createOrder,
                 produce: req.body.produceOrder,
                 approve: req.body.approve,
