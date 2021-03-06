@@ -85,8 +85,8 @@ router.post('/register', (req, res) => {
                 password: hashedPassword,
                 email: req.body.email,
                 permissions: {
-                    admin: req.body.admin,
-                    createUser: req.body.createUser,
+                    admin: (req.user.permissions.admin) ? req.body.admin : false,
+                    createUser: (req.user.permissions.admin) ? req.body.createUser : false,
                     createOrder: req.body.createOrder,
                     produce: req.body.produceOrder,
                     approve: req.body.approve,

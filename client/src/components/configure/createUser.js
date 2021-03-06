@@ -1,10 +1,12 @@
 import { useState, useRef } from 'react'
 import { CreateUser } from '../../services/userService'
 import { useAPINotifier } from '../context/MessageReceiver'
+import { useAuth } from '../context/auth'
 
 export default function CreateUserModal({ setModal }) {
     const [closing, Close] = useState(false);
     const { AddMessage } = useAPINotifier();
+    let auth = useAuth();
 
     const inputs = useRef({});
     const errorBox = useRef();
@@ -75,14 +77,16 @@ export default function CreateUserModal({ setModal }) {
                             </div>
                             <input className="textField" id="mail" ref={input => inputs.current.mail = input} type="email" name="mail"></input>
                         </div>
-                        <div className="inputField checkBoxField">
-                            <input id="adminBox" name="adminBox" ref={input => inputs.current.admin = input} type="checkbox" defaultChecked={false} />
-                            <label className="checkLabel" htmlFor="adminBox"><span>Administrator</span></label>
-                        </div>
-                        <div className="inputField checkBoxField">
-                            <input id="createUserBox" name="adminBox" ref={input => inputs.current.createUser = input} type="checkbox" defaultChecked={false} />
-                            <label className="checkLabel" htmlFor="createUserBox"><span>Skab bruger</span></label>
-                        </div>
+                        {auth.user.user.permissions["admin"] && <>
+                            <div className="inputField checkBoxField">
+                                <input id="adminBox" name="adminBox" ref={input => inputs.current.admin = input} type="checkbox" defaultChecked={false} />
+                                <label className="checkLabel" htmlFor="adminBox"><span>Administrator</span></label>
+                            </div>
+                            <div className="inputField checkBoxField">
+                                <input id="createUserBox" name="adminBox" ref={input => inputs.current.createUser = input} type="checkbox" defaultChecked={false} />
+                                <label className="checkLabel" htmlFor="createUserBox"><span>Skab bruger</span></label>
+                            </div>
+                        </>}
                         <div className="inputField checkBoxField">
                             <input id="createBox" name="adminBox" ref={input => inputs.current.create = input} type="checkbox" defaultChecked={true} />
                             <label className="checkLabel" htmlFor="createBox"><span>Skab ordre</span></label>
