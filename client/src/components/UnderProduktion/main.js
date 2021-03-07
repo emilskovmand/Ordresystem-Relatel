@@ -145,7 +145,7 @@ export default function GodtkendtTilProduktion() {
                 {!data && <ReactLoading className="loader" type={"spin"} color={"black"} height={50} width={50} />}
 
                 <div className="info">
-                    <div>Hvis du oplever nogle problemer eller har spørgsmål, så kontakt os venligst på telefon: <a href="tek:+4571991814"></a> eller email: <a href="mailto:kontakt@telefonspeak.dk">kontakt@telefonspeak.dk</a></div>
+                    <div>Hvis du oplever nogle problemer eller har spørgsmål, så kontakt os venligst på telefon: <a href="tek:+4571991814">71 99 18 14</a> eller email: <a href="mailto:kontakt@telefonspeak.dk">kontakt@telefonspeak.dk</a></div>
 
                 </div>
 
