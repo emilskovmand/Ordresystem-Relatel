@@ -46,7 +46,7 @@ export default function LoginPage() {
                     <div className="form">
                         <input onKeyDown={(ev) => ListenForKey(ev, 'Enter', handleLogin)} id="usernameField" className="credential" type="text" maxLength={60} placeholder="Username" onChange={e => setUsername(e.target.value)} />
                         <input onKeyDown={(ev) => ListenForKey(ev, 'Enter', handleLogin)} id="passwordField" className="credential" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-                        <input ref={input => rememberMe.current = input} type="checkbox" /> <p>Husk mig</p>
+                        <input ref={input => rememberMe.current = input} type="checkbox" defaultChecked /> <p>Husk mig</p>
                         <button onClick={handleLogin} type="submit" id="login-button">Login</button>
                     </div>
                     <a href="/forgotpassword">
