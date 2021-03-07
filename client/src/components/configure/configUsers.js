@@ -83,6 +83,22 @@ function AdminRow({ dbid, userName, mail = "", admin = false, createUser = false
 }
 
 
+function CreatorRow({ dbid, userName, mail = '', toggleLogs }) {
+
+    return (
+        <tr className="userRow">
+            <td>{userName}</td>
+            <td>
+                <a href={`mailto:${mail}`}>{mail}</a>
+            </td>
+            <td>
+                <button onClick={() => toggleLogs(dbid, userName)} className="logButton">Se logs</button>
+            </td>
+        </tr>
+    )
+}
+
+
 export default function ConfigPage() {
     let auth = useAuth();
 
@@ -146,7 +162,7 @@ export default function ConfigPage() {
 
     useEffect(() => {
         // effect
-        if (auth.user.user.permissions["admin"]) {
+        if (auth.user.user.permissions["admin"] || auth.user.user.permissions["createUser"]) {
             GetUserList().then((response) => {
                 setData(response);
             });
@@ -232,9 +248,37 @@ export default function ConfigPage() {
                                         admin={value.permissions.admin}
                                         createOrder={value.permissions.createOrder}
                                         produce={value.permissions.produce}
-                                        createUser={(value.permissions.createUser != undefined) ? value.permissions.createUser : false}
+                                        createUser={(value.permissions.createUser !== undefined) ? value.permissions.createUser : false}
                                         approve={value.permissions.approve}
                                         complete={value.permissions.complete}
+                                        toggleLogs={(id, userName) => setLogModalState(id, userName, true)}
+                                    />
+                                })}
+                            </tbody>
+                        </table>
+
+                        {!data && <ReactLoading className="loader" type={"spin"} color={"black"} height={50} width={50} />}
+
+                    </div>
+                </>}
+
+                {auth.user.user.permissions["createUser"] && !auth.user.user.permissions["admin"] && <>
+                    <div className="userlistContainer">
+                        <table className="content-table info">
+                            <thead>
+                                <tr>
+                                    <th>Brugernavn</th>
+                                    <th>E-mail</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data && data.map((value, index) => {
+                                    return <CreatorRow
+                                        key={index}
+                                        dbid={value._id}
+                                        userName={value.username}
+                                        mail={value.email}
                                         toggleLogs={(id, userName) => setLogModalState(id, userName, true)}
                                     />
                                 })}

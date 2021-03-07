@@ -21,6 +21,9 @@ const UserSchema = mongoose.Schema({
     lastLoginDate: {
         type: Date
     },
+    createdBy: {
+        type: String
+    },
     permissions: {
         admin: {
             type: Boolean,

@@ -84,6 +84,7 @@ router.post('/register', (req, res) => {
                 username: req.body.username,
                 password: hashedPassword,
                 email: req.body.email,
+                createdBy: req.user._id,
                 permissions: {
                     admin: (req.user.permissions.admin) ? req.body.admin : false,
                     createUser: (req.user.permissions.admin) ? req.body.createUser : false,
@@ -143,15 +144,24 @@ router.put('/editmyuser/:_id', async (req, res) => {
 // ROUTE: /api/user/userlist
 router.get('/userlist', async (req, res) => {
 
-    if (!req.user.permissions.admin) {
+    if (!req.user) {
         res.status(401);
-        res.send("Manglende tilladelse til at se liste af brugere.");
+        res.send("Manglende brugerinformationer");
         return;
     }
 
-    if (req.user) {
+    if (req.user.permissions.admin) {
         try {
             const users = await userModel.find();
+            res.json(users);
+            res.status(200);
+        } catch (error) {
+            res.json("Serverfejl: userlist")
+            res.status(500);
+        }
+    } else if (req.user.permissions.createUser) {
+        try {
+            const users = await userModel.find({ createdBy: req.user._id });
             res.json(users);
             res.status(200);
         } catch (error) {
@@ -198,9 +208,9 @@ router.put('/updateRoles/:_id', async (req, res) => {
 
 // ROUTE: /api/user/userlogs/%DYNAMIC%_id
 router.get('/userlogs/:_id', async (req, res) => {
-    if (!req.user.permissions.admin) {
+    if (!req.user.permissions.admin && !req.user.permissions.createUser) {
         res.status(401);
-        res.json("Manglende tilladelser til at hente brugerlogs");
+        res.json([]);
         return;
     }
 
