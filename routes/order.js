@@ -306,7 +306,7 @@ router.post('/addcomment/:_id', async (req, res) => {
         }
 
         order.CommentAmount += 1;
-        order.save();
+        await order.save();
 
         SubmitUserLog(req.user, `Tilføjede en kommentar til ordreId: ${order.OrdreId}.`, 'Create');
 
