@@ -16,6 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // allows objects and arrays
 app.use(cors());
 
 app.use((req, res, next) => {
+    console.log("Outside auth: " + req.headers.authorization);
+    console.log("Inside auth: " + process.env.AUTHPASS);
     if (req.headers.authorization != process.env.AUTHPASS) {
         return res.status(403).json({ error: 'Credentials missing!' });
     } else {
