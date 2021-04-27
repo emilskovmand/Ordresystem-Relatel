@@ -29,7 +29,8 @@ async function GetOrderId() {
 
 async function CreateRecordings(res, recordingArray) {
     const recording = new recordingModel({
-        recordings: recordingArray
+        recordings: recordingArray,
+        audio: []
     });
 
     await recording.save().catch(err => {
@@ -50,6 +51,7 @@ async function createOrder(orderStructure, res) {
     console.log("Step 1");
 
     const orderId = await GetOrderId();
+    console.log("Id: " + orderId)
     const recordingId = await CreateRecordings(res, orderStructure.indtalinger);
 
     console.log("Step 2");
