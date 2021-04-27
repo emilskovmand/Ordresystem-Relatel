@@ -47,8 +47,12 @@ const dato = () => {
 
 async function createOrder(orderStructure, res) {
 
+    console.log("Step 1");
+
     const orderId = await GetOrderId();
     const recordingId = await CreateRecordings(res, orderStructure.indtalinger);
+
+    console.log("Step 2");
 
     const order = new orderModel({
         _id: mongoose.Types.ObjectId(),
@@ -64,7 +68,7 @@ async function createOrder(orderStructure, res) {
         Language: orderStructure.sprog
     });
 
-    console.log(order);
+    console.log("Step 3");
 
     order.save()
         .then(data => {
