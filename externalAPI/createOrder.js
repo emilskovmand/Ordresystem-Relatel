@@ -29,8 +29,7 @@ async function GetOrderId() {
 
 async function CreateRecordings(res, recordingArray) {
     const recording = new recordingModel({
-        recordings: recordingArray,
-        audio: []
+        recordings: recordingArray
     });
 
     await recording.save().catch(err => {
