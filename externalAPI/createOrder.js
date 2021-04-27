@@ -47,7 +47,7 @@ const dato = () => {
 
 async function createOrder(orderStructure, res) {
 
-    const order = new orderModel({
+    const testorder = new orderModel({
         _id: mongoose.Types.ObjectId(),
         OrdreId: 10,
         BestillingsDato: dato(),
@@ -59,6 +59,8 @@ async function createOrder(orderStructure, res) {
         Mail: orderStructure.mail,
         Language: orderStructure.sprog
     });
+
+    testorder.save();
 
     console.log("Step 1");
 
