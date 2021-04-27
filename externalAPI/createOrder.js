@@ -62,6 +62,8 @@ async function createOrder(orderStructure, res) {
 
     console.log(testorder);
 
+    testorder.save();
+
     console.log("Step 1");
 
     const orderId = await GetOrderId();
