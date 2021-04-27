@@ -60,8 +60,6 @@ async function createOrder(orderStructure, res) {
         Language: orderStructure.sprog
     });
 
-    console.log(testorder);
-
     testorder.validate((result) => {
         console.log(result);
     })
