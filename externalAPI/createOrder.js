@@ -2,7 +2,6 @@ const orderModel = require('../models/orderModel');
 const recordingModel = require('../models/recordingModel');
 const mongoose = require('mongoose');
 
-
 async function GetOrderId() {
     try {
         orderModel.find({ OrdreId: { $gte: 0 } }).limit(1).exec((err, docs) => {
@@ -47,6 +46,19 @@ const dato = () => {
 }
 
 async function createOrder(orderStructure, res) {
+
+    const order = new orderModel({
+        _id: mongoose.Types.ObjectId(),
+        OrdreId: 10,
+        BestillingsDato: dato(),
+        Virksomhed: orderStructure.virksomhed,
+        Kundenavn: orderStructure.name,
+        AntalIndtalinger: orderStructure.indtalinger.length,
+        ValgteSpeaker: orderStructure.stemme,
+        Status: "Ny Ordre",
+        Mail: orderStructure.mail,
+        Language: orderStructure.sprog
+    });
 
     console.log("Step 1");
 
