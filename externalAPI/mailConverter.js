@@ -4,8 +4,6 @@ const testString = 'Contact reconversion by submitting on HubSpot Form "Bestil d
 function ConvertToOrder(mailString = "") {
     const mailStringPart = mailString.split('\r\n');
 
-    console.log(mailStringPart);
-
     const customerObject = {
         mail: '',
         virksomhed: '',
