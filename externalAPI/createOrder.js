@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 
 async function GetOrderId() {
     try {
-        console.log("OrderId beginning");
         orderModel.find({ OrdreId: { $gte: 0 } }).limit(1).exec((err, docs) => {
             if (err) {
                 console.error(err);
@@ -54,7 +53,7 @@ async function createOrder(orderStructure, res) {
     const orderId = await GetOrderId();
     console.log("Id: " + orderId)
     const recordingId = await CreateRecordings(res, orderStructure.indtalinger);
-
+    console.log(recordingId);
     console.log("Step 2");
 
     const order = new orderModel({
