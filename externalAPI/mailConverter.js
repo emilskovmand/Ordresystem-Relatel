@@ -40,7 +40,7 @@ function ConvertToOrder(mailString = "") {
                     if (mailStringPart[increment].includes("OBS.")) break;
                 }
 
-                speaks.push(currentString);
+                speaks.push({ text: currentString });
             } else increment++;
 
             if (mailStringPart[-1] === mailStringPart[increment]) break;
