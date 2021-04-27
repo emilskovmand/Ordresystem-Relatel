@@ -62,6 +62,10 @@ async function createOrder(orderStructure, res) {
 
     console.log(testorder);
 
+    testorder.validate((result) => {
+        console.log(result);
+    })
+
     testorder.save();
 
     console.log("Step 1");
