@@ -72,12 +72,12 @@ async function createOrder(orderStructure, res) {
 
     order.save()
         .then(data => {
-            return [200, `Ordre nr.: '${orderId}' skabt!`]
+            return `Ordre nr.: '${orderId}' skabt!`
         })
         .catch(err => {
             console.log(`Serverfejl: CreateOrder failed while saving...`)
             console.error(err);
-            return [500, "Kunne ikke skabe ordre..."]
+            return "Kunne ikke skabe ordre..."
         })
 }
 
