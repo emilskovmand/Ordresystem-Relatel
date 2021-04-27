@@ -47,7 +47,6 @@ const createOrder = require('./createOrder');
 
 app.post('/externalOrder', cors(), async (req, res) => {
     const orderStructure = ConvertToOrderStructure(req.body[0].data);
-    console.log(orderStructure);
     await createOrder(orderStructure, res);
 });
 
