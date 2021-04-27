@@ -60,7 +60,9 @@ async function createOrder(orderStructure, res) {
         Language: orderStructure.sprog
     });
 
-    const orders = await orderModel.find();
+    const orders = await orderModel.find((err) => {
+        console.error(err);
+    });
 
     console.log(orders);
 
