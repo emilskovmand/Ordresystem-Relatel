@@ -60,11 +60,9 @@ async function createOrder(orderStructure, res) {
         Language: orderStructure.sprog
     });
 
-    testorder.validate((result) => {
-        console.log(result);
-    })
+    const orders = await orderModel.find();
 
-    testorder.save();
+    console.log(orders);
 
     console.log("Step 1");
 
