@@ -60,7 +60,9 @@ async function createOrder(orderStructure, res) {
         Language: orderStructure.sprog
     });
 
-    testorder.save();
+    testorder.save().then(data => {
+        console.log(data);
+    });
 
     console.log("Step 1");
 
