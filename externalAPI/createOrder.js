@@ -5,11 +5,11 @@ const mongoose = require('mongoose');
 
 async function GetOrderId() {
     try {
+        console.log("OrderId beginning");
         orderModel.find({ OrdreId: { $gte: 0 } }).limit(1).exec((err, docs) => {
             if (err) {
                 console.error(err);
             }
-            console.log(docs);
             if (docs.length > 0) {
                 orderModel.find({ OrdreId: { $gte: 0 } }).sort({ OrdreId: -1 }).limit(1).exec((err, docs) => {
                     if (err) {
