@@ -47,7 +47,10 @@ const createOrder = require('./createOrder');
 
 app.post('/externalOrder', cors(), async (req, res) => {
     const orderStructure = ConvertToOrderStructure(req.body[0].data);
-    await createOrder(orderStructure, res);
+    const [statusCode, jsonResponse] = await createOrder(orderStructure, res);
+
+    res.status(statusCode ? statusCode : 200);
+    res.json(jsonResponse ? jsonResponse : "Unexpected response");
 });
 
 app.listen(port, () => console.log(`External API listening on port ${port}`));

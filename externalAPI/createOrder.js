@@ -64,16 +64,16 @@ async function createOrder(orderStructure, res) {
         Language: orderStructure.sprog
     });
 
+    console.log(order);
+
     order.save()
         .then(data => {
-            res.json(`Ordre nr.: '${orderId}' skabt!`);
-            res.status(200);
+            return [200, `Ordre nr.: '${orderId}' skabt!`]
         })
         .catch(err => {
             console.log(`Serverfejl: CreateOrder failed while saving...`)
             console.error(err);
-            res.json("Kunne ikke skabe ordre...")
-            res.status(500);
+            return [500, "Kunne ikke skabe ordre..."]
         })
 }
 
