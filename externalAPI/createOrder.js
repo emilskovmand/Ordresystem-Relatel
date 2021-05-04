@@ -1,29 +1,28 @@
-const orderModel = require('../models/orderModel');
-const recordingModel = require('../models/recordingModel');
+const orderModel = require('./models/orderModel');
+const recordingModel = require('./models/recordingModel');
 const mongoose = require('mongoose');
 
 async function GetOrderId() {
-    try {
+    return new Promise((resolve, reject) => {
         orderModel.find({ OrdreId: { $gte: 0 } }).limit(1).exec((err, docs) => {
             if (err) {
                 console.error(err);
+                reject(0);
             }
             if (docs.length > 0) {
                 orderModel.find({ OrdreId: { $gte: 0 } }).sort({ OrdreId: -1 }).limit(1).exec((err, docs) => {
                     if (err) {
                         console.error(err);
+                        reject(0);
                     }
-                    return docs[0].OrdreId + 1
+                    resolve(docs[0].OrdreId + 1);
                 });
             }
             else {
-                return 1;
+                resolve(1);
             }
         })
-    } catch (err) {
-        console.log("Serverfejl: newid");
-        console.error(err);
-    }
+    })
 }
 
 async function CreateRecordings(res, recordingArray) {
@@ -47,32 +46,8 @@ const dato = () => {
 
 async function createOrder(orderStructure, res) {
 
-    const testorder = new orderModel({
-        _id: mongoose.Types.ObjectId(),
-        OrdreId: 10,
-        BestillingsDato: dato(),
-        Virksomhed: orderStructure.virksomhed,
-        Kundenavn: orderStructure.name,
-        AntalIndtalinger: orderStructure.indtalinger.length,
-        ValgteSpeaker: orderStructure.stemme,
-        Status: "Ny Ordre",
-        Mail: orderStructure.mail,
-        Language: orderStructure.sprog
-    });
-
-    const orders = await orderModel.find((err) => {
-        console.error(err);
-    });
-
-    console.log(orders);
-
-    console.log("Step 1");
-
     const orderId = await GetOrderId();
-    console.log("Id: " + orderId)
     const recordingId = await CreateRecordings(res, orderStructure.indtalinger);
-    console.log(recordingId);
-    console.log("Step 2");
 
     const order = new orderModel({
         _id: mongoose.Types.ObjectId(),
@@ -87,8 +62,6 @@ async function createOrder(orderStructure, res) {
         Mail: orderStructure.mail,
         Language: orderStructure.sprog
     });
-
-    console.log("Step 3");
 
     order.save()
         .then(data => {

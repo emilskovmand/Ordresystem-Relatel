@@ -38,9 +38,10 @@ mongoose.connect(process.env.DB_CONNECTION_STRING,
 );
 
 
-app.get('/test', (req, res) => {
+app.get('/test', async (req, res) => {
     res.status(200);
     res.json("External API for Relatel.Ordresystem");
+
 })
 
 const createOrder = require('./createOrder');
